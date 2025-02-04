@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
 const router = require("./routers/router");
-const sequelize = require("./database/config");
 const valENV = require("./utils/valENV");
 app.use(express.json());
 app.use(router);
@@ -16,7 +15,6 @@ if (variableIsValid) {
 }
 
 try {
-  // sequelize();
   app.listen(PORT, () => {
     console.log("==========================================================");
     console.log(`Servidor rodando na porta ${PORT}`);
@@ -25,9 +23,3 @@ try {
 } catch (error) {
   console.log(error);
 }
-
-
-// cego
-// tal
-// ada
-
