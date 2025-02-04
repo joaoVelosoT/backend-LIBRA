@@ -2,16 +2,17 @@ const UserCreateService = require("../../services/UsersServices/UserCreateServic
 
 const UserCreateController = async (req, res) => {
   try {
-    
     const user = await UserCreateService(req.user);
     if (!user.sucess) {
-      return res.status(user.code).json({
-        code: user.code,
-        data: user.user,
-        message: user.message,
-        sucess: true,
-      });
+      return res.status(user.code).json(user);
     }
+
+    return res.status(user.code).json({
+      code: user.code,
+      data: user.user,
+      message: user.message,
+      sucess: true,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({

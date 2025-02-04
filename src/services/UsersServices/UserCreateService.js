@@ -8,7 +8,10 @@ const UserCreateService = async (dataUser) => {
     //isDisabled
     //techAss
 
-    const existsEmail = await User.findOne({ email: dataUser.email });
+    const existsEmail = await User.findOne({
+      where: { email: dataUser.email },
+    });
+
     if (existsEmail) {
       return {
         code: 409,
