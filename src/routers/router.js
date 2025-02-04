@@ -1,11 +1,12 @@
 const { Router } = require("express");
 const router = Router();
-const routerUser = require("./routerUser");
-const routerDisableds = require("./routerDisabled");
+
+const typesDisable = require("./routerTypeDisabled")
 const routerAssistiveTech = require("./routerAssistiveTech");
+const routerUser = require("./routerUser")
 
 router.use("/users", routerUser);
-router.use("/disableds", routerDisableds);
+router.use("/Typesdisabled", typesDisable);
 router.use("/assistivetech", routerAssistiveTech);
 
 module.exports = router;
