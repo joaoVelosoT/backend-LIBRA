@@ -9,11 +9,17 @@ app.use(express.json());
 app.use(router);
 
 // Validar .env
-const variableIsValid = valENV();
-if (variableIsValid) {
-  console.log(variableIsValid);
-  process.exit(1);
-}
+
+const funcValidENV = async () => {
+  const variableIsValid = await valENV();
+
+  if (variableIsValid) {
+    console.log(variableIsValid);
+    process.exit(1);
+  }
+};
+
+funcValidENV();
 
 try {
   // sequelize();
@@ -26,8 +32,6 @@ try {
   console.log(error);
 }
 
-
 // cego
 // tal
 // ada
-
