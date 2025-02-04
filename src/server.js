@@ -31,7 +31,3 @@ try {
 } catch (error) {
   console.log(error);
 }
-
-// cego
-// tal
-// ada
