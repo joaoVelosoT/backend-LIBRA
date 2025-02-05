@@ -1,15 +1,10 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../database/config');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../database/config");
 
-const Disabled = sequelize.define('Disabled', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
+const Disabled = sequelize.define("Disabled", {
   id_disabled_types: {
-    type: DataTypes.INTEGER, 
-  //   references: {
+    type: DataTypes.INTEGER,
+      //   references: {
   //     model: DisabledsTypes,
   //     key: 'id',
   // },
