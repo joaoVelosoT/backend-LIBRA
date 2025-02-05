@@ -1,8 +1,10 @@
 const typesDisabled = require('../../models/typesDisabled');
 
-const typesDisabledService = {
+const typesDisabledCreateService = {
     create: async (type) => {
         try {
+
+            //getOneByName -> tomar cuidado com a case
 
             const createdType = await typesDisabled.create(type);
             return {
@@ -19,7 +21,6 @@ const typesDisabledService = {
             throw new Error(error.message)
         }
     }
-
 }
 
-module.exports = typesDisabledService;
+module.exports = typesDisabledCreateService;

@@ -1,20 +1,22 @@
 const { Router } = require("express");
 const router = Router();
 
-const validatorTypeDisabled = require("../middlewares/validators/TypesDisabledValidators/validatorTypeDisabled.js")
+const validatorNameTypeDisabled = require("../middlewares/validators/TypesDisabledValidators/validatorNameTypeDisabled.js")
 
-const typesDisableControllers = require("../controllers/TypesDisableControllers/TypesDisabledControllers.js");
+const typesDisableCreateControllers = require("../controllers/typesDisableControllers/typesDisableCreateController.js");
+const typesDisableGetOneControllers = require("../controllers/typesDisableControllers/TypesDisabledGetOneControllers.js");
 
 // typesDisable será uma funcionalidade com acesso restrito ao admin
 
+
 // Create TypeDisable
-router.post("/", validatorTypeDisabled, typesDisableControllers.create);
+router.post("/", validatorNameTypeDisabled, typesDisableCreateControllers.create);
 
 // // getAll TypesDisable
 // router.get("/", typesDisableControllers);
 
 // // getOne TypeDisable
-// router.get("/:id", typesDisableControllers);
+router.get("/:name", typesDisableGetOneControllers.getOneByName);
 
 // // update TypeDisable
 // router.put("/:id", typesDisableControllers);
