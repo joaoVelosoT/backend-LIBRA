@@ -1,24 +1,9 @@
-const expressValidator = require("express-validator");
 const isEmail = require("../../../utils/isEmail");
 
-const UserCreateValidator = async (req, res, next) => {
+const UserUpdateValidator = async (req, res, next) => {
   try {
     const { name, email, password, isDisabled, techAss } = req.body;
     const errors = [];
-
-    if (!name) {
-      errors.push({
-        field: "name",
-        message: "O 'name' e obrigatorio",
-      });
-    }
-
-    if (!email) {
-      errors.push({
-        field: "email",
-        message: "O 'email' e obrigatorio",
-      });
-    }
 
     if (email) {
       // validar se e um email valido
@@ -31,19 +16,14 @@ const UserCreateValidator = async (req, res, next) => {
       }
     }
 
-    if (!password) {
-      errors.push({
-        field: "password",
-        message: "O 'password' e obrigatorio",
-      });
-    }
-
-    // Fazer outras validações no password
-    if (typeof isDisabled !== "boolean") {
-      errors.push({
-        field: "isDisabled",
-        message: "O 'isDisabled' e obrigatorio é precisa ser um boolean",
-      });
+    if (isDisabled) {
+      // Fazer outras validações no password
+      if (typeof isDisabled !== "boolean") {
+        errors.push({
+          field: "isDisabled",
+          message: "O 'isDisabled' precisa ser um boolean",
+        });
+      }
     }
 
     if (errors.length !== 0) {
@@ -55,7 +35,7 @@ const UserCreateValidator = async (req, res, next) => {
       });
     }
 
-    req.user = {
+    req.dataUpdate = {
       name,
       email,
       password,
@@ -71,15 +51,15 @@ const UserCreateValidator = async (req, res, next) => {
       error: {
         details: [
           {
-            validator: "UserCreateValidator",
+            validator: "UserUpdateValidator",
             message: "Erro interno",
           },
         ],
       },
-      message: "Erro no UserCreateValidator",
+      message: "Erro no UserUpdateValidator",
       success: false,
     });
   }
 };
 
-module.exports = UserCreateValidator;
+module.exports = UserUpdateValidator;
