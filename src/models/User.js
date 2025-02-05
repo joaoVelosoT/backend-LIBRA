@@ -20,10 +20,9 @@ const User = db.define("user", {
     defaultValue: false,
     allowNull: false,
   },
-  useTecAss: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-    allowNull: false,
+  techAss: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
 });
 
