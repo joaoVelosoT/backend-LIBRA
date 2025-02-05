@@ -7,7 +7,9 @@ const UserGetAllController = async (req, res) => {
       return users;
     }
 
-    return res.status(users.code).json({
+    console.log(users);
+
+    return res.status(200).json({
       code: users.code,
       data: users.users,
       message: users.message,

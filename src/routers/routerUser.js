@@ -6,6 +6,7 @@ const ValidatorID = require("../middlewares/Validators/ValidatorID");
 const UserGetOneController = require("../controllers/UsersControllers/UserGetOneController");
 const UserUpdateController = require("../controllers/UsersControllers/UserUpdateController");
 const UserUpdateValidator = require("../middlewares/Validators/UserValidators/UserUpdateValidator");
+const UserDeleteController = require("../controllers/UsersControllers/UserDeleteController");
 const router = Router();
 
 // Create user
@@ -21,6 +22,6 @@ router.get("/:id", ValidatorID, UserGetOneController);
 router.put("/:id", ValidatorID, UserUpdateValidator, UserUpdateController);
 
 // delete user
-router.delete("/:id");
+router.delete("/:id", ValidatorID, UserDeleteController);
 
 module.exports = router;

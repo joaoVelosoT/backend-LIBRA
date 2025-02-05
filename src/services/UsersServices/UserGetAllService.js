@@ -8,7 +8,7 @@ const UserGetAllService = async () => {
     // Pequena validação, se caso não tiver nenhum user criado
     if (users.length === 0) {
       return {
-        code: 204,
+        code: 200,
         users,
         message: "Nenhum user encontrado",
         success: true,
