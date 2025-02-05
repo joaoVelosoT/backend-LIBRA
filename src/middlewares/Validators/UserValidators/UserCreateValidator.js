@@ -79,13 +79,13 @@ const UserCreateValidator = async (req, res, next) => {
       error: {
         details: [
           {
-            controller: "UserCreateController",
+            validator: "UserCreateValidator",
             message: "Erro interno",
           },
         ],
       },
-      message: "Erro no UserCreateController",
-      sucess: false,
+      message: "Erro no UserCreateValidator",
+      success: false,
     });
   }
 };
