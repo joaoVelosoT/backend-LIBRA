@@ -24,7 +24,7 @@ const UserCreateService = async (dataUser) => {
           ],
         },
         message: "Erro ao validar user",
-        sucess: false,
+        success: false,
       };
     }
 
@@ -39,7 +39,7 @@ const UserCreateService = async (dataUser) => {
       code: 201,
       user,
       message: "User criado com sucesso",
-      sucess: true,
+      success: true,
     };
   } catch (error) {
     console.error(error);

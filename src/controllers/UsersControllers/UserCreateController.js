@@ -3,7 +3,7 @@ const UserCreateService = require("../../services/UsersServices/UserCreateServic
 const UserCreateController = async (req, res) => {
   try {
     const user = await UserCreateService(req.user);
-    if (!user.sucess) {
+    if (!user.success) {
       return res.status(user.code).json(user);
     }
 
@@ -11,7 +11,7 @@ const UserCreateController = async (req, res) => {
       code: user.code,
       data: user.user,
       message: user.message,
-      sucess: true,
+      success: true,
     });
   } catch (error) {
     console.error(error);
@@ -26,7 +26,7 @@ const UserCreateController = async (req, res) => {
         ],
       },
       message: "Erro no UserCreateController",
-      sucess: false,
+      success: false,
     });
   }
 };
