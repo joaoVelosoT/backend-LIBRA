@@ -14,7 +14,7 @@ router.post("/", validatorTypeDisabled, typesDisableControllers.create);
 // router.get("/", typesDisableControllers);
 
 // // getOne TypeDisable
-// router.get("/:id", typesDisableControllers);
+router.get("/:name", typesDisableControllers.getOneByName);
 
 // // update TypeDisable
 // router.put("/:id", typesDisableControllers);
