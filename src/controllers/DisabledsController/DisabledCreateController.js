@@ -1,4 +1,4 @@
-const DisabledCreateService = require("../services/DisabledServices/DisabledCreateService");
+const DisabledCreateService = require("../../services/DisabledServices/DisabledCreateService");
 
 const DisabledCreateController = async (req, res) => {
   try {

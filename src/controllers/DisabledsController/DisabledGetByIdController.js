@@ -1,4 +1,4 @@
-const DisabledGetByIdService = require("../services/DisabledServices/DisabledGetByIdService");
+const DisabledGetByIdService = require("../../services/DisabledServices/DisabledGetByIdService");
 
 const DisabledGetByIdController = async (req, res) => {
   try {

@@ -1,4 +1,4 @@
-const DisabledUpdateService = require("../services/DisabledServices/DisabledUpdateService");
+const DisabledUpdateService = require("../../services/DisabledServices/DisabledUpdateService");
 
 const DisabledUpdateController = async (req, res) => {
   try {
