@@ -3,11 +3,11 @@ const router = Router();
 
 const validatorNameTypeDisabled = require("../middlewares/validators/TypesDisabledValidators/validatorNameTypeDisabled.js")
 
-const typesDisableCreateControllers = require("../controllers/typesDisableControllers/typesDisableCreateController.js");
+const typesDisableCreateControllers = require("../controllers/typesDisableControllers/typesDisableCreateControllers.js");
 const typesDisableGetOneControllers = require("../controllers/typesDisableControllers/TypesDisabledGetOneControllers.js");
 const typesDisableGetAllControllers = require("../controllers/TypesDisableControllers/typesDisableGetAllControllers.js");
 const typesDisabledUpdateController = require("../controllers/TypesDisableControllers/typesDisableUpdateController.js");
-
+const typesDisableDeleteControllers = require("../controllers/TypesDisableControllers/typesDisabledDeleteControllers.js");
 
 // typesDisable será uma funcionalidade com acesso restrito ao admin
 
@@ -25,6 +25,6 @@ router.get("/:name", typesDisableGetOneControllers.getOneByName);
 router.put("/:name", validatorNameTypeDisabled, typesDisabledUpdateController.update);
 
 // // delete TypeDisable
-// router.delete("/:id", typesDisableControllers);
+router.delete("/:name", typesDisableDeleteControllers.delete);
 
 module.exports = router;

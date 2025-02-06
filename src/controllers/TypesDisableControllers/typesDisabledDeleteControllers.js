@@ -1,14 +1,13 @@
-const typesDisabledCreateService = require('../../services/TypesDisabledServices/typesDisabledCreateServices');
+const typesDisabledDeleteService = require("../../services/TypesDisabledServices/typesDisabledDeleteServices");
 
-const typeDisableCreateController = {
+const typeDisabledDeleteController = {
 
-    create: async (req, res) => {
-
+    delete: async (req, res) => {
         try {
 
-            console.log(req.body);
+            const { name } = req.params
 
-            const type = await typesDisabledCreateService.create(req.body);
+            const type = await typesDisabledDeleteService.delete(name);
 
             return res.status(201).json(type)
 
@@ -25,9 +24,8 @@ const typeDisableCreateController = {
                 sucess: false,
             });
         }
-
     }
 
 }
 
-module.exports = typeDisableCreateController;
+module.exports = typeDisabledDeleteController;
