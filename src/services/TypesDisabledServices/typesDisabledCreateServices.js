@@ -4,8 +4,6 @@ const typesDisabledCreateService = {
     create: async (type) => {
         try {
 
-            //getOneByName -> tomar cuidado com a case
-
             const createdType = await typesDisabled.create(type);
             return {
                 code: 201,
