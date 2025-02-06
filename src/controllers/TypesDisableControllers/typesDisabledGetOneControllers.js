@@ -12,6 +12,7 @@ const typeDisableGetOneController = {
             return res.status(type.code).json(type)
 
         } catch (error) {
+            console.error(error);
             return res.status(500).json({
                 code: 500,
                 error: {

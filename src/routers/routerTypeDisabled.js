@@ -5,7 +5,8 @@ const validatorNameTypeDisabled = require("../middlewares/validators/TypesDisabl
 
 const typesDisableCreateControllers = require("../controllers/typesDisableControllers/typesDisableCreateController.js");
 const typesDisableGetOneControllers = require("../controllers/typesDisableControllers/TypesDisabledGetOneControllers.js");
-const typesDisableGetAllControllers = require("../controllers/TypesDisableControllers/typesDisableGetAllControllers.js")
+const typesDisableGetAllControllers = require("../controllers/TypesDisableControllers/typesDisableGetAllControllers.js");
+const typesDisabledUpdateController = require("../controllers/TypesDisableControllers/typesDisableUpdateController.js");
 
 
 // typesDisable será uma funcionalidade com acesso restrito ao admin
@@ -21,7 +22,7 @@ router.get("/", typesDisableGetAllControllers.getAll);
 router.get("/:name", typesDisableGetOneControllers.getOneByName);
 
 // // update TypeDisable
-// router.put("/:id", typesDisableControllers);
+router.put("/:name", validatorNameTypeDisabled, typesDisabledUpdateController.update);
 
 // // delete TypeDisable
 // router.delete("/:id", typesDisableControllers);
