@@ -5,7 +5,7 @@ const DisabledGetAllService = async () => {
     const disableds = await Disabled.findAll();
     if (disableds.length === 0) {
       return {
-        code: 200,
+        code: 404,
         data: disableds,
         message: "Nenhuma deficiência encontrada",
         success: true,
