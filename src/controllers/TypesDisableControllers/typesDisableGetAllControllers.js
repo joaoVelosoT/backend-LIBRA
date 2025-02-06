@@ -10,6 +10,7 @@ const typesDisabledGetAllController = {
             return res.status(types.code).json(types)
 
         } catch (error) {
+            console.error(error);
             return res.status(500).json({
                 code: 500,
                 error: {

@@ -13,6 +13,7 @@ const typeDisableCreateController = {
             return res.status(201).json(type)
 
         } catch (error) {
+            console.error(error);
             return res.status(500).json({
                 code: 500,
                 error: {
