@@ -1,24 +1,20 @@
 const typesDisabled = require('../../models/typesDisabled');
 
-const typesDisabledGetOneService = {
+const typesDisabledGetAllService = {
 
-    getOneByName: async (name) => {
+    getAll: async () => {
         try {
 
-            const getOneByNameType = await typesDisabled.findOne({
-                where: {
-                    name: name,
-                },
-            });
+            const getAllTypes = await typesDisabled.findAll();
 
-            if (getOneByNameType === null) {
+            if (getAllTypes === null) {
                 return {
                     code: 404,
                     data: {
-                        getOneByNameType
+                        getAllTypes
                     },
                     erro: 'Tipo de deficiência não encontrada!',
-                    message: 'Busque um tipo de deficiência pelo nome correto.',
+                    message: 'Não há nenhum tipo de deficiência cadastrada no banco de dados!',
                     success: false
                 }
             }
@@ -26,9 +22,9 @@ const typesDisabledGetOneService = {
             return {
                 code: 200,
                 data: {
-                    getOneByNameType
+                    getAllTypes
                 },
-                message: 'Tipo de deficiência encontrada com sucesso!',
+                message: 'Tipos de deficiências encontradas com sucesso!',
                 success: true
             }
 
@@ -40,4 +36,4 @@ const typesDisabledGetOneService = {
 
 }
 
-module.exports = typesDisabledGetOneService;
+module.exports = typesDisabledGetAllService;

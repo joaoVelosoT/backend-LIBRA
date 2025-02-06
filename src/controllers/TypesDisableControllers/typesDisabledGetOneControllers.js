@@ -7,12 +7,9 @@ const typeDisableGetOneController = {
 
             const { name } = req.params;
 
-            console.log(name);
-
-
             const type = await typesDisabledGetOneService.getOneByName(name);
 
-            return res.status(200).json(type)
+            return res.status(type.code).json(type)
 
         } catch (error) {
             return res.status(500).json({
