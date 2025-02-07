@@ -7,13 +7,8 @@ const validatorNameTypeDisabled = async (req, res, next) => {
             message: "Erro na validação de nome, tipo de deficiência."
         };
 
-        let numbers = /[0-9]/g;
-        let specialChars = /[`!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?~ ]/;
 
-        const verificationNumbers = name.search(numbers); // retorna o index do caracter que corresponder a pesquisa
-        const verificationSpecialChars = specialChars.test(name) // retorna true caso ache o caracter que corresponder a pesquisa
-
-        if (name === "") {
+        if (name === "" || name === undefined) {
             errorMessage.details = "Nome não pode ser vazio"
             return res.status(500).json({
                 code: 500,
@@ -26,6 +21,13 @@ const validatorNameTypeDisabled = async (req, res, next) => {
                 sucess: false,
             });
         }
+
+        let numbers = /[0-9]/g;
+        let specialChars = /[`!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?~ ]/;
+
+        const verificationSpecialChars = specialChars.test(name) // retorna true caso ache o caracter que corresponder a pesquisa
+        const verificationNumbers = name.search(numbers); // retorna o index do caracter que corresponder a pesquisa
+
 
         if (verificationNumbers !== -1) {
             errorMessage.details = "Nome não pode ter números"
