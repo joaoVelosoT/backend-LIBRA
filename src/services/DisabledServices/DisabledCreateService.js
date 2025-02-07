@@ -4,7 +4,6 @@ const TypesDisabled = require("../../models/typesDisabled");
 const DisabledCreateService = async (data) => {
   try {
     // id_disabled_types -> validar se existe esse tipo de disabled
-
     const disabledTypes = await TypesDisabled.findByPk(data.id_disabled_types);
     if (!disabledTypes) {
       return {
