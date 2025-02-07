@@ -1,10 +1,14 @@
 const { Router } = require("express");
+const UsersDisabledCreateController = require("../controllers/UsersDisabledsController/UsersDisabledCreateController");
+const UsersDisabledCreateValidator = require("../middlewares/Validators/UsersDisabledValidators/UsersDisabledCreateValidator");
 const router = Router();
 
 const userDisabledGetAllController = require('../controllers/UsersDisabledsController/UsersDisabledGetAllController');
 
+const UserDisabledDeleteController = require("../controllers/UsersDisabledsController/UsersDisabledDeleteController");
+
 // Create userDisabled
-router.post("/");
+router.post("/", UsersDisabledCreateValidator, UsersDisabledCreateController);
 
 // GetAll userDisabled
 router.get("/");
@@ -16,6 +20,6 @@ router.get("/", userDisabledGetAllController.getAll);
 router.put("/");
 
 // Delete userDisabled
-router.delete("/");
+router.delete("/:id", UserDisabledDeleteController);
 
 module.exports = router;
