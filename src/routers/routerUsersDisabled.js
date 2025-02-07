@@ -1,6 +1,9 @@
 const { Router } = require("express");
 const router = Router();
 
+const UserDisabledDeleteController = require("../controllers/UsersDisabledsController/UsersDisabledDeleteController");
+
+
 // Create userDisabled
 router.post("/");
 
@@ -14,6 +17,6 @@ router.get("/");
 router.put("/");
 
 // Delete userDisabled
-router.delete("/");
+router.delete("/:id", UserDisabledDeleteController);
 
 module.exports = router;
