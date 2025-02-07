@@ -1,3 +1,7 @@
+const validateIsNumber = require("../../../utils/isNumber");
+
+const validateIsSpecialCharacter = require("../../../utils/isSpecialCharacter");
+
 const validatorNameTypeDisabled = async (req, res, next) => {
     try {
 
@@ -22,28 +26,10 @@ const validatorNameTypeDisabled = async (req, res, next) => {
             });
         }
 
-        let numbers = /[0-9]/g;
-        let specialChars = /[`!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?~ ]/;
-
-        const verificationSpecialChars = specialChars.test(name) // retorna true caso ache o caracter que corresponder a pesquisa
-        const verificationNumbers = name.search(numbers); // retorna o index do caracter que corresponder a pesquisa
+        const verificationSpecialChars = validateIsSpecialCharacter(name)
 
 
-        if (verificationNumbers !== -1) {
-            errorMessage.details = "Nome não pode ter números"
-            return res.status(400).json({
-                code: 400,
-                error: {
-                    details: [
-                        { errorMessage },
-                    ],
-                },
-                message: "Erro no typeDisabledCreateController",
-                sucess: false,
-            });
-        }
-
-        if (verificationSpecialChars !== false) {
+        if (verificationSpecialChars !== true) {
             errorMessage.details = "Nome não pode ter caracteres especiais"
             return res.status(400).json({
                 code: 400,
@@ -57,6 +43,21 @@ const validatorNameTypeDisabled = async (req, res, next) => {
             });
         }
 
+        const verificationIsNumber = validateIsNumber(name);
+
+        if (verificationIsNumber !== true) {
+            errorMessage.details = "Nome não pode ter números"
+            return res.status(400).json({
+                code: 400,
+                error: {
+                    details: [
+                        { errorMessage },
+                    ],
+                },
+                message: "Erro no typeDisabledCreateController",
+                sucess: false,
+            });
+        }
 
         return next();
 
