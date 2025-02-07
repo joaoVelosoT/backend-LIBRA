@@ -1,11 +1,13 @@
 const { Router } = require("express");
+const UsersDisabledCreateController = require("../controllers/UsersDisabledsController/UsersDisabledCreateController");
+const UsersDisabledCreateValidator = require("../middlewares/Validators/UsersDisabledValidators/UsersDisabledCreateValidator");
 const router = Router();
 
 const UserDisabledDeleteController = require("../controllers/UsersDisabledsController/UsersDisabledDeleteController");
 
 
 // Create userDisabled
-router.post("/");
+router.post("/", UsersDisabledCreateValidator, UsersDisabledCreateController);
 
 // GetAll userDisabled
 router.get("/");
