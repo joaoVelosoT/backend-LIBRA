@@ -1,11 +1,14 @@
 const { Router } = require("express");
 const UsersDisabledCreateController = require("../controllers/UsersDisabledsController/UsersDisabledCreateController");
 const UsersDisabledCreateValidator = require("../middlewares/Validators/UsersDisabledValidators/UsersDisabledCreateValidator");
+const UserDisabledUpdateValidator = require("../middlewares/Validators/UsersDisabledValidators/usersDisabledUpdateValidator");
+const UserDisabledUpdateController = require("../controllers/UsersDisabledsController/UsersDisabledUpdateController");
+const UserDisabledDeleteController = require("../controllers/UsersDisabledsController/UsersDisabledDeleteController");
+const userDisabledGetAllController = require("../controllers/UsersDisabledsController/UsersDisabledGetAllController");
+
 const router = Router();
 
-const userDisabledGetAllController = require('../controllers/UsersDisabledsController/UsersDisabledGetAllController');
 
-const UserDisabledDeleteController = require("../controllers/UsersDisabledsController/UsersDisabledDeleteController");
 
 // Create userDisabled
 router.post("/", UsersDisabledCreateValidator, UsersDisabledCreateController);
@@ -17,7 +20,7 @@ router.get("/");
 router.get("/", userDisabledGetAllController.getAll);
 
 // Update userDisabled
-router.put("/");
+router.put("/:id", UserDisabledUpdateValidator, UserDisabledUpdateController);;
 
 // Delete userDisabled
 router.delete("/:id", UserDisabledDeleteController);
