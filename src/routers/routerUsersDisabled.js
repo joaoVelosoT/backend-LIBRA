@@ -1,6 +1,8 @@
 const { Router } = require("express");
 const router = Router();
 
+const userDisabledGetAllController = require('../controllers/UsersDisabledsController/UsersDisabledGetAllController');
+
 // Create userDisabled
 router.post("/");
 
@@ -8,7 +10,7 @@ router.post("/");
 router.get("/");
 
 // GetOne userDisabled
-router.get("/");
+router.get("/", userDisabledGetAllController.getAll);
 
 // Update userDisabled
 router.put("/");
