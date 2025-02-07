@@ -46,12 +46,13 @@ const LoginUserService = async (dataLogin) => {
       };
     }
 
+    console.log(user);
     const token = await jwt.sign(
       {
-        id: user.user.id,
-        email: user.user.email,
-        isDisabled: user.user.isDisabled,
-        techAss: user.user.techAss,
+        id: user.id,
+        email: user.email,
+        isDisabled: user.isDisabled,
+        techAss: user.techAss,
       },
       process.env.SECRET,
       { expiresIn: "10h" }
@@ -61,7 +62,7 @@ const LoginUserService = async (dataLogin) => {
       code: 201,
       data: {
         token,
-        user: user.user,
+        user,
       },
       message: "login realizado com sucesso",
       success: true,
