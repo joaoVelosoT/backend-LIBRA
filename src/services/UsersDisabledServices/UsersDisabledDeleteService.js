@@ -13,7 +13,7 @@ const UserDisabledDeleteService = async (idUserDisabled) => {
             },
           ],
         },
-        message: "Erro ao buscar usuário com deficiêcia",
+        message: "Erro ao buscar usuário com deficiêcia no banco de dados",
         success: false,
       };
     }
@@ -23,7 +23,7 @@ const UserDisabledDeleteService = async (idUserDisabled) => {
     return {
       code: 200,
       userDisabled,
-      message: "usuário com deficiência deletado com sucesso",
+      message: "usuário com deficiência deletado com sucesso do banco de dados",
       success: true,
     };
   } catch (error) {

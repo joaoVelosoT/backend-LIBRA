@@ -1,5 +1,7 @@
 const User = require("../../models/User");
 const bycrpt = require("bcryptjs");
+const UserDisabled = require("../../models/UsersDisableds");
+const UsersDisabledCreateService = require("../UsersDisabledServices/UsersDisabledCreateService");
 const UserCreateService = async (dataUser) => {
   try {
     //name
@@ -34,6 +36,18 @@ const UserCreateService = async (dataUser) => {
     // Mudando o password do dataUser para a senha criptografada
     dataUser.password = passwordCript;
     const user = await User.create(dataUser);
+
+    // Se o usuario for deficiente, criar ele na tabela UsersDisabled
+    if (dataUser.isDisabled) {
+      const userDisabled = await UsersDisabledCreateService({
+        idUser: user.id,
+        idDisabled: dataUser.idDisabled,
+      });
+
+      if (!userDisabled.success) {
+        return userDisabled;
+      }
+    }
 
     return {
       code: 201,
