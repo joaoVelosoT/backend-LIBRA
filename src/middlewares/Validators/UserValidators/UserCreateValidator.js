@@ -3,7 +3,7 @@ const isEmail = require("../../../utils/isEmail");
 
 const UserCreateValidator = async (req, res, next) => {
   try {
-    const { name, email, password, isDisabled, techAss } = req.body;
+    const { name, email, password, isDisabled, techAss, idDisabled } = req.body;
     const errors = [];
 
     if (!name) {
@@ -46,6 +46,15 @@ const UserCreateValidator = async (req, res, next) => {
       });
     }
 
+    if (isDisabled) {
+      if (!idDisabled) {
+        errors.push({
+          field: "idDisabled",
+          message: "O 'idDisabled' e obrigatorio",
+        });
+      }
+    }
+
     if (errors.length !== 0) {
       return res.status(400).json({
         code: 400,
@@ -61,6 +70,7 @@ const UserCreateValidator = async (req, res, next) => {
       password,
       isDisabled,
       techAss,
+      idDisabled,
     };
 
     return next();
