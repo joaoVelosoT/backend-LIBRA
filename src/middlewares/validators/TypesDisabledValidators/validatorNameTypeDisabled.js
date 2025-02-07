@@ -10,8 +10,8 @@ const validatorNameTypeDisabled = async (req, res, next) => {
 
         if (name === "" || name === undefined) {
             errorMessage.details = "Nome não pode ser vazio"
-            return res.status(500).json({
-                code: 500,
+            return res.status(400).json({
+                code: 400,
                 error: {
                     details: [
                         { errorMessage },
@@ -31,8 +31,8 @@ const validatorNameTypeDisabled = async (req, res, next) => {
 
         if (verificationNumbers !== -1) {
             errorMessage.details = "Nome não pode ter números"
-            return res.status(500).json({
-                code: 500,
+            return res.status(400).json({
+                code: 400,
                 error: {
                     details: [
                         { errorMessage },
@@ -45,8 +45,8 @@ const validatorNameTypeDisabled = async (req, res, next) => {
 
         if (verificationSpecialChars !== false) {
             errorMessage.details = "Nome não pode ter caracteres especiais"
-            return res.status(500).json({
-                code: 500,
+            return res.status(400).json({
+                code: 400,
                 error: {
                     details: [
                         { errorMessage },

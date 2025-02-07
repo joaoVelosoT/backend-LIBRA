@@ -25,6 +25,6 @@ router.get("/:name", typesDisableGetOneControllers.getOneByName);
 router.put("/:name", validatorNameTypeDisabled, typesDisabledUpdateController.update);
 
 // // delete TypeDisable
-router.delete("/:name", typesDisableDeleteControllers.delete);
+router.delete("/:name", validatorNameTypeDisabled, typesDisableDeleteControllers.delete);
 
 module.exports = router;
