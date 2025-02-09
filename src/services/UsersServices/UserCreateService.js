@@ -2,7 +2,10 @@ const User = require("../../models/User");
 const bycrpt = require("bcryptjs");
 const UserDisabled = require("../../models/UsersDisableds");
 const UsersDisabledCreateService = require("../UsersDisabledServices/UsersDisabledCreateService");
+const sequelize = require("../../database/config");
 const UserCreateService = async (dataUser) => {
+  const transaction = await sequelize.transaction();
+
   try {
     //name
     //email -> validar se ja existe alguem com esse email
@@ -35,20 +38,31 @@ const UserCreateService = async (dataUser) => {
 
     // Mudando o password do dataUser para a senha criptografada
     dataUser.password = passwordCript;
-    const user = await User.create(dataUser);
 
+    // Criando o usuario
+    const user = await User.create(dataUser, { transaction });
+    console.log(user);
     // Se o usuario for deficiente, criar ele na tabela UsersDisabled
     if (dataUser.isDisabled) {
-      const userDisabled = await UsersDisabledCreateService({
-        idUser: user.id,
-        idDisabled: dataUser.idDisabled,
-      });
+      const userDisabled = await UsersDisabledCreateService(
+        {
+          idUser: user.id,
+          idDisabled: dataUser.idDisabled,
+        },
+        transaction
+      );
 
+      console.log(await userDisabled.error);
+
+      // Se tiver tido algum problema ao criar o usuario com deficiencia, deletar o usuario ja criado
       if (!userDisabled.success) {
+        await transaction.rollback();
         return userDisabled;
       }
     }
 
+    // Confirmando a transação
+    await transaction.commit();
     return {
       code: 201,
       user,
@@ -56,6 +70,7 @@ const UserCreateService = async (dataUser) => {
       success: true,
     };
   } catch (error) {
+    await transaction.rollback();
     console.error(error);
     throw new Error(error.message);
   }

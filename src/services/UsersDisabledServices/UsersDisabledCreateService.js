@@ -3,13 +3,13 @@ const User = require("../../models/User");
 // const UserDisabled = require("../../models/UsersDisableds");
 const UsersDisabled = require("../../models/UsersDisableds");
 
-const UsersDisabledCreateService = async (dataCreate) => {
+const UsersDisabledCreateService = async (dataCreate, transaction = null) => {
   try {
     // idUser
     // idDisabled
 
     // Validar se existe o user
-    const user = await User.findByPk(dataCreate.idUser);
+    const user = await User.findByPk(dataCreate.idUser, { transaction });
     if (!user) {
       return {
         code: 404,
@@ -27,7 +27,9 @@ const UsersDisabledCreateService = async (dataCreate) => {
     }
 
     // Validar se existe a deficiencia
-    const disabled = await Disabled.findByPk(dataCreate.idDisabled);
+    const disabled = await Disabled.findByPk(dataCreate.idDisabled, {
+      transaction,
+    });
     if (!disabled) {
       return {
         code: 404,
@@ -44,7 +46,9 @@ const UsersDisabledCreateService = async (dataCreate) => {
       };
     }
 
-    const userDisabled = await UsersDisabled.create(dataCreate);
+    const userDisabled = await UsersDisabled.create(dataCreate, {
+      transaction,
+    });
 
     return {
       code: 201,
