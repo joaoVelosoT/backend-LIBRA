@@ -7,8 +7,16 @@ const DisabledCreateValidator = async (req, res, next) => {
       errors.push({ field: "id_disabled_types", message: "ID inválido." });
     }
 
-    if (!name || typeof name !== "string" || name.trim() === "" || name.length >= 100 ) {
-      errors.push({ field: "name", message: "O nome é obrigatório e não deve passar de 100 caracteres." });
+    if (
+      !name ||
+      typeof name !== "string" ||
+      name.trim() === "" ||
+      name.length >= 100
+    ) {
+      errors.push({
+        field: "name",
+        message: "O nome é obrigatório e não deve passar de 100 caracteres.",
+      });
     }
 
     if (errors.length !== 0) {

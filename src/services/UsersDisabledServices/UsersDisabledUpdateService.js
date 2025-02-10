@@ -2,7 +2,6 @@ const UserDisabled = require("../../models/UsersDisableds");
 
 const UserDisabledUpdateService = async (idUserDisabled, data) => {
   try {
-    
     const userDisabled = await UserDisabled.findByPk(idUserDisabled);
     if (!userDisabled) {
       return {
@@ -10,7 +9,8 @@ const UserDisabledUpdateService = async (idUserDisabled, data) => {
         error: {
           details: [
             {
-              message: "usuário com deficiêcia não encontrado no banco de dados",
+              message:
+                "usuário com deficiêcia não encontrado no banco de dados",
             },
           ],
         },
@@ -19,12 +19,16 @@ const UserDisabledUpdateService = async (idUserDisabled, data) => {
       };
     }
 
+    // se tiver o data.idUser, e o data.idDisabled para atualizar, validar se ele existe,
+    // e validar também se o isDisabled é false antes de atualizar
+
     await userDisabled.update(data);
 
     return {
       code: 200,
       data: userDisabled,
-      message: "usuário com deficiêcia atualizado com sucesso no banco de dados",
+      message:
+        "usuário com deficiêcia atualizado com sucesso no banco de dados",
       success: true,
     };
   } catch (error) {
@@ -35,7 +39,8 @@ const UserDisabledUpdateService = async (idUserDisabled, data) => {
         details: [
           {
             service: "UserDisabledUpdateService",
-            message: "Erro interno ao atualizar usuário com deficiêcia no banco de dados",
+            message:
+              "Erro interno ao atualizar usuário com deficiêcia no banco de dados",
           },
         ],
       },
