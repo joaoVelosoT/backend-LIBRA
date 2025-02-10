@@ -1,5 +1,6 @@
 const Disabled = require("../../models/Disabled");
 const User = require("../../models/User");
+const UserDisabled = require("../../models/UsersDisableds");
 // const UserDisabled = require("../../models/UsersDisableds");
 const UsersDisabled = require("../../models/UsersDisableds");
 
@@ -38,6 +39,27 @@ const UsersDisabledCreateService = async (dataCreate, transaction = null) => {
             {
               field: "idDisabled",
               message: "Disabled não encontrado",
+            },
+          ],
+        },
+        message: "Erro ao validar UsersDisabledCreate",
+        success: false,
+      };
+    }
+
+    // Validar se ja não existe o user com def criado
+    const existsUserDisabled = await UserDisabled.findOne({
+      where: { idUser: user.id },
+    });
+
+    if (existsUserDisabled) {
+      return {
+        code: 400,
+        error: {
+          details: [
+            {
+              field: "idUser",
+              message: "Esse user ja existe na tabela de userDisabled",
             },
           ],
         },
