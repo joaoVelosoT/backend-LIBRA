@@ -27,6 +27,24 @@ const UsersDisabledCreateService = async (dataCreate, transaction = null) => {
       };
     }
 
+    // Validar se o user e um user com deficiencia
+    if (!user.isDisabled) {
+      return {
+        code: 400,
+        error: {
+          details: [
+            {
+              field: "idUser",
+              message:
+                "Não e possivel criar esse usuario com deficiencia, pois ele esta com o isDisabled false",
+            },
+          ],
+        },
+        message: "Erro ao validar UsersDisabledCreate",
+        success: false,
+      };
+    }
+
     // Validar se existe a deficiencia
     const disabled = await Disabled.findByPk(dataCreate.idDisabled, {
       transaction,
@@ -51,7 +69,6 @@ const UsersDisabledCreateService = async (dataCreate, transaction = null) => {
     const existsUserDisabled = await UserDisabled.findOne({
       where: { idUser: user.id },
     });
-
     if (existsUserDisabled) {
       return {
         code: 400,

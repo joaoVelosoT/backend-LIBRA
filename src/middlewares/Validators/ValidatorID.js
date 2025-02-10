@@ -10,10 +10,7 @@ const ValidatorID = async (req, res, next) => {
     }
 
     if (req.params.id) {
-      console.log(Number(req.params.id));
-
       if (!Number(req.params.id)) {
-        console.log("caiu aq");
         errors.push({
           field: "id",
           message: "O id enviado não e um numero",

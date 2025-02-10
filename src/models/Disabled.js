@@ -3,7 +3,7 @@ const sequelize = require("../database/config");
 const TypesDisabled = require("./typesDisabled");
 
 const Disabled = sequelize.define("Disabled", {
-  id_disabled_types: {
+  idDisabledTypes: {
     type: DataTypes.INTEGER,
     references: {
       model: TypesDisabled,
