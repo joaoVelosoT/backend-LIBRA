@@ -3,6 +3,13 @@ const isNumber = async (verification) => {
 
         const character = verification;
 
+        const typeCharacter = typeof (verification);
+
+        if (typeCharacter !== 'string') {
+            console.error("Tipo de variável inválida");
+            return false;
+        }
+
         let numbers = /[0-9]/g;
 
         const verificationNumbers = character.search(numbers); // retorna o index do caracter que corresponder a pesquisa

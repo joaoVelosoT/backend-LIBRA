@@ -11,7 +11,7 @@ const validatorNameTypeDisabled = async (req, res, next) => {
     };
 
     if (name === "" || name === undefined) {
-      errorMessage.details = "Nome não pode ser vazio";
+      errorMessage.details = "'name' não pode ser vazio";
       return res.status(400).json({
         code: 400,
         error: {

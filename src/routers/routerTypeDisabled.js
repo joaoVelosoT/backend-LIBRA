@@ -22,9 +22,9 @@ router.get("/", typesDisableGetAllControllers.getAll);
 router.get("/:name", typesDisableGetOneControllers.getOneByName);
 
 // // update TypeDisable
-router.put("/:name", validatorNameTypeDisabled, typesDisabledUpdateController.update);
+router.patch("/:name", validatorNameTypeDisabled, typesDisabledUpdateController.update);
 
 // // delete TypeDisable
-router.delete("/:name", validatorNameTypeDisabled, typesDisableDeleteControllers.delete);
+router.delete("/:name", typesDisableDeleteControllers.delete);
 
 module.exports = router;
