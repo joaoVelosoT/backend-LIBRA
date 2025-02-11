@@ -79,7 +79,528 @@
           }
         }
       }
+    },
+    "/disableds": {
+      "post": {
+        "summary": "Criar uma pessoa com deficiência",
+        "description": "Essa rota cria uma nova pessoa com deficiência no banco de dados.",
+        "tags": ["Disabled"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Disabled"
+              },
+              "examples": {
+                "Criar Pessoa com Deficiência": {
+                  "value": {
+                    "idDisabledTypes": 1,
+                    "name": "Miopia"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "deficiência criada com sucesso no banco de dados."
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todas as deficiências no banco de dados",
+        "description": "Essa rota retorna todas as deficiências.",
+        "tags": ["Disabled"],
+        "responses": {
+          "200": {
+            "description": "Lista de deficiências no banco de dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Disabled"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/disableds/{id}": {
+      "get": {
+        "summary": "Buscar uma deficiência no banco de dados",
+        "description": "Essa rota retorna os detalhes da deficiência pelo ID.",
+        "tags": ["Disabled"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "deficiência encontrada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Disabled"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar os dados de uma  deficiência",
+        "description": "Essa rota atualiza as informações de uma deficiência pelo ID.",
+        "tags": ["Disabled"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Disabled"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "deficiência atualizada com sucesso"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir uma deficiência",
+        "description": "Essa rota exclui uma deficiência pelo ID.",
+        "tags": ["Disabled"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "deficiência excluída com sucesso"
+          }
+        }
+      }
+    },
+"/typesdisabled": {
+      "post": {
+        "summary": "Criar um tipo de deficiência",
+        "description": "Essa rota cria um novo tipo de deficiência.",
+        "tags": ["TypesDisabled"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypesDisabled"
+              },
+              "examples": {
+                "Criar Tipo de Deficiência": {
+                  "value": {
+                    "name": "Deficiência Visual"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tipo de deficiência criado com sucesso"
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os tipos de deficiência",
+        "description": "Essa rota retorna todos os tipos de deficiência cadastrados.",
+        "tags": ["TypesDisabled"],
+        "responses": {
+          "200": {
+            "description": "Lista de tipos de deficiência",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TypesDisabled"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/typesdisabled/{name}": {
+      "get": {
+        "summary": "Buscar um tipo de deficiência pelo nome",
+        "description": "Essa rota retorna os detalhes de um tipo de deficiência pelo nome.",
+        "tags": ["TypesDisabled"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tipo de deficiência encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypesDisabled"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualizar um tipo de deficiência",
+        "description": "Essa rota atualiza as informações de um tipo de deficiência pelo nome.",
+        "tags": ["TypesDisabled"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypesDisabled"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tipo de deficiência atualizado com sucesso"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir um tipo de deficiência",
+        "description": "Essa rota exclui um tipo de deficiência pelo nome.",
+        "tags": ["TypesDisabled"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tipo de deficiência excluído com sucesso"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "Criar um usuário",
+        "description": "Essa rota cria um novo usuário.",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "Criar Usuário com Deficência": {
+                  "value": {
+                    "name": "João Veloso",
+                    "email": "emailteste@gmail.com",
+                    "password": "senhateste123",
+                    "isDisabled": true,
+                    "idDisabled": 1,
+                    "techAss": "Software Reader"
+                  }
+                },
+                "Criar Usuário sem Deficência": {
+                  "value": {
+                    "name": "João Veloso",
+                    "email": "emailteste@gmail.com",
+                    "password": "senhateste123",
+                    "isDisabled": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso."
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os usuários",
+        "description": "Essa rota retorna todos os usuários cadastrados.",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "Lista de usuários cadastrados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Buscar um usuário pelo ID",
+        "description": "Essa rota retorna os detalhes de um usuário pelo ID.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar um usuário",
+        "description": "Essa rota atualiza as informações de um usuário pelo ID.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir um usuário",
+        "description": "Essa rota exclui um usuário pelo ID.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário excluído com sucesso."
+          }
+        }
+      }
+    },
+    "/usersdisabled": {
+      "post": {
+        "summary": "Associar um usuário a uma deficiência",
+        "description": "Essa rota associa um usuário a uma deficiência específica.",
+        "tags": ["UsersDisabled"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDisabled"
+              },
+              "examples": {
+                "Associar Usuário e Deficiência": {
+                  "value": {
+                    "idUser": 1,
+                    "idDisabled": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Associação criada com sucesso."
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todas as associações entre usuários e deficiências",
+        "description": "Essa rota retorna todas as associações entre usuários e deficiências cadastradas.",
+        "tags": ["UsersDisabled"],
+        "responses": {
+          "200": {
+            "description": "Lista de associações cadastradas.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDisabled"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usersdisabled/{id}": {
+      "get": {
+        "summary": "Buscar uma associação pelo ID",
+        "description": "Essa rota retorna os detalhes de uma associação pelo ID.",
+        "tags": ["UsersDisabled"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Associação encontrada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDisabled"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir uma associação",
+        "description": "Essa rota exclui uma associação entre usuário e deficiência pelo ID.",
+        "tags": ["UsersDisabled"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Associação excluída com sucesso."
+          }
+        }
+      },
+
+
+      "patch": {
+    "summary": "Atualizar uma associação entre usuário e deficiência",
+    "description": "Essa rota atualiza as informações de uma associação entre um usuário e uma deficiência.",
+    "tags": ["UsersDisabled"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/UserDisabled"
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Associação atualizada com sucesso."
+      }
     }
+  }
+}
   },
   "components": {
     "schemas": {
@@ -105,8 +626,38 @@
             "type": "string"
           }
         }
+      },
+      "Disabled": {
+        "type": "object",
+        "properties": {
+          "idDisabledTypes": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+    "TypesDisabled": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
       }
     },
+    "UserDisabled": {
+      "type": "object",
+      "properties": {
+        "idUser": {
+          "type": "integer"
+        },
+        "idDisabled": {
+          "type": "integer"
+        }
+      }
+    }
+  },
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
