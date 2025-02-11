@@ -1,13 +1,31 @@
+const { ForeignKeyConstraintError } = require("sequelize");
+const Disabled = require("../../models/Disabled");
 const typesDisabled = require("../../models/typesDisabled");
+const UserUpdateForDelete = require("../UsersDisabledServices/UserUpdateForDelete");
 
 const typesDisabledDeleteService = {
   delete: async (name) => {
     try {
+      
+      // Buscando o tipo
+      const typeDisabled = await typesDisabled.findOne({
+        where: {
+          name: name,
+        },
+      });
 
+      // Buscar todas as deficiencias que usam esse tipo
+      const getDisabledByType = await Disabled.findAll({
+        where: { idDisabledTypes: typeDisabled.id },
+      });
 
-    const usersUpdated = await UserUpdateForDelete(disabled.id);
-
-    
+      for (const type of getDisabledByType) {
+        // Deletar
+        const usersUpdated = await UserUpdateForDelete(type.dataValues.id);
+        console.log(usersUpdated);
+        
+        // console.log(type.dataValues.id)
+      }
 
       const typeDisabledDelete = await typesDisabled.destroy({
         where: {
