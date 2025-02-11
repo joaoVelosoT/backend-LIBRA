@@ -1,10 +1,12 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const PORT = process.env.PORT || 8080;
 const router = require("./routers/router");
 const valENV = require("./utils/valENV");
 app.use(express.json());
+app.use(cors());
 app.use(router);
 
 // Validar .env
