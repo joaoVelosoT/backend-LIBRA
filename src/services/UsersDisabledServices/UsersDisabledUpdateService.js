@@ -14,7 +14,7 @@ const UserDisabledUpdateService = async (idUserDisabled, data) => {
         success: false,
       };
     }
-
+    
     await userDisabled.update({ idDisabled: data.idDisabled });
 
     return {

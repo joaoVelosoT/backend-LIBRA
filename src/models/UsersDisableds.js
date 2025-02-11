@@ -19,8 +19,8 @@ const UserDisabled = db.define("userdisabled", {
       model: Disabled,
       key: "id",
     },
-    onDelete: "CASCADE",
-    allowNull: false,
+    // onDelete: "CASCADE",
+    allowNull: true,
   },
 });
 

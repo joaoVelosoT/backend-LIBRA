@@ -3,6 +3,12 @@ const typesDisabled = require("../../models/typesDisabled");
 const typesDisabledDeleteService = {
   delete: async (name) => {
     try {
+
+
+    const usersUpdated = await UserUpdateForDelete(disabled.id);
+
+    
+
       const typeDisabledDelete = await typesDisabled.destroy({
         where: {
           name: name,

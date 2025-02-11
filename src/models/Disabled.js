@@ -9,6 +9,7 @@ const Disabled = sequelize.define("Disabled", {
       model: TypesDisabled,
       key: "id",
     },
+    onDelete: "CASCADE",
     allowNull: false,
   },
   name: {

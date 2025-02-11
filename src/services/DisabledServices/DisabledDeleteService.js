@@ -1,7 +1,9 @@
 const Disabled = require("../../models/Disabled");
+const UserUpdateForDelete = require("../UsersDisabledServices/UserUpdateForDelete");
 
 const DisabledDeleteService = async (idDisabled) => {
   try {
+
     const disabled = await Disabled.findByPk(idDisabled);
     if (!disabled) {
       return {
@@ -16,9 +18,21 @@ const DisabledDeleteService = async (idDisabled) => {
         message: "Erro ao buscar deficiência por ID",
         success: false,
       };
-    }
+    } 
 
+    
+
+    
+    const usersUpdated = await UserUpdateForDelete(disabled.id);
     await disabled.destroy();
+
+
+
+    
+
+    console.log("=======================================");
+    console.log("deletou o disabled");
+    console.log("=======================================");
 
     return {
       code: 200,
