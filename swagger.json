@@ -1,0 +1,118 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "backend-LIBRA",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Servidor local para ambiente de desenvolvimento"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "summary": "Cadastro de usuario",
+        "description": "Essa rota será responsavel por cadastrar um novo usuario",
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "User Comum": {
+                  "value": {
+                    "name": "joao veloso",
+                    "email": "emailteste@gmail.com",
+                    "password": "senhateste123",
+                    "isDisabled": false
+                  }
+                },
+                "User Disabled": {
+                  "value": {
+                    "name": "joao veloso",
+                    "email": "emailteste@gmail.com",
+                    "password": "senhateste123",
+                    "isDisabled": true,
+                    "idDisabled": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login de usuario",
+        "description": "Essa rota será responsavel por logar um novo usuario",
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "email": "emailteste@gmail.com",
+                    "password": "senhateste123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "isDisabled": {
+            "type": "boolean"
+          },
+          "idDisabled": {
+            "type": "int"
+          },
+          "techAss": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
