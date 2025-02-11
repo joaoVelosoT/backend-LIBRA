@@ -6,22 +6,32 @@ const UserUpdateValidator = async (req, res, next) => {
     const errors = [];
 
     if (email) {
-      // validar se e um email valido
       const emailIsValid = await isEmail(email);
       if (!emailIsValid) {
         errors.push({
           field: "email",
-          message: "O 'email' não e valido",
+          message: "O 'email' não é válido",
         });
       }
     }
 
-    if (isDisabled) {
-      // Fazer outras validações no password
+    if (isDisabled !== undefined) {
       if (typeof isDisabled !== "boolean") {
         errors.push({
           field: "isDisabled",
           message: "O 'isDisabled' precisa ser um boolean",
+        });
+      }
+      if (isDisabled && techAss === undefined) {
+        errors.push({
+          field: "techAss",
+          message: "O 'techAss' pode ser fornecido quando 'isDisabled' é true, mas não é obrigatório",
+        });
+      }
+      if (!isDisabled && techAss) {
+        errors.push({
+          field: "techAss",
+          message: "O 'techAss' não deve ser fornecido quando 'isDisabled' é false",
         });
       }
     }
@@ -51,7 +61,7 @@ const UserUpdateValidator = async (req, res, next) => {
       error: {
         details: [
           {
-            validator: "UserUpdateValidator",
+            validator: "User UpdateValidator",
             message: "Erro interno",
           },
         ],

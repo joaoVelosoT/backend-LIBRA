@@ -9,24 +9,23 @@ const UserCreateValidator = async (req, res, next) => {
     if (!name) {
       errors.push({
         field: "name",
-        message: "O 'name' e obrigatorio",
+        message: "O 'name' é obrigatório",
       });
     }
 
     if (!email) {
       errors.push({
         field: "email",
-        message: "O 'email' e obrigatorio",
+        message: "O 'email' é obrigatório",
       });
     }
 
     if (email) {
-      // validar se e um email valido
       const emailIsValid = await isEmail(email);
       if (!emailIsValid) {
         errors.push({
           field: "email",
-          message: "O 'email' não e valido",
+          message: "O 'email' não é válido",
         });
       }
     }
@@ -34,15 +33,14 @@ const UserCreateValidator = async (req, res, next) => {
     if (!password) {
       errors.push({
         field: "password",
-        message: "O 'password' e obrigatorio",
+        message: "O 'password' é obrigatório",
       });
     }
 
-    // Fazer outras validações no password
     if (typeof isDisabled !== "boolean") {
       errors.push({
         field: "isDisabled",
-        message: "O 'isDisabled' e obrigatorio é precisa ser um boolean",
+        message: "O 'isDisabled' é obrigatório e precisa ser um boolean",
       });
     }
 
@@ -50,7 +48,16 @@ const UserCreateValidator = async (req, res, next) => {
       if (!idDisabled) {
         errors.push({
           field: "idDisabled",
-          message: "O 'idDisabled' e obrigatorio",
+          message: "O 'idDisabled' é obrigatório",
+        });
+      }
+      // techAss pode ser fornecido, mas não é obrigatório
+    } else {
+      // Se isDisabled for false, techAss não deve ser fornecido
+      if (techAss) {
+        errors.push({
+          field: "techAss",
+          message: "O 'techAss' não deve ser fornecido quando 'isDisabled' é false",
         });
       }
     }
@@ -81,7 +88,7 @@ const UserCreateValidator = async (req, res, next) => {
       error: {
         details: [
           {
-            validator: "UserCreateValidator",
+            validator: "User CreateValidator",
             message: "Erro interno",
           },
         ],
