@@ -82,8 +82,8 @@
     },
     "/disableds": {
       "post": {
-        "summary": "Criar uma pessoa com deficiência",
-        "description": "Essa rota cria uma nova pessoa com deficiência no banco de dados.",
+        "summary": "Criar uma deficiência no banco de dados",
+        "description": "Essa rota cria uma nova deficiência no banco de dados.",
         "tags": ["Disabled"],
         "requestBody": {
           "content": {
