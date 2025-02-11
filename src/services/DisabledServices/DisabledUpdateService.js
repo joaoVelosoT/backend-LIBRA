@@ -1,5 +1,6 @@
 const Disabled = require("../../models/Disabled");
 const DisabledType = require("../../models/typesDisabled");
+const { Op } = require("sequelize");
 
 const DisabledUpdateService = async (id, data) => {
   try {
@@ -16,6 +17,7 @@ const DisabledUpdateService = async (id, data) => {
       };
     }
 
+    // Verificar se o tipo de deficiência existe
     if (data.idDisabledTypes !== undefined) {
       const disabledTypeExists = await DisabledType.findByPk(data.idDisabledTypes);
       if (!disabledTypeExists) {
@@ -30,6 +32,31 @@ const DisabledUpdateService = async (id, data) => {
       }
     }
 
+    if (data.name) {
+      const existingDisabled = await Disabled.findOne({
+        where: {
+          name: data.name,
+          id: { [Op.ne]: id }, 
+        },
+      });
+      if (existingDisabled) {
+        return {
+          code: 409,
+          error: {
+            details: [
+              {
+                field: "name",
+                message: "Deficiência com mesmo nome já cadastrada no banco de dados",
+              },
+            ],
+          },
+          message: "Erro ao validar DisabledUpdate",
+          success: false,
+        };
+      }
+    }
+
+    // Atualizar a deficiência
     await disabled.update(data);
 
     return {

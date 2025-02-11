@@ -3,7 +3,7 @@ const TypesDisabled = require("../../models/typesDisabled");
 
 const DisabledCreateService = async (data) => {
   try {
-
+    // Verificar se o tipo de deficiência existe
     const disabledTypes = await TypesDisabled.findByPk(data.idDisabledTypes);
     if (!disabledTypes) {
       return {
@@ -12,7 +12,7 @@ const DisabledCreateService = async (data) => {
           details: [
             {
               field: "idDisabledTypes",
-              message: "A deficiencia enviada não existe (idDisabledTypes)",
+              message: "A deficiência enviada não existe (idDisabledTypes)",
             },
           ],
         },
@@ -21,6 +21,27 @@ const DisabledCreateService = async (data) => {
       };
     }
 
+    // Verificar se já existe uma deficiência com o mesmo nome
+    const existingDisabled = await Disabled.findOne({
+      where: { name: data.name },
+    });
+    if (existingDisabled) {
+      return {
+        code: 409,
+        error: {
+          details: [
+            {
+              field: "name",
+              message: "Deficiência com mesmo nome já cadastrada no banco de dados",
+            },
+          ],
+        },
+        message: "Erro ao validar DisabledCreate",
+        success: false,
+      };
+    }
+
+    // Criar nova deficiência
     const newDisabled = await Disabled.create(data);
 
     return {
