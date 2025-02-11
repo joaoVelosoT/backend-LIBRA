@@ -5,9 +5,23 @@ const typesDisabledGetOneService = {
     getOneByName: async (name) => {
         try {
 
+            const typeOfName = typeof (name);
+
+            console.log(typeOfName);
+
+            var nome;
+
+            if (typeOfName !== 'string') {
+
+                nome = name.name;
+
+            } else {
+                nome = name;
+            }
+
             const getOneByNameType = await typesDisabled.findOne({
                 where: {
-                    name: name,
+                    name: nome,
                 },
             });
 
