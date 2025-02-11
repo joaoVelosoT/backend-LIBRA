@@ -1,3 +1,6 @@
+const isNumber = require("../../../utils/isNumber");
+const isValidID = require("../../../utils/isValid_ID");
+
 const UsersDisabledCreateValidator = async (req, res, next) => {
   try {
     const { idUser, idDisabled } = req.body;
@@ -10,11 +13,33 @@ const UsersDisabledCreateValidator = async (req, res, next) => {
       });
     }
 
+    // Se tiver o idUser validar se e um id valido
+    if (idUser) {
+      const idUserIsValid = await isValidID(idUser);
+      if (!idUserIsValid) {
+        errors.push({
+          field: "idUser",
+          message: "O 'idUser' não e valido",
+        });
+      }
+    }
+
     if (!idDisabled) {
       errors.push({
         field: "idDisabled",
         message: "O 'idDisabled' e obrigatorio",
       });
+    }
+
+    // Se tiver o idDisabled validar se e um id valido
+    if (idDisabled) {
+      const idDisabledIsValid = await isValidID(idDisabled);
+      if (!idDisabledIsValid) {
+        errors.push({
+          field: "idDisabled",
+          message: "O 'idDisabled' não e valido",
+        });
+      }
     }
 
     if (errors.length !== 0) {

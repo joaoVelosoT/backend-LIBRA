@@ -3,16 +3,16 @@ const TypesDisabled = require("../../models/typesDisabled");
 
 const DisabledCreateService = async (data) => {
   try {
-    // id_disabled_types -> validar se existe esse tipo de disabled
-    const disabledTypes = await TypesDisabled.findByPk(data.id_disabled_types);
+
+    const disabledTypes = await TypesDisabled.findByPk(data.idDisabledTypes);
     if (!disabledTypes) {
       return {
         code: 400,
         error: {
           details: [
             {
-              field: "id_disabled_types",
-              message: "A deficiencia enviada não existe",
+              field: "idDisabledTypes",
+              message: "A deficiencia enviada não existe (idDisabledTypes)",
             },
           ],
         },

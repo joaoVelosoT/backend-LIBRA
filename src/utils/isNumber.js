@@ -1,29 +1,29 @@
 const isNumber = async (verification) => {
-    try {
+  try {
 
-        const character = verification;
+      const character = verification;
 
-        const typeCharacter = typeof (verification);
+      const typeCharacter = typeof (verification);
 
-        if (typeCharacter !== 'string') {
-            console.error("Tipo de variável inválida");
-            return false;
-        }
+      if (typeCharacter !== 'string') {
+          console.error("Tipo de variável inválida");
+          return false;
+      }
 
-        let numbers = /[0-9]/g;
+      let numbers = /[0-9]/g;
 
-        const verificationNumbers = character.search(numbers); // retorna o index do caracter que corresponder a pesquisa
+      const verificationNumbers = character.search(numbers); // retorna o index do caracter que corresponder a pesquisa
 
-        if (verificationNumbers !== -1) {
-            return false;
-        }
+      if (verificationNumbers !== -1) {
+          return false;
+      }
 
-        return true;
+      return true;
 
-    } catch (error) {
-        console.error(error);
-        throw new Error(error);
-    }
+  } catch (error) {
+      console.error(error);
+      throw new Error(error);
+  }
 }
 
 module.exports = isNumber

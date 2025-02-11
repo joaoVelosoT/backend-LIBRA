@@ -1,25 +1,36 @@
 const Disabled = require("../../models/Disabled");
+const DisabledType = require("../../models/typesDisabled");
 
-const DisabledUpdateService = async (dataUpdate) => {
+const DisabledUpdateService = async (id, data) => {
   try {
-    const disabled = await Disabled.findByPk(dataUpdate.id);
+    const disabled = await Disabled.findByPk(id);
 
     if (!disabled) {
       return {
         code: 404,
         error: {
-          details: [
-            {
-              message: "Deficiência não encontrada",
-            },
-          ],
+          details: [{ message: "Deficiência não encontrada" }],
         },
-        message: "Erro ao buscar deficiência por id",
+        message: "Erro ao buscar deficiência por ID",
         success: false,
       };
     }
 
-    await disabled.update(dataUpdate.data);
+    if (data.idDisabledTypes !== undefined) {
+      const disabledTypeExists = await DisabledType.findByPk(data.idDisabledTypes);
+      if (!disabledTypeExists) {
+        return {
+          code: 404,
+          error: {
+            details: [{ message: "Tipo de deficiência não encontrado" }],
+          },
+          message: "Erro ao validar id_disabled_types",
+          success: false,
+        };
+      }
+    }
+
+    await disabled.update(data);
 
     return {
       code: 200,
@@ -32,12 +43,7 @@ const DisabledUpdateService = async (dataUpdate) => {
     return {
       code: 500,
       error: {
-        details: [
-          {
-            service: "DisabledUpdateService",
-            message: "Erro interno ao atualizar deficiência",
-          },
-        ],
+        details: [{ service: "DisabledUpdateService", message: "Erro interno ao atualizar deficiência" }],
       },
       message: "Erro ao atualizar deficiência",
       success: false,

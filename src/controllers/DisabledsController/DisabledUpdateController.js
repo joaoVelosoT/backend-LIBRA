@@ -2,12 +2,12 @@ const DisabledUpdateService = require("../../services/DisabledServices/DisabledU
 
 const DisabledUpdateController = async (req, res) => {
   try {
-    const dataUpdate = {
-      id: req.params.id,
-      data: req.body,
-    };
-
-    const response = await DisabledUpdateService(dataUpdate);
+    const response = await DisabledUpdateService
+    (
+      req.params.id, 
+      req.body
+    );
+    
     return res.status(response.code).json(response);
   } catch (error) {
     console.error(error);

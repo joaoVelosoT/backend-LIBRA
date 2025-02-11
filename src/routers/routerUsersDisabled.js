@@ -22,7 +22,7 @@ router.get("/:id", ValidatorID, userDisabledGetOneController.getOneById);
 router.get("/", userDisabledGetAllController.getAll);
 
 // Update userDisabled
-router.put("/:id", UserDisabledUpdateValidator, UserDisabledUpdateController);;
+router.patch("/:id", UserDisabledUpdateValidator, UserDisabledUpdateController);;
 
 // Delete userDisabled
 router.delete("/:id", UserDisabledDeleteController);

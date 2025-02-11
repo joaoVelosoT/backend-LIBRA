@@ -1,10 +1,13 @@
 const DisabledCreateValidator = async (req, res, next) => {
   try {
-    const { id_disabled_types, name } = req.body;
+    const { idDisabledTypes, name } = req.body;
     const errors = [];
 
-    if (!id_disabled_types || typeof id_disabled_types !== "number") {
-      errors.push({ field: "id_disabled_types", message: "ID inválido." });
+    if (!idDisabledTypes || typeof idDisabledTypes !== "number") {
+      errors.push({ 
+        field: "idDisabledTypes", 
+        message: "O 'idDisabledTypes' não é valido." 
+      });
     }
 
     if (
@@ -28,7 +31,7 @@ const DisabledCreateValidator = async (req, res, next) => {
       });
     }
 
-    req.disabledData = { id_disabled_types, name };
+    req.disabledData = { idDisabledTypes, name };
     return next();
   } catch (error) {
     console.error(error);

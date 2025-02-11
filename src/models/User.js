@@ -27,3 +27,26 @@ const User = db.define("user", {
 });
 
 module.exports = User;
+
+
+
+/*
+
+const [name, Setname] =useState=();
+
+const dataUser = {
+  name : name
+  passwod : adasn
+}
+
+if(!name){
+  alert("erro no nome")
+}
+
+
+  const reponse = await fetch("http://localhost:8080/auth/register", {
+  method : POST,
+  headers : {"Application-type : json"},
+  data : dataUser
+  })
+*/
