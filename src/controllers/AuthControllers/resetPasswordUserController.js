@@ -10,7 +10,7 @@ const ResetPasswordController = async (req, res) => {
     const user = await User.findOne({
         where: {
           resetPasswordToken: token,
-          resetPasswordExpires: { [Op.gt]: Date.now() }, // Token não expirado
+          resetPasswordExpires: { [Op.gt]: Date.now() }, 
         },
       });
 

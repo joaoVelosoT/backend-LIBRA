@@ -17,7 +17,7 @@ const ForgotPasswordController = async (req, res) => {
     // Gerar token único para redefinição de senha
     const resetToken = crypto.randomBytes(32).toString("hex");
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 3600000; // Expira em 1 hora
+    user.resetPasswordExpires = Date.now() + 3600000; 
     await user.save();
 
     // Enviar e-mail com o link de redefinição
