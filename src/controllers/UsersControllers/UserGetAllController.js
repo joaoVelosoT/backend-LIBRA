@@ -2,7 +2,7 @@ const UserGetAllService = require("../../services/UsersServices/UserGetAllServic
 
 const UserGetAllController = async (req, res) => {
   try {
-    const users = await UserGetAllService();
+    const users = await UserGetAllService(req.query);
     if (!users.success) {
       return users;
     }
