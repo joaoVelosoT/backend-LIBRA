@@ -4,7 +4,6 @@
     "title": "backend-LIBRA",
     "version": "1.0.1",
     "description": "A versão 1.0.1 inclui: \n- FIX: Criação das rotas principais para registro e login de usuários.\n- FIX: Implementação de CRUD para gerenciamento de deficiências e tipos de deficiência.\n- FIX: Associação entre usuários e deficiências.\n- FIX: Uso de autenticação via Bearer token com JWT.\n- ADD: Adição das rotas para 'esqueceu senha' e 'alterar senha'.\n  - Rota 'esqueceu senha' permite a solicitação de redefinição de senha via email.\n  - Rota 'alterar senha' permite ao usuário atualizar sua senha mediante a autenticação com Bearer token."
-
   },
   "servers": [
     {
@@ -83,75 +82,75 @@
       }
     },
     "/auth/forgot-password": {
-    "post": {
-      "summary": "Solicitar redefinição de senha",
-      "description": "Essa rota envia um e-mail com um link para redefinir a senha.",
-      "tags": ["Auth"],
-      "requestBody": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "type": "string"
-                }
-              },
-              "required": ["email"]
+      "post": {
+        "summary": "Solicitar redefinição de senha",
+        "description": "Essa rota envia um e-mail com um link para redefinir a senha.",
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "required": ["email"]
+              }
             }
           }
-        }
-      },
-      "responses": {
-        "200": {
-          "description": "E-mail de redefinição enviado com sucesso."
         },
-        "404": {
-          "description": "Usuário não encontrado."
-        }
-      }
-    }
-  },
-  "/auth/reset-password/{token}": {
-    "post": {
-      "summary": "Redefinir senha",
-      "description": "Essa rota redefine a senha do usuário usando um token.",
-      "tags": ["Auth"],
-      "parameters": [
-        {
-          "name": "token",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
+        "responses": {
+          "200": {
+            "description": "E-mail de redefinição enviado com sucesso."
+          },
+          "404": {
+            "description": "Usuário não encontrado."
           }
         }
-      ],
-      "requestBody": {
-        "content": {
-          "application/json": {
+      }
+    },
+    "/auth/reset-password/{token}": {
+      "post": {
+        "summary": "Redefinir senha",
+        "description": "Essa rota redefine a senha do usuário usando um token.",
+        "tags": ["Auth"],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "newPassword": {
-                  "type": "string"
-                }
-              },
-              "required": ["newPassword"]
+              "type": "string"
             }
           }
-        }
-      },
-      "responses": {
-        "200": {
-          "description": "Senha redefinida com sucesso."
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "newPassword": {
+                    "type": "string"
+                  }
+                },
+                "required": ["newPassword"]
+              }
+            }
+          }
         },
-        "400": {
-          "description": "Token inválido ou expirado."
+        "responses": {
+          "200": {
+            "description": "Senha redefinida com sucesso."
+          },
+          "400": {
+            "description": "Token inválido ou expirado."
+          }
         }
       }
-    }
-  },
+    },
     "/disableds": {
       "post": {
         "summary": "Criar uma deficiência no banco de dados",
@@ -279,7 +278,7 @@
         }
       }
     },
-"/typesdisabled": {
+    "/typesdisabled": {
       "post": {
         "summary": "Criar um tipo de deficiência",
         "description": "Essa rota cria um novo tipo de deficiência.",
@@ -449,6 +448,13 @@
         "summary": "Listar todos os usuários",
         "description": "Essa rota retorna todos os usuários cadastrados.",
         "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "onlyDisabled",
+            "required": false,
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de usuários cadastrados.",
@@ -642,37 +648,36 @@
         }
       },
 
-
       "patch": {
-    "summary": "Atualizar uma associação entre usuário e deficiência",
-    "description": "Essa rota atualiza as informações de uma associação entre um usuário e uma deficiência.",
-    "tags": ["UsersDisabled"],
-    "parameters": [
-      {
-        "name": "id",
-        "in": "path",
-        "required": true,
-        "schema": {
-          "type": "integer"
-        }
-      }
-    ],
-    "requestBody": {
-      "content": {
-        "application/json": {
-          "schema": {
-            "$ref": "#/components/schemas/UserDisabled"
+        "summary": "Atualizar uma associação entre usuário e deficiência",
+        "description": "Essa rota atualiza as informações de uma associação entre um usuário e uma deficiência.",
+        "tags": ["UsersDisabled"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDisabled"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Associação atualizada com sucesso."
           }
         }
       }
-    },
-    "responses": {
-      "200": {
-        "description": "Associação atualizada com sucesso."
-      }
     }
-  }
-}
   },
   "components": {
     "schemas": {
@@ -716,26 +721,26 @@
           }
         }
       },
-    "TypesDisabled": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
+      "TypesDisabled": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "UserDisabled": {
+        "type": "object",
+        "properties": {
+          "idUser": {
+            "type": "integer"
+          },
+          "idDisabled": {
+            "type": "integer"
+          }
         }
       }
     },
-    "UserDisabled": {
-      "type": "object",
-      "properties": {
-        "idUser": {
-          "type": "integer"
-        },
-        "idDisabled": {
-          "type": "integer"
-        }
-      }
-    }
-  },
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
