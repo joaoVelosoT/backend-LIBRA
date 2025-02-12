@@ -24,6 +24,14 @@ const User = db.define("user", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  resetPasswordToken: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  resetPasswordExpires: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  },  
 });
 
 module.exports = User;
