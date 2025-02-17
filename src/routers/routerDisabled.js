@@ -6,12 +6,14 @@ const DisabledGetAllController = require("../controllers/DisabledsController/Dis
 const DisabledGetByIdController = require("../controllers/DisabledsController/DisabledGetByIdController");
 const DisabledUpdateController = require("../controllers/DisabledsController/DisabledUpdateController");
 const DisabledDeleteController = require("../controllers/DisabledsController/DisabledDeleteController");
+const DisabledGetByTypeController = require("../controllers/DisabledsController/DisabledGetDisabledByType")
 
 const router = Router();
 
 router.post("/", DisabledCreateValidator, DisabledCreateController);
-router.get('/', DisabledGetAllController); 
+router.get('/', DisabledGetAllController);
 router.get('/:id', DisabledGetByIdController);
+router.get("/type/:id", DisabledGetByTypeController);
 router.put("/:id", DisabledUpdateValidator, DisabledUpdateController);
 router.delete('/:id', DisabledDeleteController);
 
