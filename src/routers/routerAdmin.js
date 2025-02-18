@@ -1,8 +1,10 @@
 const { Router } = require("express");
 const router = Router();
+const AdminCreateController = require("../controllers/AdminControllers/AdminCreateController");
+const AdminCreateValidator = require("../middlewares/Validators/AdminValidators/AdminCreateValidator");
 
 // Create Admin 
-router.post("/");
+router.post("/", AdminCreateValidator, AdminCreateController);
 
 // getAll Admin
 router.get("/");
