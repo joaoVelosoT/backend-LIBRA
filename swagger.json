@@ -2,8 +2,8 @@
   "openapi": "3.1.1",
   "info": {
     "title": "backend-LIBRA",
-    "version": "1.0.1",
-    "description": "A versão 1.0.1 inclui: \n- FIX: Criação das rotas principais para registro e login de usuários.\n- FIX: Implementação de CRUD para gerenciamento de deficiências e tipos de deficiência.\n- FIX: Associação entre usuários e deficiências.\n- FIX: Uso de autenticação via Bearer token com JWT.\n- ADD: Adição das rotas para 'esqueceu senha' e 'alterar senha'.\n  - Rota 'esqueceu senha' permite a solicitação de redefinição de senha via email.\n  - Rota 'alterar senha' permite ao usuário atualizar sua senha mediante a autenticação com Bearer token."
+    "version": "1.0.2",
+    "description": "A versão 1.0.1 inclui: \n- FIX: Criação das rotas principais para registro e login de usuários.\n- FIX: Implementação de CRUD para gerenciamento de deficiências e tipos de deficiência.\n- FIX: Associação entre usuários e deficiências.\n- FIX: Uso de autenticação via Bearer token com JWT.\n- ADD: Nova rota para buscar deficiências pelo nome."
   },
   "servers": [
     {
@@ -200,6 +200,38 @@
         }
       }
     },
+    "/disableds/type/{id}": {
+  "get": {
+    "summary": "Buscar deficiências pelo tipo",
+    "description": "Essa rota retorna as deficiências por tipo.",
+    "tags": ["Disabled"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Deficiências encontradas com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Disabled"
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Deficiência não encontrada"
+      }
+    }
+  }
+},
     "/disableds/{id}": {
       "get": {
         "summary": "Buscar uma deficiência no banco de dados",
