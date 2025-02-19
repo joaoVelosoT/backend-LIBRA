@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 
 const AuthAdminMiddleware = async (req, res, next) => {
-  console.log("AuthAdminMiddleware foi chamado!"); // Teste para ver se o middleware está rodando
 
   try {
     const token = req.headers.authorization?.split(" ")[1];
