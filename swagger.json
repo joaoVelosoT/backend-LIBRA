@@ -2,8 +2,8 @@
   "openapi": "3.1.1",
   "info": {
     "title": "backend-LIBRA",
-    "version": "1.0.2",
-    "description": "A versão 1.0.1 inclui: \n- FIX: Criação das rotas principais para registro e login de usuários.\n- FIX: Implementação de CRUD para gerenciamento de deficiências e tipos de deficiência.\n- FIX: Associação entre usuários e deficiências.\n- FIX: Uso de autenticação via Bearer token com JWT.\n- ADD: Nova rota para buscar deficiências pelo nome."
+    "version": "2.0.1",
+    "description": "A versão 1.0.1 inclui: \n- FIX: Criação das rotas principais para registro e login de usuários.\n- FIX: Implementação de CRUD para gerenciamento de deficiências e tipos de deficiência.\n- FIX: Associação entre usuários e deficiências.\n- FIX: Uso de autenticação via Bearer token com JWT.\n- ADD: nova rota e tag de admin."
   },
   "servers": [
     {
@@ -151,11 +151,51 @@
         }
       }
     },
+    "/admin": {
+      "post": {
+        "summary": "Criar um administrador",
+        "description": "Essa rota cria um novo administrador.",
+        "tags": ["Admin"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Admin"
+              },
+              "examples": {
+                "Admin": {
+                  "value": {
+                    "name": "Admin",
+                    "email": "admin@example.com",
+                    "password": "admin123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Administrador criado com sucesso."
+          }
+        }
+      }
+    },
     "/disableds": {
       "post": {
         "summary": "Criar uma deficiência no banco de dados",
         "description": "Essa rota cria uma nova deficiência no banco de dados.",
         "tags": ["Disabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -183,6 +223,11 @@
         "summary": "Listar todas as deficiências no banco de dados",
         "description": "Essa rota retorna todas as deficiências.",
         "tags": ["Disabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de deficiências no banco de dados",
@@ -201,42 +246,52 @@
       }
     },
     "/disableds/type/{id}": {
-  "get": {
-    "summary": "Buscar deficiências pelo tipo",
-    "description": "Essa rota retorna as deficiências por tipo.",
-    "tags": ["Disabled"],
-    "parameters": [
-      {
-        "name": "id",
-        "in": "path",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      }
-    ],
-    "responses": {
-      "200": {
-        "description": "Deficiências encontradas com sucesso",
-        "content": {
-          "application/json": {
+      "get": {
+        "summary": "Buscar deficiências pelo tipo",
+        "description": "Essa rota retorna as deficiências por tipo.",
+        "tags": ["Disabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
             "schema": {
-              "$ref": "#/components/schemas/Disabled"
+              "type": "string"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deficiências encontradas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Disabled"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deficiência não encontrada"
+          }
         }
-      },
-      "404": {
-        "description": "Deficiência não encontrada"
       }
-    }
-  }
-},
+    },
     "/disableds/{id}": {
       "get": {
         "summary": "Buscar uma deficiência no banco de dados",
         "description": "Essa rota retorna os detalhes da deficiência pelo ID.",
         "tags": ["Disabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -264,6 +319,11 @@
         "summary": "Atualizar os dados de uma  deficiência",
         "description": "Essa rota atualiza as informações de uma deficiência pelo ID.",
         "tags": ["Disabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -293,6 +353,11 @@
         "summary": "Excluir uma deficiência",
         "description": "Essa rota exclui uma deficiência pelo ID.",
         "tags": ["Disabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -315,6 +380,11 @@
         "summary": "Criar um tipo de deficiência",
         "description": "Essa rota cria um novo tipo de deficiência.",
         "tags": ["TypesDisabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -341,6 +411,11 @@
         "summary": "Listar todos os tipos de deficiência",
         "description": "Essa rota retorna todos os tipos de deficiência cadastrados.",
         "tags": ["TypesDisabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de tipos de deficiência",
@@ -363,6 +438,11 @@
         "summary": "Buscar um tipo de deficiência pelo nome",
         "description": "Essa rota retorna os detalhes de um tipo de deficiência pelo nome.",
         "tags": ["TypesDisabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "name",
@@ -390,6 +470,11 @@
         "summary": "Atualizar um tipo de deficiência",
         "description": "Essa rota atualiza as informações de um tipo de deficiência pelo nome.",
         "tags": ["TypesDisabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "name",
@@ -419,6 +504,11 @@
         "summary": "Excluir um tipo de deficiência",
         "description": "Essa rota exclui um tipo de deficiência pelo nome.",
         "tags": ["TypesDisabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "name",
@@ -480,6 +570,11 @@
         "summary": "Listar todos os usuários",
         "description": "Essa rota retorna todos os usuários cadastrados.",
         "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "onlyDisabled",
@@ -509,6 +604,11 @@
         "summary": "Buscar um usuário pelo ID",
         "description": "Essa rota retorna os detalhes de um usuário pelo ID.",
         "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -536,6 +636,11 @@
         "summary": "Atualizar um usuário",
         "description": "Essa rota atualiza as informações de um usuário pelo ID.",
         "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -565,6 +670,11 @@
         "summary": "Excluir um usuário",
         "description": "Essa rota exclui um usuário pelo ID.",
         "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -587,6 +697,11 @@
         "summary": "Associar um usuário a uma deficiência",
         "description": "Essa rota associa um usuário a uma deficiência específica.",
         "tags": ["UsersDisabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -614,6 +729,11 @@
         "summary": "Listar todas as associações entre usuários e deficiências",
         "description": "Essa rota retorna todas as associações entre usuários e deficiências cadastradas.",
         "tags": ["UsersDisabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de associações cadastradas.",
@@ -636,6 +756,11 @@
         "summary": "Buscar uma associação pelo ID",
         "description": "Essa rota retorna os detalhes de uma associação pelo ID.",
         "tags": ["UsersDisabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -663,6 +788,11 @@
         "summary": "Excluir uma associação",
         "description": "Essa rota exclui uma associação entre usuário e deficiência pelo ID.",
         "tags": ["UsersDisabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -679,11 +809,15 @@
           }
         }
       },
-
       "patch": {
         "summary": "Atualizar uma associação entre usuário e deficiência",
         "description": "Essa rota atualiza as informações de uma associação entre um usuário e uma deficiência.",
         "tags": ["UsersDisabled"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -738,6 +872,20 @@
             "type": "string"
           },
           "resetPasswordExpires": {
+            "type": "string"
+          }
+        }
+      },
+      "Admin": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
             "type": "string"
           }
         }

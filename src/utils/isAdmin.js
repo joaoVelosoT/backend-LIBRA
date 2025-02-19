@@ -44,7 +44,7 @@ const AuthAdminMiddleware = async (req, res, next) => {
     req.admin = decoded;
     next();
   } catch (error) {
-    console.error("Erro no middleware:", error);
+    console.error("Erro no isAdmin:", error);
     return res.status(500).json({
       code: 500,
       error: {
@@ -54,7 +54,7 @@ const AuthAdminMiddleware = async (req, res, next) => {
           },
         ],
       },
-      message: "Erro no AuthAdminMiddleware",
+      message: "Erro no AuthAdmin",
       success: false,
     });
   }
