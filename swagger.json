@@ -208,8 +208,134 @@
             "description": "Administrador criado com sucesso."
           }
         }
+      },
+      "get": {
+        "summary": "Listar todos os administradores",
+        "description": "Essa rota retorna todos os administradores cadastrados.",
+        "tags": ["Admin"],
+        "responses": {
+          "200": {
+            "description": "Lista de administradores encontrada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Admin"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Nenhum administrador encontrado"
+          }
+        }
       }
     },
+    "/admin/{id}": {
+  "get": {
+    "summary": "Buscar um administrador pelo ID",
+    "description": "Essa rota retorna os detalhes de um administrador pelo ID.",
+    "tags": ["Admin"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Administrador encontrado com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Admin"
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Administrador não encontrado"
+      }
+    }
+  },
+  "delete": {
+    "summary": "Excluir um administrador",
+    "description": "Essa rota exclui um administrador pelo ID.",
+    "tags": ["Admin"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Administrador excluído com sucesso"
+      },
+      "404": {
+        "description": "Administrador não encontrado"
+      }
+    }
+  },
+  "patch": {
+    "summary": "Atualizar o email de um administrador",
+    "description": "Essa rota atualiza o email de um administrador pelo ID.",
+    "tags": ["Admin"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              }
+            },
+            "required": ["email"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Email do administrador atualizado com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Admin"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Email inválido ou já em uso"
+      },
+      "404": {
+        "description": "Administrador não encontrado"
+      }
+    }
+  }
+},
     "/disableds": {
       "post": {
         "summary": "Criar uma deficiência no banco de dados",
