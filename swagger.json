@@ -185,11 +185,6 @@
         "summary": "Criar um administrador",
         "description": "Essa rota cria um novo administrador.",
         "tags": ["Admin"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
