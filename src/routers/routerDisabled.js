@@ -7,14 +7,16 @@ const DisabledGetByIdController = require("../controllers/DisabledsController/Di
 const DisabledUpdateController = require("../controllers/DisabledsController/DisabledUpdateController");
 const DisabledDeleteController = require("../controllers/DisabledsController/DisabledDeleteController");
 const DisabledGetByTypeController = require("../controllers/DisabledsController/DisabledGetDisabledByType")
+const AuthAdmin = require("../utils/isAdmin"); 
+
 
 const router = Router();
 
-router.post("/", DisabledCreateValidator, DisabledCreateController);
-router.get('/', DisabledGetAllController);
-router.get('/:id', DisabledGetByIdController);
-router.get("/type/:id", DisabledGetByTypeController);
-router.put("/:id", DisabledUpdateValidator, DisabledUpdateController);
-router.delete('/:id', DisabledDeleteController);
+router.post("/", AuthAdmin, DisabledCreateValidator, DisabledCreateController);
+router.get('/', AuthAdmin, DisabledGetAllController);
+router.get('/:id', AuthAdmin, DisabledGetByIdController);
+router.get("/type/:id", AuthAdmin, DisabledGetByTypeController);
+router.put("/:id", AuthAdmin, DisabledUpdateValidator, DisabledUpdateController);
+router.delete('/:id', AuthAdmin, DisabledDeleteController);
 
 module.exports = router;

@@ -7,24 +7,25 @@ const userDisabledGetAllController = require("../controllers/UsersDisabledsContr
 const userDisabledGetOneController = require("../controllers/UsersDisabledsController/UsersDisabledGetOneController");
 const UserDisabledDeleteController = require("../controllers/UsersDisabledsController/UsersDisabledDeleteController");
 const UserDisabledUpdateController = require("../controllers/UsersDisabledsController/UsersDisabledUpdateController");
+const AuthAdmin = require("../utils/isAdmin"); 
 const router = Router();
 
 
 
 
 // Create userDisabled
-router.post("/", UsersDisabledCreateValidator, UsersDisabledCreateController);
+router.post("/", AuthAdmin, UsersDisabledCreateValidator, UsersDisabledCreateController);
 
 // GetOne userDisabled
-router.get("/:id", ValidatorID, userDisabledGetOneController.getOneById);
+router.get("/:id", AuthAdmin, ValidatorID, userDisabledGetOneController.getOneById);
 
 // GetAll userDisabled
-router.get("/", userDisabledGetAllController.getAll);
+router.get("/", AuthAdmin, userDisabledGetAllController.getAll);
 
 // Update userDisabled
-router.patch("/:id", UserDisabledUpdateValidator, UserDisabledUpdateController);;
+router.patch("/:id", AuthAdmin, UserDisabledUpdateValidator, UserDisabledUpdateController);;
 
 // Delete userDisabled
-router.delete("/:id", UserDisabledDeleteController);
+router.delete("/:id", AuthAdmin, UserDisabledDeleteController);
 
 module.exports = router;

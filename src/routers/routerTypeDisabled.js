@@ -8,23 +8,25 @@ const typesDisableGetOneControllers = require("../controllers/typesDisableContro
 const typesDisableGetAllControllers = require("../controllers/TypesDisableControllers/typesDisableGetAllControllers.js");
 const typesDisabledUpdateController = require("../controllers/TypesDisableControllers/typesDisableUpdateController.js");
 const typesDisableDeleteControllers = require("../controllers/TypesDisableControllers/typesDisabledDeleteControllers.js");
+const AuthAdmin = require("../utils/isAdmin"); 
+
 
 // typesDisable será uma funcionalidade com acesso restrito ao admin
 
 
 // Create TypeDisable
-router.post("/", validatorNameTypeDisabled, typesDisableCreateControllers.create);
+router.post("/", AuthAdmin, validatorNameTypeDisabled, typesDisableCreateControllers.create);
 
 // // getAll TypesDisable
-router.get("/", typesDisableGetAllControllers.getAll);
+router.get("/", AuthAdmin, typesDisableGetAllControllers.getAll);
 
 // // getOne TypeDisable
-router.get("/:name", typesDisableGetOneControllers.getOneByName);
+router.get("/:name", AuthAdmin, typesDisableGetOneControllers.getOneByName);
 
 // // update TypeDisable
-router.patch("/:name", validatorNameTypeDisabled, typesDisabledUpdateController.update);
+router.patch("/:name", AuthAdmin, validatorNameTypeDisabled, typesDisabledUpdateController.update);
 
 // // delete TypeDisable
-router.delete("/:name", typesDisableDeleteControllers.delete);
+router.delete("/:name", AuthAdmin, typesDisableDeleteControllers.delete);
 
 module.exports = router;

@@ -7,21 +7,22 @@ const UserGetOneController = require("../controllers/UsersControllers/UserGetOne
 const UserUpdateController = require("../controllers/UsersControllers/UserUpdateController");
 const UserUpdateValidator = require("../middlewares/Validators/UserValidators/UserUpdateValidator");
 const UserDeleteController = require("../controllers/UsersControllers/UserDeleteController");
+const AuthAdmin = require("../utils/isAdmin"); 
 const router = Router();
 
 // Create user
 router.post("/", UserCreateValidator, UserCreateController);
 
 // getAll user
-router.get("/", UserGetAllController);
+router.get("/", AuthAdmin, UserGetAllController);
 
 // getOne user
-router.get("/:id", ValidatorID, UserGetOneController);
+router.get("/:id", AuthAdmin, ValidatorID, UserGetOneController);
 
 // update user
 router.put("/:id", ValidatorID, UserUpdateValidator, UserUpdateController);
 
 // delete user
-router.delete("/:id", ValidatorID, UserDeleteController);
+router.delete("/:id", AuthAdmin, ValidatorID, UserDeleteController );
 
 module.exports = router;
