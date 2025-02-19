@@ -3,7 +3,7 @@
   "info": {
     "title": "backend-LIBRA",
     "version": "2.0.1",
-    "description": "A versão 1.0.1 inclui: \n- FIX: Criação das rotas principais para registro e login de usuários.\n- FIX: Implementação de CRUD para gerenciamento de deficiências e tipos de deficiência.\n- FIX: Associação entre usuários e deficiências.\n- FIX: Uso de autenticação via Bearer token com JWT.\n- ADD: nova rota e tag de admin."
+    "description": "A versão 2.0.1 inclui: \n- FIX: Criação das rotas principais para registro e login de usuários.\n- FIX: Implementação de CRUD para gerenciamento de deficiências e tipos de deficiência.\n- FIX: Associação entre usuários e deficiências.\n- FIX: Uso de autenticação via Bearer token com JWT.\n- ADD: nova rota e tag de admin."
   },
   "servers": [
     {
@@ -67,6 +67,35 @@
                 "User": {
                   "value": {
                     "email": "emailteste@gmail.com",
+                    "password": "senhateste123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/login-admin": {
+      "post": {
+        "summary": "Login de admin",
+        "description": "Essa rota será responsavel por logar um admin",
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Admin"
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "NIF": "123456",
                     "password": "senhateste123"
                   }
                 }
@@ -882,12 +911,16 @@
           "name": {
             "type": "string"
           },
+          "NIF": {
+            "type": "string"
+          },
           "email": {
             "type": "string"
           },
           "password": {
             "type": "string"
           }
+          
         }
       },
       "Disabled": {
