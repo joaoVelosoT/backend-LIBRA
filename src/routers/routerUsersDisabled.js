@@ -23,9 +23,9 @@ router.get("/:id", AuthAdmin, ValidatorID, userDisabledGetOneController.getOneBy
 router.get("/", AuthAdmin, userDisabledGetAllController.getAll);
 
 // Update userDisabled
-router.patch("/:id", AuthAdmin, UserDisabledUpdateValidator, UserDisabledUpdateController);;
+router.patch("/:id", ValidatorID, AuthAdmin, UserDisabledUpdateValidator, UserDisabledUpdateController);;
 
 // Delete userDisabled
-router.delete("/:id", AuthAdmin, UserDisabledDeleteController);
+router.delete("/:id", ValidatorID, AuthAdmin, UserDisabledDeleteController);
 
 module.exports = router;

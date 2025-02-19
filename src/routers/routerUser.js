@@ -17,12 +17,12 @@ router.post("/", UserCreateValidator, UserCreateController);
 router.get("/", AuthAdmin, UserGetAllController);
 
 // getOne user
-router.get("/:id", AuthAdmin, ValidatorID, UserGetOneController);
+router.get("/:id", ValidatorID, AuthAdmin, UserGetOneController);
 
 // update user
 router.put("/:id", ValidatorID, UserUpdateValidator, UserUpdateController);
 
 // delete user
-router.delete("/:id", AuthAdmin, ValidatorID, UserDeleteController );
+router.delete("/:id", ValidatorID, AuthAdmin, UserDeleteController );
 
 module.exports = router;
