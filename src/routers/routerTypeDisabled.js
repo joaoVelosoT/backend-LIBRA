@@ -8,7 +8,7 @@ const typesDisableGetOneControllers = require("../controllers/typesDisableContro
 const typesDisableGetAllControllers = require("../controllers/TypesDisableControllers/typesDisableGetAllControllers.js");
 const typesDisabledUpdateController = require("../controllers/TypesDisableControllers/typesDisableUpdateController.js");
 const typesDisableDeleteControllers = require("../controllers/TypesDisableControllers/typesDisabledDeleteControllers.js");
-const AuthAdmin = require("../utils/isAdmin"); 
+const AuthAdmin = require("../utils/isAdmin");
 
 
 // typesDisable será uma funcionalidade com acesso restrito ao admin
@@ -18,7 +18,7 @@ const AuthAdmin = require("../utils/isAdmin");
 router.post("/", AuthAdmin, validatorNameTypeDisabled, typesDisableCreateControllers.create);
 
 // // getAll TypesDisable
-router.get("/", AuthAdmin, typesDisableGetAllControllers.getAll);
+router.get("/", typesDisableGetAllControllers.getAll);
 
 // // getOne TypeDisable
 router.get("/:name", AuthAdmin, typesDisableGetOneControllers.getOneByName);

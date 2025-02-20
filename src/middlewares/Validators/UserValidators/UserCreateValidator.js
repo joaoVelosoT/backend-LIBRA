@@ -3,6 +3,10 @@ const isEmail = require("../../../utils/isEmail");
 
 const UserCreateValidator = async (req, res, next) => {
   try {
+
+    console.log(req.body);
+
+
     const { name, email, password, isDisabled, techAss, idDisabled } = req.body;
     const errors = [];
 
