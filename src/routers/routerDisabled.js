@@ -7,7 +7,9 @@ const DisabledGetByIdController = require("../controllers/DisabledsController/Di
 const DisabledUpdateController = require("../controllers/DisabledsController/DisabledUpdateController");
 const DisabledDeleteController = require("../controllers/DisabledsController/DisabledDeleteController");
 const DisabledGetByTypeController = require("../controllers/DisabledsController/DisabledGetDisabledByType")
-const AuthAdmin = require("../utils/isAdmin"); 
+const ValidatorID = require("../middlewares/Validators/ValidatorID");
+const AuthAdmin = require("../utils/isAdmin");
+
 
 
 const router = Router();
