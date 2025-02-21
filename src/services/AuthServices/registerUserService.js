@@ -3,6 +3,9 @@ const jwt = require("jsonwebtoken");
 
 const RegisterUserService = async (dataUser) => {
   try {
+
+    console.log(dataUser);
+
     // Criar o usuario
     const user = await UserCreateService(dataUser);
 

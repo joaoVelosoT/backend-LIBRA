@@ -8,7 +8,7 @@ const typesDisableGetOneControllers = require("../controllers/typesDisableContro
 const typesDisableGetAllControllers = require("../controllers/TypesDisableControllers/typesDisableGetAllControllers.js");
 const typesDisabledUpdateController = require("../controllers/TypesDisableControllers/typesDisableUpdateController.js");
 const typesDisableDeleteControllers = require("../controllers/TypesDisableControllers/typesDisabledDeleteControllers.js");
-const AuthAdmin = require("../utils/isAdmin"); 
+const AuthAdmin = require("../utils/isAdmin");
 
 
 // typesDisable será uma funcionalidade com acesso restrito ao admin

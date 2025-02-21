@@ -8,7 +8,7 @@ const DisabledUpdateController = require("../controllers/DisabledsController/Dis
 const DisabledDeleteController = require("../controllers/DisabledsController/DisabledDeleteController");
 const DisabledGetByTypeController = require("../controllers/DisabledsController/DisabledGetDisabledByType")
 const ValidatorID = require("../middlewares/Validators/ValidatorID");
-const AuthAdmin = require("../utils/isAdmin"); 
+const AuthAdmin = require("../utils/isAdmin");
 
 
 
