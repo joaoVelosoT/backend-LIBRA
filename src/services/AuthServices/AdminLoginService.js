@@ -1,3 +1,4 @@
+// services/AuthServices/AdminLoginService.js
 const Admin = require("../../models/Admin");
 const bycrpt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -47,11 +48,13 @@ const AdminLoginService = async (dataLogin) => {
       {
         id: admin.id,
         email: admin.email,
-        role: "admin", // Adicionando a role para diferenciar admin de user
+        role: "admin",
       },
       process.env.SECRET,
       { expiresIn: "10h" } // Token expira em 10 horas
     );
+
+    await admin.update({ validToken: token });
 
     return {
       code: 201,

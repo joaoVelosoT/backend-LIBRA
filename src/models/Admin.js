@@ -1,3 +1,4 @@
+// models/Admin.js
 const { DataTypes } = require("sequelize");
 const db = require("../database/config");
 const AdminFoto = require("./adminFoto")
@@ -37,9 +38,10 @@ const Admin = db.define("admin", {
     type: DataTypes.DATE,
     allowNull: true,
   },
+  validToken: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 });
 
 module.exports = Admin;
-
-
-
