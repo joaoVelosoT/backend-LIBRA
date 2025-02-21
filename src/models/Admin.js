@@ -1,3 +1,4 @@
+// models/Admin.js
 const { DataTypes } = require("sequelize");
 const db = require("../database/config");
 
@@ -18,7 +19,7 @@ const Admin = db.define("admin", {
   NIF: {
     type: DataTypes.STRING,
     allowNull: false,
-  }, 
+  },
   resetPasswordToken: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -26,10 +27,11 @@ const Admin = db.define("admin", {
   resetPasswordExpires: {
     type: DataTypes.DATE,
     allowNull: true,
-  },  
+  },
+  validToken: {
+    type: DataTypes.STRING, 
+    allowNull: true,
+  },
 });
 
 module.exports = Admin;
-
-
-

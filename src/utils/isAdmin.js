@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
+const Admin = require("../models/Admin"); 
 
 const AuthAdminMiddleware = async (req, res, next) => {
-
   try {
     const token = req.headers.authorization?.split(" ")[1];
 
@@ -40,10 +40,26 @@ const AuthAdminMiddleware = async (req, res, next) => {
       });
     }
 
+    const admin = await Admin.findOne({ where: { id: decoded.id } });
+    if (!admin || admin.validToken !== token) {
+      return res.status(401).json({
+        code: 401,
+        error: {
+          details: [
+            {
+              message: "Token inválido. Faça login novamente.",
+            },
+          ],
+        },
+        message: "Erro de autenticação",
+        success: false,
+      });
+    }
+
     req.admin = decoded;
     next();
   } catch (error) {
-    console.error("Erro no isAdmin:", error);
+    console.error("Erro no AuthAdminMiddleware:", error);
     return res.status(500).json({
       code: 500,
       error: {
@@ -53,7 +69,7 @@ const AuthAdminMiddleware = async (req, res, next) => {
           },
         ],
       },
-      message: "Erro no AuthAdmin",
+      message: "Erro no AuthAdminMiddleware",
       success: false,
     });
   }

@@ -8,6 +8,9 @@ const LoginUserController = require("../controllers/AuthControllers/loginUserCon
 const LoginValidator = require("../middlewares/Validators/AuthValidators/LoginValidator");
 const  AdminLoginValidator = require("../middlewares/Validators/AuthValidators/AdminLoginValidator");
 const AdminLoginController = require("../controllers/AuthControllers/AdminLoginController");
+const AdminLogoutController = require("../controllers/AuthControllers/AdminLogoutController");
+const verifyToken = require("../middlewares/Validators/AuthValidators/verifyToken");
+
 
 
 const router = Router();
@@ -26,5 +29,7 @@ router.post("/login", LoginValidator, LoginUserController);
 
 // Admin Login
 router.post("/login-admin", AdminLoginValidator, AdminLoginController);
+
+router.post("/logout-admin", verifyToken, AdminLogoutController);
 
 module.exports = router;
