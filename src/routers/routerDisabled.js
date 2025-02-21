@@ -17,7 +17,7 @@ const router = Router();
 router.post("/", AuthAdmin, DisabledCreateValidator, DisabledCreateController);
 router.get('/', AuthAdmin, DisabledGetAllController);
 router.get('/:id', AuthAdmin, DisabledGetByIdController);
-router.get("/type/:id", ValidatorID, AuthAdmin, DisabledGetByTypeController);
+router.get("/type/:id", ValidatorID,  DisabledGetByTypeController);
 router.put("/:id", ValidatorID, AuthAdmin, DisabledUpdateValidator, DisabledUpdateController);
 router.delete('/:id', ValidatorID, AuthAdmin, DisabledDeleteController);
 

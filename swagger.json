@@ -400,11 +400,6 @@
         "summary": "Buscar deficiências pelo tipo",
         "description": "Essa rota retorna as deficiências por tipo.",
         "tags": ["Disabled"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
@@ -561,11 +556,6 @@
         "summary": "Listar todos os tipos de deficiência",
         "description": "Essa rota retorna todos os tipos de deficiência cadastrados.",
         "tags": ["TypesDisabled"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "Lista de tipos de deficiência",

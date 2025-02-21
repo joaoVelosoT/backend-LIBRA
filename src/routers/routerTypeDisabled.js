@@ -18,7 +18,7 @@ const AuthAdmin = require("../utils/isAdmin");
 router.post("/", AuthAdmin, validatorNameTypeDisabled, typesDisableCreateControllers.create);
 
 // // getAll TypesDisable
-router.get("/", AuthAdmin, typesDisableGetAllControllers.getAll);
+router.get("/",  typesDisableGetAllControllers.getAll);
 
 // // getOne TypeDisable
 router.get("/:name", AuthAdmin, typesDisableGetOneControllers.getOneByName);
