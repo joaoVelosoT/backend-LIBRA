@@ -1,9 +1,19 @@
 const { DataTypes } = require("sequelize");
-const db = require("../database/config");
+const sequelize = require("../database/config");
+const TypesDisabled = require("./typesDisabled");
 
-const Disabled = db.define("disabled", {
+const Disabled = sequelize.define("Disabled", {
+  idDisabledTypes: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: TypesDisabled,
+      key: "id",
+    },
+    onDelete: "CASCADE",
+    allowNull: false,
+  },
   name: {
-    type: DataTypes.STRING(30),
+    type: DataTypes.STRING(255),
     allowNull: false,
   },
 });

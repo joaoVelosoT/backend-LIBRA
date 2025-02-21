@@ -37,6 +37,19 @@ const valENV = async () => {
       });
     }
 
+    if (!process.env.EMAIL_USER) {
+      errors.push({
+        field: "EMAIL_USER",
+        message: "a variavel de ambiente EMAIL_USER é obrigatorio",
+      });
+    }
+    if (!process.env.EMAIL_PASS) {
+      errors.push({
+        field: "EMAIL_PASS",
+        message: "a variavel de ambiente EMAIL_PASS é obrigatorio",
+      });
+    }
+
     if (errors.length !== 0) {
       return errors;
     } else {

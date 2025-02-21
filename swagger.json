@@ -1,0 +1,1139 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "backend-LIBRA",
+    "version": "2.0.1",
+    "description": "A versão 2.0.1 inclui: \n- FIX: Criação das rotas principais para registro e login de usuários.\n- FIX: Implementação de CRUD para gerenciamento de deficiências e tipos de deficiência.\n- FIX: Associação entre usuários e deficiências.\n- FIX: Uso de autenticação via Bearer token com JWT.\n- ADD: nova rota e tag de admin."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Servidor local para ambiente de desenvolvimento"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "summary": "Cadastro de usuario",
+        "description": "Essa rota será responsavel por cadastrar um novo usuario",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "User Comum": {
+                  "value": {
+                    "name": "joao veloso",
+                    "email": "emailteste@gmail.com",
+                    "password": "senhateste123",
+                    "isDisabled": false
+                  }
+                },
+                "User Disabled": {
+                  "value": {
+                    "name": "joao veloso",
+                    "email": "emailteste@gmail.com",
+                    "password": "senhateste123",
+                    "isDisabled": true,
+                    "idDisabled": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login de usuario",
+        "description": "Essa rota será responsavel por logar um novo usuario",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "email": "emailteste@gmail.com",
+                    "password": "senhateste123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/login-admin": {
+      "post": {
+        "summary": "Login de admin",
+        "description": "Essa rota será responsavel por logar um admin",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Admin"
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "NIF": "123456",
+                    "password": "senhateste123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "summary": "Solicitar redefinição de senha",
+        "description": "Essa rota envia um e-mail com um link para redefinir a senha.",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "E-mail de redefinição enviado com sucesso."
+          },
+          "404": {
+            "description": "Usuário não encontrado."
+          }
+        }
+      }
+    },
+    "/auth/reset-password/{token}": {
+      "post": {
+        "summary": "Redefinir senha",
+        "description": "Essa rota redefine a senha do usuário usando um token.",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "newPassword": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "newPassword"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Senha redefinida com sucesso."
+          },
+          "400": {
+            "description": "Token inválido ou expirado."
+          }
+        }
+      }
+    },
+    "/admin": {
+      "post": {
+        "summary": "Criar um administrador",
+        "description": "Essa rota cria um novo administrador.",
+        "tags": [
+          "Admin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Admin"
+              },
+              "examples": {
+                "Admin": {
+                  "value": {
+                    "name": "Admin",
+                    "email": "admin@example.com",
+                    "password": "admin123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Administrador criado com sucesso."
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os administradores",
+        "description": "Essa rota retorna todos os administradores cadastrados.",
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de administradores encontrada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Admin"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Nenhum administrador encontrado"
+          }
+        }
+      }
+    },
+    "/admin/{id}": {
+      "get": {
+        "summary": "Buscar um administrador pelo ID",
+        "description": "Essa rota retorna os detalhes de um administrador pelo ID.",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Administrador encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Admin"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Administrador não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir um administrador",
+        "description": "Essa rota exclui um administrador pelo ID.",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Administrador excluído com sucesso"
+          },
+          "404": {
+            "description": "Administrador não encontrado"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualizar o email de um administrador",
+        "description": "Essa rota atualiza o email de um administrador pelo ID.",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email do administrador atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Admin"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email inválido ou já em uso"
+          },
+          "404": {
+            "description": "Administrador não encontrado"
+          }
+        }
+      }
+    },
+    "/disableds": {
+      "post": {
+        "summary": "Criar uma deficiência no banco de dados",
+        "description": "Essa rota cria uma nova deficiência no banco de dados.",
+        "tags": [
+          "Disabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Disabled"
+              },
+              "examples": {
+                "Criar Pessoa com Deficiência": {
+                  "value": {
+                    "idDisabledTypes": 1,
+                    "name": "Miopia"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "deficiência criada com sucesso no banco de dados."
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todas as deficiências no banco de dados",
+        "description": "Essa rota retorna todas as deficiências.",
+        "tags": [
+          "Disabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de deficiências no banco de dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Disabled"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/disableds/type/{id}": {
+      "get": {
+        "summary": "Buscar deficiências pelo tipo",
+        "description": "Essa rota retorna as deficiências por tipo.",
+        "tags": ["Disabled"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deficiências encontradas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Disabled"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Deficiência não encontrada"
+          }
+        }
+      }
+    },
+    "/disableds/{id}": {
+      "get": {
+        "summary": "Buscar uma deficiência no banco de dados",
+        "description": "Essa rota retorna os detalhes da deficiência pelo ID.",
+        "tags": [
+          "Disabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "deficiência encontrada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Disabled"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar os dados de uma  deficiência",
+        "description": "Essa rota atualiza as informações de uma deficiência pelo ID.",
+        "tags": [
+          "Disabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Disabled"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "deficiência atualizada com sucesso"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir uma deficiência",
+        "description": "Essa rota exclui uma deficiência pelo ID.",
+        "tags": [
+          "Disabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "deficiência excluída com sucesso"
+          }
+        }
+      }
+    },
+    "/typesdisabled": {
+      "post": {
+        "summary": "Criar um tipo de deficiência",
+        "description": "Essa rota cria um novo tipo de deficiência.",
+        "tags": [
+          "TypesDisabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypesDisabled"
+              },
+              "examples": {
+                "Criar Tipo de Deficiência": {
+                  "value": {
+                    "name": "Deficiência Visual"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tipo de deficiência criado com sucesso"
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os tipos de deficiência",
+        "description": "Essa rota retorna todos os tipos de deficiência cadastrados.",
+        "tags": ["TypesDisabled"],
+        "responses": {
+          "200": {
+            "description": "Lista de tipos de deficiência",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TypesDisabled"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/typesdisabled/{name}": {
+      "get": {
+        "summary": "Buscar um tipo de deficiência pelo nome",
+        "description": "Essa rota retorna os detalhes de um tipo de deficiência pelo nome.",
+        "tags": [
+          "TypesDisabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tipo de deficiência encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypesDisabled"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualizar um tipo de deficiência",
+        "description": "Essa rota atualiza as informações de um tipo de deficiência pelo nome.",
+        "tags": [
+          "TypesDisabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypesDisabled"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tipo de deficiência atualizado com sucesso"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir um tipo de deficiência",
+        "description": "Essa rota exclui um tipo de deficiência pelo nome.",
+        "tags": [
+          "TypesDisabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tipo de deficiência excluído com sucesso"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "Criar um usuário",
+        "description": "Essa rota cria um novo usuário.",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "Criar Usuário com Deficência": {
+                  "value": {
+                    "name": "João Veloso",
+                    "email": "emailteste@gmail.com",
+                    "password": "senhateste123",
+                    "isDisabled": true,
+                    "idDisabled": 1,
+                    "techAss": "Software Reader"
+                  }
+                },
+                "Criar Usuário sem Deficência": {
+                  "value": {
+                    "name": "João Veloso",
+                    "email": "emailteste@gmail.com",
+                    "password": "senhateste123",
+                    "isDisabled": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso."
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os usuários",
+        "description": "Essa rota retorna todos os usuários cadastrados.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "onlyDisabled",
+            "required": false,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de usuários cadastrados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Buscar um usuário pelo ID",
+        "description": "Essa rota retorna os detalhes de um usuário pelo ID.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar um usuário",
+        "description": "Essa rota atualiza as informações de um usuário pelo ID.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir um usuário",
+        "description": "Essa rota exclui um usuário pelo ID.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário excluído com sucesso."
+          }
+        }
+      }
+    },
+    "/usersdisabled": {
+      "post": {
+        "summary": "Associar um usuário a uma deficiência",
+        "description": "Essa rota associa um usuário a uma deficiência específica.",
+        "tags": [
+          "UsersDisabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDisabled"
+              },
+              "examples": {
+                "Associar Usuário e Deficiência": {
+                  "value": {
+                    "idUser": 1,
+                    "idDisabled": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Associação criada com sucesso."
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todas as associações entre usuários e deficiências",
+        "description": "Essa rota retorna todas as associações entre usuários e deficiências cadastradas.",
+        "tags": [
+          "UsersDisabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de associações cadastradas.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDisabled"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usersdisabled/{id}": {
+      "get": {
+        "summary": "Buscar uma associação pelo ID",
+        "description": "Essa rota retorna os detalhes de uma associação pelo ID.",
+        "tags": [
+          "UsersDisabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Associação encontrada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDisabled"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir uma associação",
+        "description": "Essa rota exclui uma associação entre usuário e deficiência pelo ID.",
+        "tags": [
+          "UsersDisabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Associação excluída com sucesso."
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualizar uma associação entre usuário e deficiência",
+        "description": "Essa rota atualiza as informações de uma associação entre um usuário e uma deficiência.",
+        "tags": [
+          "UsersDisabled"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDisabled"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Associação atualizada com sucesso."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "isDisabled": {
+            "type": "boolean"
+          },
+          "idDisabled": {
+            "type": "int"
+          },
+          "techAss": {
+            "type": "string"
+          },
+          "resetPasswordToken": {
+            "type": "string"
+          },
+          "resetPasswordExpires": {
+            "type": "string"
+          }
+        }
+      },
+      "Admin": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "NIF": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Disabled": {
+        "type": "object",
+        "properties": {
+          "idDisabledTypes": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "TypesDisabled": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "UserDisabled": {
+        "type": "object",
+        "properties": {
+          "idUser": {
+            "type": "integer"
+          },
+          "idDisabled": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

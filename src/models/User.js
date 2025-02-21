@@ -12,7 +12,7 @@ const User = db.define("user", {
     unique: true,
   },
   password: {
-    type: DataTypes.STRING(20),
+    type: DataTypes.STRING,
     allowNull: false,
   },
   isDisabled: {
@@ -20,11 +20,41 @@ const User = db.define("user", {
     defaultValue: false,
     allowNull: false,
   },
-  useTecAss: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-    allowNull: false,
+  techAss: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
+  resetPasswordToken: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  resetPasswordExpires: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  },  
 });
 
 module.exports = User;
+
+
+
+/*
+
+const [name, Setname] =useState=();
+
+const dataUser = {
+  name : name
+  passwod : adasn
+}
+
+if(!name){
+  alert("erro no nome")
+}
+
+
+  const reponse = await fetch("http://localhost:8080/auth/register", {
+  method : POST,
+  headers : {"Application-type : json"},
+  data : dataUser
+  })
+*/
