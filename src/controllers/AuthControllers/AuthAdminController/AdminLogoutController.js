@@ -1,5 +1,5 @@
 // controllers/AuthControllers/AdminLogoutController.js
-const AdminLogoutService = require("../../services/AuthServices/AdminLogoutService");
+const AdminLogoutService = require("../../../services/AuthServices/AdminLogoutService");
 
 const AdminLogoutController = async (req, res) => {
   try {

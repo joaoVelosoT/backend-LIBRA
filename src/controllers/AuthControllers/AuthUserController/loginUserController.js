@@ -1,8 +1,8 @@
-const RegisterUserService = require("../../services/AuthServices/registerUserService");
+const LoginUserService = require("../../../services/AuthServices/loginUserService");
 
-const RegisterUserController = async (req, res, next) => {
+const LoginUserController = async (req, res) => {
   try {
-    const user = await RegisterUserService(req.user);
+    const user = await LoginUserService(req.dataLogin);
     if (!user.success) {
       return res.status(user.code).json(user);
     }
@@ -20,15 +20,15 @@ const RegisterUserController = async (req, res, next) => {
       error: {
         details: [
           {
-            controller: "RegisterUserController",
+            controller: "LoginUserController",
             message: "Erro interno",
           },
         ],
       },
-      message: "Erro no RegisterUserController",
+      message: "Erro no LoginUserController",
       success: false,
     });
   }
 };
 
-module.exports = RegisterUserController;
+module.exports = LoginUserController;

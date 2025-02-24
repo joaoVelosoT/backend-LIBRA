@@ -2,13 +2,13 @@ const { Router } = require("express");
 
 const ForgotPasswordController = require("../controllers/AuthControllers/forgotPasswordUserController")
 const ResetPasswordController = require("../controllers/AuthControllers/resetPasswordUserController");
-const RegisterUserController = require("../controllers/AuthControllers/registerUserController");
+const RegisterUserController = require("../controllers/AuthControllers/AuthUserController/registerUserController");
 const UserCreateValidator = require("../middlewares/Validators/UserValidators/UserCreateValidator");
-const LoginUserController = require("../controllers/AuthControllers/loginUserController");
+const LoginUserController = require("../controllers/AuthControllers/AuthUserController/loginUserController");
 const LoginValidator = require("../middlewares/Validators/AuthValidators/LoginValidator");
 const  AdminLoginValidator = require("../middlewares/Validators/AuthValidators/AdminLoginValidator");
-const AdminLoginController = require("../controllers/AuthControllers/AdminLoginController");
-const AdminLogoutController = require("../controllers/AuthControllers/AdminLogoutController");
+const AdminLoginController = require("../controllers/AuthControllers/AuthAdminController/AdminLoginController");
+const AdminLogoutController = require("../controllers/AuthControllers/AuthAdminController/AdminLogoutController");
 const verifyToken = require("../middlewares/Validators/AuthValidators/verifyToken");
 
 
