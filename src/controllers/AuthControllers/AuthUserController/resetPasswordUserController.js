@@ -1,4 +1,4 @@
-const User = require("../../models/User");
+const User = require("../../../models/User");
 const bcrypt = require("bcryptjs");
 const { Op } = require("sequelize");
 
@@ -8,11 +8,11 @@ const ResetPasswordController = async (req, res) => {
     const { newPassword } = req.body;
 
     const user = await User.findOne({
-        where: {
-          resetPasswordToken: token,
-          resetPasswordExpires: { [Op.gt]: Date.now() }, 
-        },
-      });
+      where: {
+        resetPasswordToken: token,
+        resetPasswordExpires: { [Op.gt]: Date.now() },
+      },
+    });
 
     if (!user) {
       return res.status(400).json({
