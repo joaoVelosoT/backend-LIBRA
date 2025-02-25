@@ -31,6 +31,7 @@ const Admin = db.define("admin", {
     allowNull: true
   },
   resetPasswordToken: {
+    
     type: DataTypes.STRING,
     allowNull: true,
   },
