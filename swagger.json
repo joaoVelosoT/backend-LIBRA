@@ -211,8 +211,8 @@
                 "Admin": {
                   "value": {
                     "name": "Admin",
-                    "email": "admin@example.com",
-                    "password": "admin123"
+                    "email": "admin@gmail.com",
+                    "password": "admin"
                   }
                 }
               }
@@ -362,6 +362,64 @@
         }
       }
     },
+
+
+
+"/admin/image/{id}": {
+  "post": {
+    "summary": "Adicionar imagem de perfil a um admin",
+    "description": "Essa rota permite adicionar uma imagem de perfil a um admin já existente. A imagem deve ser enviada como `form-data` no campo `imagemPerfil`.",
+    "tags": [
+      "Admin"
+    ],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        },
+        "description": "ID do admin que receberá a imagem."
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "imagemPerfil": {
+                "type": "string",
+                "format": "binary",
+                "description": "Arquivo de imagem (formatos suportados: JPEG, PNG)."
+              }
+            },
+            "required": [
+              "imagemPerfil"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Imagem de perfil adicionada com sucesso."
+      },
+      "400": {
+        "description": "Arquivo inválido ou não enviado."
+      },
+      "404": {
+        "description": "Admin não encontrado."
+      }
+    }
+  }
+},
+
+
+
+
+
     "/disableds": {
       "post": {
         "summary": "Criar uma deficiência no banco de dados",
