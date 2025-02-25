@@ -8,6 +8,7 @@ const routerTypesDisableds = require("./routerTypeDisabled");
 const routerAuth = require("./routerAuth");
 const routerUsersDisabled = require("./routerUsersDisabled");
 const routerAdmin = require("./routerAdmin");
+const routerNotification = require("./routerNotificarion");
 
 router.use("/users", routerUser);
 router.use("/admin", routerAdmin);
@@ -16,4 +17,5 @@ router.use("/assistivetech", routerAssistiveTech);
 router.use("/typesdisabled", routerTypesDisableds);
 router.use("/auth", routerAuth);
 router.use("/usersdisabled", routerUsersDisabled);
+router.use("/notifications", routerNotification);
 module.exports = router;
