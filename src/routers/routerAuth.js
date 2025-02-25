@@ -6,10 +6,12 @@ const RegisterUserController = require("../controllers/AuthControllers/AuthUserC
 const UserCreateValidator = require("../middlewares/Validators/UserValidators/UserCreateValidator");
 const LoginUserController = require("../controllers/AuthControllers/AuthUserController/loginUserController");
 const LoginValidator = require("../middlewares/Validators/AuthValidators/LoginValidator");
-const  AdminLoginValidator = require("../middlewares/Validators/AuthValidators/AdminLoginValidator");
+const UserLogoutController = require("../controllers/AuthControllers/AuthUserController/UserLogoutController");
+const AdminLoginValidator = require("../middlewares/Validators/AuthValidators/AdminLoginValidator");
 const AdminLoginController = require("../controllers/AuthControllers/AuthAdminController/AdminLoginController");
 const AdminLogoutController = require("../controllers/AuthControllers/AuthAdminController/AdminLogoutController");
-const verifyToken = require("../middlewares/Validators/AuthValidators/verifyToken");
+const verifyTokenUser = require("../middlewares/Validators/AuthValidators/verifyTokenUser");
+const verifyTokenAdmin = require("../middlewares/Validators/AuthValidators/verifyTokenAdmin");
 
 
 
@@ -27,9 +29,13 @@ router.post("/register", UserCreateValidator, RegisterUserController);
 // User Login
 router.post("/login", LoginValidator, LoginUserController);
 
+// User Logout
+router.post("/logout-user", verifyTokenUser, UserLogoutController);
+
 // Admin Login
 router.post("/login-admin", AdminLoginValidator, AdminLoginController);
 
-router.post("/logout-admin", verifyToken, AdminLogoutController);
+// Admin Logout
+router.post("/logout-admin", verifyTokenAdmin, AdminLogoutController);
 
 module.exports = router;

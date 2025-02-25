@@ -1,70 +1,39 @@
-const User = require("../../models/User");
-const bycrpt = require("bcryptjs");
+const UserCreateService = require("../UsersServices/UserCreateService");
 const jwt = require("jsonwebtoken");
 
-const LoginUserService = async (dataLogin) => {
+const RegisterUserService = async (dataUser) => {
   try {
-    // email
-    // password
+    console.log(dataUser);
 
-    const user = await User.findOne({ where: { email: dataLogin.email } });
-    if (!user) {
-      return {
-        code: 400,
-        error: {
-          details: [
-            {
-              field: "email",
-              message: "O email enviado não existe",
-            },
-          ],
-        },
-        message: "Erro ao validar login",
-        success: false,
-      };
+    // Criar o usuário
+    const user = await UserCreateService(dataUser);
+
+    // Se der algum erro na criação, retornar
+    if (!user.success) {
+      return user;
     }
 
-    // se achou o user, validar se a senha e a mesma enviada
-    const passwordDecode = await bycrpt.compareSync(
-      dataLogin.password,
-      user.password
-    );
-
-    if (!passwordDecode) {
-      return {
-        code: 401,
-        error: {
-          details: [
-            {
-              field: "password",
-              message: "Senha incorreta",
-            },
-          ],
-        },
-        message: "Erro ao validar login",
-        success: false,
-      };
-    }
-
-    console.log(user);
+    // Criar o token de autenticação
     const token = await jwt.sign(
       {
-        id: user.id,
-        email: user.email,
-        isDisabled: user.isDisabled,
-        techAss: user.techAss,
+        id: user.user.id,
+        email: user.user.email,
+        isDisabled: user.user.isDisabled,
+        techAss: user.user.techAss,
       },
       process.env.SECRET,
       { expiresIn: "10h" }
     );
 
+    await user.user.update({ validToken: token });
+
     return {
       code: 201,
       data: {
         token,
-        user,
+        user: user.user,
       },
-      message: "login realizado com sucesso",
+      message: "Usuário cadastrado com sucesso",
       success: true,
     };
   } catch (error) {
@@ -73,4 +42,4 @@ const LoginUserService = async (dataLogin) => {
   }
 };
 
-module.exports = LoginUserService;
+module.exports = RegisterUserService;
