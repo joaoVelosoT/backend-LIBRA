@@ -1,4 +1,3 @@
-// middlewares/Validators/AuthValidators/AdminLoginValidator.js
 const AdminLoginValidator = async (req, res, next) => {
   try {
     const { NIF, password } = req.body;
