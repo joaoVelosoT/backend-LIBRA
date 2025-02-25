@@ -413,6 +413,54 @@
         "description": "Admin não encontrado."
       }
     }
+  },
+  "put": {
+    "summary": "Atualizar a imagem de perfil de um admin",
+    "description": "Essa rota permite atualizar a imagem de perfil de um admin já existente. A imagem deve ser enviada como `form-data` no campo `imagemPerfil`.",
+    "tags": [
+      "Admin"
+    ],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        },
+        "description": "ID do admin que terá a imagem atualizada."
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "imagemPerfil": {
+                "type": "string",
+                "format": "binary",
+                "description": "Arquivo de imagem (formatos suportados: JPEG, PNG)."
+              }
+            },
+            "required": [
+              "imagemPerfil"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Imagem de perfil atualizada com sucesso."
+      },
+      "400": {
+        "description": "Arquivo inválido ou não enviado."
+      },
+      "404": {
+        "description": "Admin não encontrado ou não possui uma foto para atualizar."
+      }
+    }
   }
 },
 

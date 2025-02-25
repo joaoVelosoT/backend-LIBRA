@@ -10,7 +10,9 @@ const AdminUpdateValidator = require("../middlewares/Validators/AdminValidators/
 const ValidatorID = require("../middlewares/Validators/ValidatorID");
 const AdminAddPicture = require("../controllers/AdminControllers/AdminAddPictureController");
 const AdminUpdatePicture = require("../controllers/AdminControllers/AdminUpdatePictureController");
+
 const AdminPictureValidator = require("../middlewares/Validators/AdminValidators/AdminPictureValidator");
+const AdminPictureUpdateValidator = require("../middlewares/Validators/AdminValidators/AdminUpdatePictureValidator");
 
 // Create Admin 
 router.post("/", AdminCreateValidator, AdminCreateController);
@@ -31,6 +33,6 @@ router.delete("/:id", ValidatorID, AdminDeleteController);
 router.post("/image/:id", ValidatorID, AdminPictureValidator, AdminAddPicture);
 
 // atualizar foto do admin
-router.put("/image/:id", ValidatorID, AdminPictureValidator, AdminUpdatePicture);
+router.put("/image/:id", ValidatorID, AdminPictureUpdateValidator, AdminUpdatePicture);
 
 module.exports = router;

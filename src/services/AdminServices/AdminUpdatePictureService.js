@@ -8,6 +8,8 @@ const AdminUpdatePictureService = async (files, id) => {
         // Buscar o admin pelo ID
         const admin = await Admin.findByPk(id);
 
+
+
         if (!admin) {
             return {
                 code: 404,
