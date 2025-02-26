@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const db = require("../database/config");
 
-const Notification = db.define("title", {
+const Notification = db.define("Notification", {
   title: {
     type: DataTypes.STRING(50),
     allowNull: false,
@@ -13,7 +13,7 @@ const Notification = db.define("title", {
   type: {
     type: DataTypes.STRING(50),
     allowNull: false,
-  }
+  },
 });
 
 module.exports = Notification;

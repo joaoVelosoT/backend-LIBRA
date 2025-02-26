@@ -2,7 +2,27 @@ const Notification = require("../../models/Notification");
 
 const NotificationDeleteService = async (id) => {
   try {
-    const notification = await Notification.findByPk(id);
+    console.log("ID recebido no serviço:", id, "Tipo:", typeof id);
+
+    // Verifica se o ID é um número válido
+    if (!id || isNaN(Number(id))) {
+      return {
+        code: 400,
+        error: {
+          details: [
+            {
+              field: "id",
+              message: "O id enviado não é um número válido",
+            },
+          ],
+        },
+        message: "Erro ao validar id",
+        success: false,
+      };
+    }
+
+    const notification = await Notification.findByPk(Number(id)); // Converte o ID para número
+    console.log("Notificação encontrada:", notification);
 
     if (!notification) {
       return {
@@ -20,6 +40,7 @@ const NotificationDeleteService = async (id) => {
     }
 
     await notification.destroy();
+    console.log("Notificação deletada com sucesso");
 
     return {
       code: 200,
@@ -28,8 +49,20 @@ const NotificationDeleteService = async (id) => {
       success: true,
     };
   } catch (error) {
-    console.error(error);
-    throw new Error(error.message);
+    console.error("Erro no NotificationDeleteService:", error);
+    return {
+      code: 500,
+      error: {
+        details: [
+          {
+            service: "NotificationDeleteService",
+            message: "Erro interno ao deletar notificação",
+          },
+        ],
+      },
+      message: "Erro ao deletar notificação",
+      success: false,
+    };
   }
 };
 

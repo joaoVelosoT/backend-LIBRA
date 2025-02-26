@@ -3,7 +3,6 @@ const Notification = require("../../models/Notification");
 const NotificationCreateService = async (data) => {
   try {
 
-    // Cria a nova notificação
     const newNotification = await Notification.create(data);
 
     return {

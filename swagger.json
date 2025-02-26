@@ -194,6 +194,40 @@
         }
       }
     },
+    "/auth/logout-user": {
+      "post": {
+        "summary": "Logout de usuário",
+        "description": "Essa rota invalida o token do usuário, realizando o logout.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Logout realizado com sucesso."
+          },
+          "401": {
+            "description": "Token inválido ou expirado."
+          }
+        }
+      }
+    },
+    "/auth/logout-admin": {
+      "post": {
+        "summary": "Logout de admin",
+        "description": "Essa rota invalida o token do admin, realizando o logout.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Logout realizado com sucesso."
+          },
+          "401": {
+            "description": "Token inválido ou expirado."
+          }
+        }
+      }
+    },
     "/admin": {
       "post": {
         "summary": "Criar um administrador",
@@ -362,112 +396,104 @@
         }
       }
     },
-
-
-
-"/admin/image/{id}": {
-  "post": {
-    "summary": "Adicionar imagem de perfil a um admin",
-    "description": "Essa rota permite adicionar uma imagem de perfil a um admin já existente. A imagem deve ser enviada como `form-data` no campo `imagemPerfil`.",
-    "tags": [
-      "Admin"
-    ],
-    "parameters": [
-      {
-        "name": "id",
-        "in": "path",
-        "required": true,
-        "schema": {
-          "type": "integer"
-        },
-        "description": "ID do admin que receberá a imagem."
-      }
-    ],
-    "requestBody": {
-      "content": {
-        "multipart/form-data": {
-          "schema": {
-            "type": "object",
-            "properties": {
-              "imagemPerfil": {
-                "type": "string",
-                "format": "binary",
-                "description": "Arquivo de imagem (formatos suportados: JPEG, PNG)."
-              }
+    "/admin/image/{id}": {
+      "post": {
+        "summary": "Adicionar imagem de perfil a um admin",
+        "description": "Essa rota permite adicionar uma imagem de perfil a um admin já existente. A imagem deve ser enviada como `form-data` no campo `imagemPerfil`.",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
             },
-            "required": [
-              "imagemPerfil"
-            ]
+            "description": "ID do admin que receberá a imagem."
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "imagemPerfil": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Arquivo de imagem (formatos suportados: JPEG, PNG)."
+                  }
+                },
+                "required": [
+                  "imagemPerfil"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Imagem de perfil adicionada com sucesso."
+          },
+          "400": {
+            "description": "Arquivo inválido ou não enviado."
+          },
+          "404": {
+            "description": "Admin não encontrado."
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar a imagem de perfil de um admin",
+        "description": "Essa rota permite atualizar a imagem de perfil de um admin já existente. A imagem deve ser enviada como `form-data` no campo `imagemPerfil`.",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do admin que terá a imagem atualizada."
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "imagemPerfil": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Arquivo de imagem (formatos suportados: JPEG, PNG)."
+                  }
+                },
+                "required": [
+                  "imagemPerfil"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Imagem de perfil atualizada com sucesso."
+          },
+          "400": {
+            "description": "Arquivo inválido ou não enviado."
+          },
+          "404": {
+            "description": "Admin não encontrado ou não possui uma foto para atualizar."
           }
         }
       }
     },
-    "responses": {
-      "200": {
-        "description": "Imagem de perfil adicionada com sucesso."
-      },
-      "400": {
-        "description": "Arquivo inválido ou não enviado."
-      },
-      "404": {
-        "description": "Admin não encontrado."
-      }
-    }
-  },
-  "put": {
-    "summary": "Atualizar a imagem de perfil de um admin",
-    "description": "Essa rota permite atualizar a imagem de perfil de um admin já existente. A imagem deve ser enviada como `form-data` no campo `imagemPerfil`.",
-    "tags": [
-      "Admin"
-    ],
-    "parameters": [
-      {
-        "name": "id",
-        "in": "path",
-        "required": true,
-        "schema": {
-          "type": "integer"
-        },
-        "description": "ID do admin que terá a imagem atualizada."
-      }
-    ],
-    "requestBody": {
-      "content": {
-        "multipart/form-data": {
-          "schema": {
-            "type": "object",
-            "properties": {
-              "imagemPerfil": {
-                "type": "string",
-                "format": "binary",
-                "description": "Arquivo de imagem (formatos suportados: JPEG, PNG)."
-              }
-            },
-            "required": [
-              "imagemPerfil"
-            ]
-          }
-        }
-      }
-    },
-    "responses": {
-      "200": {
-        "description": "Imagem de perfil atualizada com sucesso."
-      },
-      "400": {
-        "description": "Arquivo inválido ou não enviado."
-      },
-      "404": {
-        "description": "Admin não encontrado ou não possui uma foto para atualizar."
-      }
-    }
-  }
-},
-
-
-
-
-
     "/disableds": {
       "post": {
         "summary": "Criar uma deficiência no banco de dados",
@@ -535,7 +561,9 @@
       "get": {
         "summary": "Buscar deficiências pelo tipo",
         "description": "Essa rota retorna as deficiências por tipo.",
-        "tags": ["Disabled"],
+        "tags": [
+          "Disabled"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -699,7 +727,9 @@
       "get": {
         "summary": "Listar todos os tipos de deficiência",
         "description": "Essa rota retorna todos os tipos de deficiência cadastrados.",
-        "tags": ["TypesDisabled"],
+        "tags": [
+          "TypesDisabled"
+        ],
         "responses": {
           "200": {
             "description": "Lista de tipos de deficiência",
@@ -1153,6 +1183,100 @@
           }
         }
       }
+    },
+    "/notifications": {
+      "post": {
+        "summary": "Criar uma notificação",
+        "description": "Essa rota cria uma nova notificação.",
+        "tags": [
+          "Notifications"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Título da notificação."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Descrição da notificação."
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "Tipo da notificação (ex: info, alerta, etc.)."
+                  }
+                },
+                "required": [
+                  "title",
+                  "description",
+                  "type"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Notificação criada com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou faltando."
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todas as notificações",
+        "description": "Essa rota retorna todas as notificações cadastradas.",
+        "tags": [
+          "Notifications"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de notificações encontrada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Notification"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/{id}": {
+      "delete": {
+        "summary": "Excluir uma notificação",
+        "description": "Essa rota exclui uma notificação pelo ID.",
+        "tags": [
+          "Notifications"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notificação excluída com sucesso."
+          },
+          "404": {
+            "description": "Notificação não encontrada."
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1230,6 +1354,28 @@
           },
           "idDisabled": {
             "type": "integer"
+          }
+        }
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       }

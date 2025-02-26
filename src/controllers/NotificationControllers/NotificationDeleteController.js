@@ -3,7 +3,16 @@ const NotificationDeleteService = require("../../services/NotificationServices/N
 const NotificationDeleteController = async (req, res) => {
   try {
     const result = await NotificationDeleteService(req.params.id);
-    return res.status(result.code).json(result);
+    if (!result.success) {
+      return res.status(result.code).json(result);
+    }
+
+    return res.status(result.code).json({
+      code: result.code,
+      data: result.data,
+      message: result.message,
+      success: result.success,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({

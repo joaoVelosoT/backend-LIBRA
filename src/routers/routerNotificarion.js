@@ -3,6 +3,7 @@ const NotificationCreateController = require("../controllers/NotificationControl
 const NotificationGetAllController = require("../controllers/NotificationControllers/NotificationGetAllController");
 const NotificationDeleteController = require("../controllers/NotificationControllers/NotificationDeleteController");
 const NotificationCreateValidator = require("../middlewares/Validators/NotificationValidators/NotificationCreateValidator");
+const ValidatorID = require("../middlewares/Validators/ValidatorID")
 
 const router = Router();
 
@@ -13,6 +14,6 @@ router.post("/", NotificationCreateValidator, NotificationCreateController);
 router.get("/", NotificationGetAllController);
 
 // Deletar notificação
-router.delete("/:id", NotificationDeleteController);
+router.delete("/:id", ValidatorID, NotificationDeleteController);
 
 module.exports = router;
