@@ -2,8 +2,8 @@
   "openapi": "3.1.1",
   "info": {
     "title": "backend-LIBRA",
-    "version": "2.0.1",
-    "description": "A versão 2.0.1 inclui: \n- FIX: Criação das rotas principais para registro e login de usuários.\n- FIX: Implementação de CRUD para gerenciamento de deficiências e tipos de deficiência.\n- FIX: Associação entre usuários e deficiências.\n- FIX: Uso de autenticação via Bearer token com JWT.\n- ADD: nova rota e tag de admin."
+    "version": "2.2.1",
+    "description": "A versão 2.2.1 inclui: \n- FIX: formatação e padronização da documentação. \n- ADD: nova rota de notificações e rotas \n- ADD: novas rotas de logout de user e de admin."
   },
   "servers": [
     {
@@ -14,11 +14,9 @@
   "paths": {
     "/auth/register": {
       "post": {
-        "summary": "Cadastro de usuario",
-        "description": "Essa rota será responsavel por cadastrar um novo usuario",
-        "tags": [
-          "Auth"
-        ],
+        "summary": "Cadastro de usuário",
+        "description": "Essa rota será responsável por cadastrar um novo usuário.",
+        "tags": ["Auth"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -56,11 +54,9 @@
     },
     "/auth/login": {
       "post": {
-        "summary": "Login de usuario",
-        "description": "Essa rota será responsavel por logar um novo usuario",
-        "tags": [
-          "Auth"
-        ],
+        "summary": "Login de usuário",
+        "description": "Essa rota será responsável por autenticar um usuário.",
+        "tags": ["Auth"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -88,10 +84,8 @@
     "/auth/login-admin": {
       "post": {
         "summary": "Login de admin",
-        "description": "Essa rota será responsavel por logar um admin",
-        "tags": [
-          "Auth"
-        ],
+        "description": "Essa rota será responsável por autenticar um administrador.",
+        "tags": ["Auth"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -120,9 +114,7 @@
       "post": {
         "summary": "Solicitar redefinição de senha",
         "description": "Essa rota envia um e-mail com um link para redefinir a senha.",
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -133,9 +125,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "email"
-                ]
+                "required": ["email"]
               }
             }
           }
@@ -154,9 +144,7 @@
       "post": {
         "summary": "Redefinir senha",
         "description": "Essa rota redefine a senha do usuário usando um token.",
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "parameters": [
           {
             "name": "token",
@@ -177,9 +165,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "newPassword"
-                ]
+                "required": ["newPassword"]
               }
             }
           }
@@ -198,9 +184,7 @@
       "post": {
         "summary": "Logout de usuário",
         "description": "Essa rota invalida o token do usuário, realizando o logout.",
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "responses": {
           "200": {
             "description": "Logout realizado com sucesso."
@@ -215,9 +199,7 @@
       "post": {
         "summary": "Logout de admin",
         "description": "Essa rota invalida o token do admin, realizando o logout.",
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "responses": {
           "200": {
             "description": "Logout realizado com sucesso."
@@ -232,9 +214,7 @@
       "post": {
         "summary": "Criar um administrador",
         "description": "Essa rota cria um novo administrador.",
-        "tags": [
-          "Admin"
-        ],
+        "tags": ["Admin"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -262,12 +242,10 @@
       "get": {
         "summary": "Listar todos os administradores",
         "description": "Essa rota retorna todos os administradores cadastrados.",
-        "tags": [
-          "Admin"
-        ],
+        "tags": ["Admin"],
         "responses": {
           "200": {
-            "description": "Lista de administradores encontrada com sucesso",
+            "description": "Lista de administradores encontrada com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
@@ -280,7 +258,7 @@
             }
           },
           "404": {
-            "description": "Nenhum administrador encontrado"
+            "description": "Nenhum administrador encontrado."
           }
         }
       }
@@ -289,9 +267,7 @@
       "get": {
         "summary": "Buscar um administrador pelo ID",
         "description": "Essa rota retorna os detalhes de um administrador pelo ID.",
-        "tags": [
-          "Admin"
-        ],
+        "tags": ["Admin"],
         "parameters": [
           {
             "name": "id",
@@ -304,7 +280,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Administrador encontrado com sucesso",
+            "description": "Administrador encontrado com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
@@ -314,16 +290,14 @@
             }
           },
           "404": {
-            "description": "Administrador não encontrado"
+            "description": "Administrador não encontrado."
           }
         }
       },
       "delete": {
         "summary": "Excluir um administrador",
         "description": "Essa rota exclui um administrador pelo ID.",
-        "tags": [
-          "Admin"
-        ],
+        "tags": ["Admin"],
         "parameters": [
           {
             "name": "id",
@@ -336,19 +310,17 @@
         ],
         "responses": {
           "200": {
-            "description": "Administrador excluído com sucesso"
+            "description": "Administrador excluído com sucesso."
           },
           "404": {
-            "description": "Administrador não encontrado"
+            "description": "Administrador não encontrado."
           }
         }
       },
       "patch": {
         "summary": "Atualizar o email de um administrador",
         "description": "Essa rota atualiza o email de um administrador pelo ID.",
-        "tags": [
-          "Admin"
-        ],
+        "tags": ["Admin"],
         "parameters": [
           {
             "name": "id",
@@ -369,16 +341,14 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "email"
-                ]
+                "required": ["email"]
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Email do administrador atualizado com sucesso",
+            "description": "Email do administrador atualizado com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
@@ -388,10 +358,10 @@
             }
           },
           "400": {
-            "description": "Email inválido ou já em uso"
+            "description": "Email inválido ou já em uso."
           },
           "404": {
-            "description": "Administrador não encontrado"
+            "description": "Administrador não encontrado."
           }
         }
       }
@@ -399,9 +369,12 @@
     "/admin/image/{id}": {
       "post": {
         "summary": "Adicionar imagem de perfil a um admin",
-        "description": "Essa rota permite adicionar uma imagem de perfil a um admin já existente. A imagem deve ser enviada como `form-data` no campo `imagemPerfil`.",
-        "tags": [
-          "Admin"
+        "description": "Essa rota permite adicionar uma imagem de perfil a um admin já existente.",
+        "tags": ["Admin"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
         ],
         "parameters": [
           {
@@ -426,9 +399,7 @@
                     "description": "Arquivo de imagem (formatos suportados: JPEG, PNG)."
                   }
                 },
-                "required": [
-                  "imagemPerfil"
-                ]
+                "required": ["imagemPerfil"]
               }
             }
           }
@@ -447,9 +418,12 @@
       },
       "put": {
         "summary": "Atualizar a imagem de perfil de um admin",
-        "description": "Essa rota permite atualizar a imagem de perfil de um admin já existente. A imagem deve ser enviada como `form-data` no campo `imagemPerfil`.",
-        "tags": [
-          "Admin"
+        "description": "Essa rota permite atualizar a imagem de perfil de um admin já existente.",
+        "tags": ["Admin"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
         ],
         "parameters": [
           {
@@ -474,9 +448,7 @@
                     "description": "Arquivo de imagem (formatos suportados: JPEG, PNG)."
                   }
                 },
-                "required": [
-                  "imagemPerfil"
-                ]
+                "required": ["imagemPerfil"]
               }
             }
           }
@@ -496,11 +468,9 @@
     },
     "/disableds": {
       "post": {
-        "summary": "Criar uma deficiência no banco de dados",
+        "summary": "Criar uma deficiência",
         "description": "Essa rota cria uma nova deficiência no banco de dados.",
-        "tags": [
-          "Disabled"
-        ],
+        "tags": ["Disabled"],
         "security": [
           {
             "bearerAuth": []
@@ -525,16 +495,14 @@
         },
         "responses": {
           "201": {
-            "description": "deficiência criada com sucesso no banco de dados."
+            "description": "Deficiência criada com sucesso no banco de dados."
           }
         }
       },
       "get": {
-        "summary": "Listar todas as deficiências no banco de dados",
-        "description": "Essa rota retorna todas as deficiências.",
-        "tags": [
-          "Disabled"
-        ],
+        "summary": "Listar todas as deficiências",
+        "description": "Essa rota retorna todas as deficiências cadastradas.",
+        "tags": ["Disabled"],
         "security": [
           {
             "bearerAuth": []
@@ -542,7 +510,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Lista de deficiências no banco de dados",
+            "description": "Lista de deficiências encontrada com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
@@ -561,9 +529,7 @@
       "get": {
         "summary": "Buscar deficiências pelo tipo",
         "description": "Essa rota retorna as deficiências por tipo.",
-        "tags": [
-          "Disabled"
-        ],
+        "tags": ["Disabled"],
         "parameters": [
           {
             "name": "id",
@@ -576,7 +542,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Deficiências encontradas com sucesso",
+            "description": "Deficiências encontradas com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
@@ -586,18 +552,16 @@
             }
           },
           "404": {
-            "description": "Deficiência não encontrada"
+            "description": "Deficiência não encontrada."
           }
         }
       }
     },
     "/disableds/{id}": {
       "get": {
-        "summary": "Buscar uma deficiência no banco de dados",
-        "description": "Essa rota retorna os detalhes da deficiência pelo ID.",
-        "tags": [
-          "Disabled"
-        ],
+        "summary": "Buscar uma deficiência pelo ID",
+        "description": "Essa rota retorna os detalhes de uma deficiência pelo ID.",
+        "tags": ["Disabled"],
         "security": [
           {
             "bearerAuth": []
@@ -615,7 +579,7 @@
         ],
         "responses": {
           "200": {
-            "description": "deficiência encontrada com sucesso",
+            "description": "Deficiência encontrada com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
@@ -627,11 +591,9 @@
         }
       },
       "put": {
-        "summary": "Atualizar os dados de uma  deficiência",
+        "summary": "Atualizar uma deficiência",
         "description": "Essa rota atualiza as informações de uma deficiência pelo ID.",
-        "tags": [
-          "Disabled"
-        ],
+        "tags": ["Disabled"],
         "security": [
           {
             "bearerAuth": []
@@ -658,16 +620,14 @@
         },
         "responses": {
           "200": {
-            "description": "deficiência atualizada com sucesso"
+            "description": "Deficiência atualizada com sucesso."
           }
         }
       },
       "delete": {
         "summary": "Excluir uma deficiência",
         "description": "Essa rota exclui uma deficiência pelo ID.",
-        "tags": [
-          "Disabled"
-        ],
+        "tags": ["Disabled"],
         "security": [
           {
             "bearerAuth": []
@@ -685,7 +645,7 @@
         ],
         "responses": {
           "200": {
-            "description": "deficiência excluída com sucesso"
+            "description": "Deficiência excluída com sucesso."
           }
         }
       }
@@ -694,9 +654,7 @@
       "post": {
         "summary": "Criar um tipo de deficiência",
         "description": "Essa rota cria um novo tipo de deficiência.",
-        "tags": [
-          "TypesDisabled"
-        ],
+        "tags": ["TypesDisabled"],
         "security": [
           {
             "bearerAuth": []
@@ -720,19 +678,17 @@
         },
         "responses": {
           "201": {
-            "description": "Tipo de deficiência criado com sucesso"
+            "description": "Tipo de deficiência criado com sucesso."
           }
         }
       },
       "get": {
         "summary": "Listar todos os tipos de deficiência",
         "description": "Essa rota retorna todos os tipos de deficiência cadastrados.",
-        "tags": [
-          "TypesDisabled"
-        ],
+        "tags": ["TypesDisabled"],
         "responses": {
           "200": {
-            "description": "Lista de tipos de deficiência",
+            "description": "Lista de tipos de deficiência encontrada com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
@@ -751,9 +707,7 @@
       "get": {
         "summary": "Buscar um tipo de deficiência pelo nome",
         "description": "Essa rota retorna os detalhes de um tipo de deficiência pelo nome.",
-        "tags": [
-          "TypesDisabled"
-        ],
+        "tags": ["TypesDisabled"],
         "security": [
           {
             "bearerAuth": []
@@ -771,7 +725,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Tipo de deficiência encontrado com sucesso",
+            "description": "Tipo de deficiência encontrado com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
@@ -785,9 +739,7 @@
       "patch": {
         "summary": "Atualizar um tipo de deficiência",
         "description": "Essa rota atualiza as informações de um tipo de deficiência pelo nome.",
-        "tags": [
-          "TypesDisabled"
-        ],
+        "tags": ["TypesDisabled"],
         "security": [
           {
             "bearerAuth": []
@@ -814,16 +766,14 @@
         },
         "responses": {
           "200": {
-            "description": "Tipo de deficiência atualizado com sucesso"
+            "description": "Tipo de deficiência atualizado com sucesso."
           }
         }
       },
       "delete": {
         "summary": "Excluir um tipo de deficiência",
         "description": "Essa rota exclui um tipo de deficiência pelo nome.",
-        "tags": [
-          "TypesDisabled"
-        ],
+        "tags": ["TypesDisabled"],
         "security": [
           {
             "bearerAuth": []
@@ -841,7 +791,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Tipo de deficiência excluído com sucesso"
+            "description": "Tipo de deficiência excluído com sucesso."
           }
         }
       }
@@ -850,9 +800,7 @@
       "post": {
         "summary": "Criar um usuário",
         "description": "Essa rota cria um novo usuário.",
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -860,7 +808,7 @@
                 "$ref": "#/components/schemas/User"
               },
               "examples": {
-                "Criar Usuário com Deficência": {
+                "Criar Usuário com Deficiência": {
                   "value": {
                     "name": "João Veloso",
                     "email": "emailteste@gmail.com",
@@ -870,7 +818,7 @@
                     "techAss": "Software Reader"
                   }
                 },
-                "Criar Usuário sem Deficência": {
+                "Criar Usuário sem Deficiência": {
                   "value": {
                     "name": "João Veloso",
                     "email": "emailteste@gmail.com",
@@ -891,9 +839,7 @@
       "get": {
         "summary": "Listar todos os usuários",
         "description": "Essa rota retorna todos os usuários cadastrados.",
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "security": [
           {
             "bearerAuth": []
@@ -902,13 +848,16 @@
         "parameters": [
           {
             "name": "onlyDisabled",
+            "in": "query",
             "required": false,
-            "in": "query"
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Lista de usuários cadastrados.",
+            "description": "Lista de usuários encontrada com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
@@ -927,9 +876,7 @@
       "get": {
         "summary": "Buscar um usuário pelo ID",
         "description": "Essa rota retorna os detalhes de um usuário pelo ID.",
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "security": [
           {
             "bearerAuth": []
@@ -961,9 +908,7 @@
       "put": {
         "summary": "Atualizar um usuário",
         "description": "Essa rota atualiza as informações de um usuário pelo ID.",
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "security": [
           {
             "bearerAuth": []
@@ -997,9 +942,7 @@
       "delete": {
         "summary": "Excluir um usuário",
         "description": "Essa rota exclui um usuário pelo ID.",
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "security": [
           {
             "bearerAuth": []
@@ -1026,9 +969,7 @@
       "post": {
         "summary": "Associar um usuário a uma deficiência",
         "description": "Essa rota associa um usuário a uma deficiência específica.",
-        "tags": [
-          "UsersDisabled"
-        ],
+        "tags": ["UsersDisabled"],
         "security": [
           {
             "bearerAuth": []
@@ -1060,9 +1001,7 @@
       "get": {
         "summary": "Listar todas as associações entre usuários e deficiências",
         "description": "Essa rota retorna todas as associações entre usuários e deficiências cadastradas.",
-        "tags": [
-          "UsersDisabled"
-        ],
+        "tags": ["UsersDisabled"],
         "security": [
           {
             "bearerAuth": []
@@ -1070,7 +1009,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Lista de associações cadastradas.",
+            "description": "Lista de associações encontrada com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1089,9 +1028,7 @@
       "get": {
         "summary": "Buscar uma associação pelo ID",
         "description": "Essa rota retorna os detalhes de uma associação pelo ID.",
-        "tags": [
-          "UsersDisabled"
-        ],
+        "tags": ["UsersDisabled"],
         "security": [
           {
             "bearerAuth": []
@@ -1123,9 +1060,7 @@
       "delete": {
         "summary": "Excluir uma associação",
         "description": "Essa rota exclui uma associação entre usuário e deficiência pelo ID.",
-        "tags": [
-          "UsersDisabled"
-        ],
+        "tags": ["UsersDisabled"],
         "security": [
           {
             "bearerAuth": []
@@ -1150,9 +1085,7 @@
       "patch": {
         "summary": "Atualizar uma associação entre usuário e deficiência",
         "description": "Essa rota atualiza as informações de uma associação entre um usuário e uma deficiência.",
-        "tags": [
-          "UsersDisabled"
-        ],
+        "tags": ["UsersDisabled"],
         "security": [
           {
             "bearerAuth": []
@@ -1188,9 +1121,7 @@
       "post": {
         "summary": "Criar uma notificação",
         "description": "Essa rota cria uma nova notificação.",
-        "tags": [
-          "Notifications"
-        ],
+        "tags": ["Notifications"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1210,11 +1141,7 @@
                     "description": "Tipo da notificação (ex: info, alerta, etc.)."
                   }
                 },
-                "required": [
-                  "title",
-                  "description",
-                  "type"
-                ]
+                "required": ["title", "description", "type"]
               }
             }
           }
@@ -1231,8 +1158,11 @@
       "get": {
         "summary": "Listar todas as notificações",
         "description": "Essa rota retorna todas as notificações cadastradas.",
-        "tags": [
-          "Notifications"
+        "tags": ["Notifications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
         ],
         "responses": {
           "200": {
@@ -1255,8 +1185,11 @@
       "delete": {
         "summary": "Excluir uma notificação",
         "description": "Essa rota exclui uma notificação pelo ID.",
-        "tags": [
-          "Notifications"
+        "tags": ["Notifications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
         ],
         "parameters": [
           {
@@ -1297,7 +1230,7 @@
             "type": "boolean"
           },
           "idDisabled": {
-            "type": "int"
+            "type": "integer"
           },
           "techAss": {
             "type": "string"
@@ -1388,4 +1321,4 @@
       }
     }
   }
-}
+} 
