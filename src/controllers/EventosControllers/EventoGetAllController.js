@@ -3,7 +3,7 @@ const EventoGetAllService = require('../../services/EventosServices/EventoGetAll
 const EventoGetAllController = async (req, res) => {
     try {
 
-        const eventos = await EventoGetAllService();
+        const eventos = await EventoGetAllService.getAll();
 
         return res.status(eventos.code).json(eventos);
 
