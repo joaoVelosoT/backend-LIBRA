@@ -1,12 +1,13 @@
 const Evento = require("../../models/Evento");
 
-const EventoGetAllService = {
-    getAll: async () => {
+const EventoGetByIdService = {
+
+    getById: async (id) => {
         try {
 
-            const eventos = await Evento.findAll();
+            const eventos = await Evento.findByPk(id);
 
-            if (eventos.length === 0) {
+            if (eventos === null) {
                 return {
                     code: 404,
                     data: eventos,
@@ -17,7 +18,7 @@ const EventoGetAllService = {
             return {
                 code: 200,
                 data: eventos,
-                message: "Lista de eventos obtida com sucesso",
+                message: "Evento obtida com sucesso",
                 success: true,
             };
 
@@ -28,8 +29,8 @@ const EventoGetAllService = {
                 error: {
                     details: [
                         {
-                            service: "EventoGetAllService",
-                            message: "Erro interno ao buscar os Eventos",
+                            service: "EventoGetByIdService",
+                            message: "Erro interno ao buscar o Evento",
                         },
                     ],
                 },
@@ -37,9 +38,8 @@ const EventoGetAllService = {
                 success: false,
             };
         }
-
     }
 
 };
 
-module.exports = EventoGetAllService;
+module.exports = EventoGetByIdService;

@@ -5,7 +5,18 @@ const EventoCreateController = async (req, res) => {
 
         const data = req.body;
 
-        const evento = await EventoCreateService(data);
+        if (data.titulo === "" || data === undefined) {
+            res.status(400).json({
+                code: 400,
+                error: {
+                    details: "TItulo do Evento não pode ser vazio!"
+                },
+                message: "Erro no typeDisabledCreateController",
+                sucess: false,
+            });
+        }
+
+        const evento = await EventoCreateService.create(data);
 
         return res.status(evento.code).json(evento);
 

@@ -2,14 +2,17 @@ const { Router } = require("express");
 
 const EventoCreateController = require("../controllers/EventosControllers/EventoCreateController");
 const EventoGetAllController = require("../controllers/EventosControllers/EventoGetAllController");
+const EventoGetByIdController = require("../controllers/EventosControllers/EventoGetByIdController");
+const EventoUpdateController = require("../controllers/EventosControllers/EventoUpdateController");
+const EventoDeleteController = require("../controllers/EventosControllers/EventoDeleteController");
 
 const router = Router();
 
 router.post("/", EventoCreateController);
 router.get('/', EventoGetAllController);
-// router.get('/:id', AuthAdmin, DisabledGetByIdController);
-// router.get("/type/:id", ValidatorID,  DisabledGetByTypeController);
-// router.put("/:id", ValidatorID, AuthAdmin, DisabledUpdateValidator, DisabledUpdateController);
-// router.delete('/:id', ValidatorID, AuthAdmin, DisabledDeleteController);
+router.get('/:id', EventoGetByIdController);
+router.put('/:id', EventoUpdateController);
+router.delete('/:id', EventoDeleteController);
+
 
 module.exports = router;
