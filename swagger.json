@@ -1210,11 +1210,151 @@
           }
         }
       }
+    },
+    "/requestedbooks": {
+      "post": {
+        "summary": "Criar um livro solicitado",
+        "description": "Essa rota será responsável por criar um novo livro solicitado.",
+        "tags": ["RequestedBooks"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestedBook"
+              },
+              "examples": {
+                "RequestedBook": {
+                  "value": {
+                    "title": "Dom Quixote",
+                    "description": "Um clássico da literatura espanhola.",
+                    "gender": "Romance"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Livro solicitado criado com sucesso."
+          },
+          "400": {
+            "description": "Erro de validação ou dados inválidos."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os livros solicitados",
+        "description": "Essa rota retorna todos os livros solicitados cadastrados.",
+        "tags": ["RequestedBooks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de livros solicitados encontrada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RequestedBook"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Nenhum livro solicitado encontrado."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
+          }
+        }
+      }
+    },
+    "/requestedbooks/{id}": {
+      "get": {
+        "summary": "Buscar um livro solicitado pelo ID",
+        "description": "Essa rota retorna os detalhes de um livro solicitado pelo ID.",
+        "tags": ["RequestedBooks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do livro solicitado."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Livro solicitado encontrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestedBook"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Livro solicitado não encontrado."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir um livro solicitado",
+        "description": "Essa rota exclui um livro solicitado pelo ID.",
+        "tags": ["RequestedBooks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do livro solicitado."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Livro solicitado excluído com sucesso."
+          },
+          "404": {
+            "description": "Livro solicitado não encontrado."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "User": {
+      "User ": {
         "type": "object",
         "properties": {
           "name": {
@@ -1279,10 +1419,10 @@
           }
         }
       },
-      "UserDisabled": {
+      "User Disabled": {
         "type": "object",
         "properties": {
-          "idUser": {
+          "idUser ": {
             "type": "integer"
           },
           "idDisabled": {
@@ -1301,16 +1441,23 @@
           },
           "type": {
             "type": "string"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
           }
         }
+      },
+      "RequestedBook": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          }
+        },
+        "required": ["title", "description", "gender"]
       }
     },
     "securitySchemes": {
@@ -1321,4 +1468,4 @@
       }
     }
   }
-} 
+}

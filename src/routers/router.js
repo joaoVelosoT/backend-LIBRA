@@ -10,6 +10,7 @@ const routerUsersDisabled = require("./routerUsersDisabled");
 const routerAdmin = require("./routerAdmin");
 const routerEventos = require("./routerEvento");
 const routerNotification = require("./routerNotificarion");
+const routerRequestedBook = require("./routerRequestedBook");
 
 
 router.use("/users", routerUser);
@@ -21,4 +22,5 @@ router.use("/auth", routerAuth);
 router.use("/usersdisabled", routerUsersDisabled);
 router.use("/evento", routerEventos);
 router.use("/notifications", routerNotification);
+router.use("/requestedBooks", routerRequestedBook);
 module.exports = router;
