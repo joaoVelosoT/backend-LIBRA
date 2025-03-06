@@ -3,7 +3,7 @@ const db = require("../database/config");
 const Notification = require("./Notification");
 const RequestedBook = require("./RequestedBook");
 
-const Notification_requestedBook = db.define("Notificacoes_livro_solicitado", {
+const NotificationRequestedBook = db.define("NotificationLivroSolicitado", {
     notificao_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -24,4 +24,4 @@ const Notification_requestedBook = db.define("Notificacoes_livro_solicitado", {
     }
 });
 
-module.exports = Notification_requestedBook;
+module.exports = NotificationRequestedBook;

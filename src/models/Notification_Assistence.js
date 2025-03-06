@@ -4,7 +4,7 @@ const Notification = require("./Notification");
 const UserDisabled = require("./UsersDisableds");
 const Evento = require("./Evento");
 
-const Notification_event = db.define("Notificacoes_evento", {
+const NotificationAssistence = db.define("NotificationAssistence", {
     notificao_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -34,4 +34,4 @@ const Notification_event = db.define("Notificacoes_evento", {
     }
 });
 
-module.exports = Notification_event;
+module.exports = NotificationAssistence;
