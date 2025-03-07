@@ -1,6 +1,6 @@
 const RequestedBookCreateValidator = async (req, res, next) => {
     try {
-        const { title, description, gender } = req.body;
+        const { title, author, gender } = req.body;
         const errors = [];
 
         if (!title || typeof title !== "string" || title.trim() === "" || title.length > 50) {
@@ -10,9 +10,9 @@ const RequestedBookCreateValidator = async (req, res, next) => {
             });
         }
 
-        if (!description || typeof description !== "string" || description.trim() === "" || description.length > 150) {
+        if (!author || typeof author !== "string" || author.trim() === "" || author.length > 150) {
             errors.push({
-                field: "description",
+                field: "author",
                 message: "A descrição é obrigatória e deve ter no máximo 150 caracteres.",
             });
         }
@@ -33,7 +33,7 @@ const RequestedBookCreateValidator = async (req, res, next) => {
             });
         }
 
-        req.RequestedBookData = { title, description, gender };
+        req.RequestedBookData = { title, author, gender };
         return next();
     } catch (error) {
         console.error(error);

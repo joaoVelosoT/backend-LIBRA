@@ -35,7 +35,7 @@ const RequestedBookCreateService = async (data) => {
 
         // Criar a notificação do tipo "book"
         const notificationTitle = "Solicitação de livro";
-        const notificationDescription = `Título: ${data.title} Descrição: ${data.description} Gênero: ${data.gender}`;
+        const notificationDescription = `Título: ${data.title} Descrição: ${data.author} Gênero: ${data.gender}`;
 
         const newNotification = await Notification.create(
             {
