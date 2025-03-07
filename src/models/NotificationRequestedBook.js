@@ -3,8 +3,8 @@ const db = require("../database/config");
 const Notification = require("./Notification");
 const RequestedBook = require("./RequestedBook");
 
-const NotificationRequestedBook = db.define("NotificationLivroSolicitado", {
-    notificao_id: {
+const NotificationRequestedBook = db.define("NotificationRequestedBook", {
+    idNotification: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -13,7 +13,7 @@ const NotificationRequestedBook = db.define("NotificationLivroSolicitado", {
         },
         onDelete: "CASCADE"
     },
-    livro_id: {
+    idRequestedBook: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {

@@ -6,12 +6,12 @@ const RequestedBook = db.define("RequestedBook", {
         type: DataTypes.STRING(50),
         allowNull: false
     },
-    description: {
-        type: DataTypes.STRING(150),
+    author: {
+        type: DataTypes.STRING(50),
         allowNull: false
     },
     gender: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING(30),
         allowNull: false
     }
 });
