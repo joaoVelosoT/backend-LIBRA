@@ -8,16 +8,11 @@ const NotificationAssCreateService = {
 
         try {
 
-            console.log(data);
-
             const dataNotification = {
                 title: "Solicitação de Assistência",
                 description: data,
                 type: "Assistence"
             }
-
-            console.log(dataNotification.description);
-
 
             if (dataNotification.description === "" || dataNotification.description === undefined) {
                 return {
@@ -26,7 +21,7 @@ const NotificationAssCreateService = {
                         details: [
                             {
                                 service: "NotificationAssCreateService",
-                                message: "Erro interno ao criar um NOtificação de assistência.",
+                                message: "Erro interno ao criar um Notificação de assistência.",
                             },
                         ],
                     },
@@ -36,20 +31,27 @@ const NotificationAssCreateService = {
 
             const createNotification = await Notification.create(dataNotification, { transaction });
 
+            const dataNotificationAss = {
+                notificao_id: createNotification.dataValues.id,
+                user_id: idUser,
+                evento_id: idEvento
+            }
 
+            const createNotificationAss = await NotificationAssistence.create(dataNotificationAss, { transaction });
 
+            console.log(createNotificationAss);
 
             await transaction.commit();
 
-
-
             return {
                 code: 200,
-                createNotification,
+                createNotificationAss,
                 success: true,
             };
 
         } catch (error) {
+
+            await transaction.rollback();
             console.error(error);
             return {
                 code: 500,

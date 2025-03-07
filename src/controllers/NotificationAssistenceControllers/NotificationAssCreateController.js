@@ -12,7 +12,16 @@ const notificationAssCreateController = async (req, res) => {
 
         const data = req.body.data;
 
-        const userIsValid = await User.findByPk(id_user)
+        const userIsValid = await User.findByPk(id_user);
+
+        if (!userIsValid) {
+            return res.status(404).json({
+                code: 404,
+                error: "Usuário não foi encotrado.",
+                message: "Erro no NotificationAssCreateController",
+                sucess: false
+            })
+        }
 
         const eventoIsValid = await Evento.findByPk(id_evento);
 
@@ -25,9 +34,7 @@ const notificationAssCreateController = async (req, res) => {
             })
         }
 
-        const NotificationAss = await NotificationAssCreateService.create(id_evento, data);
-
-
+        const NotificationAss = await NotificationAssCreateService.create(id_evento, id_user, data);
 
         if (NotificationAss.code !== 200) {
             return res.status(NotificationAss.code).json({ NotificationAss })
