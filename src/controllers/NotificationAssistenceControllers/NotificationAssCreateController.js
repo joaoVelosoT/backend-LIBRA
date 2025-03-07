@@ -1,5 +1,4 @@
 const Evento = require("../../models/Evento");
-const Notification = require("../../models/Notification.js");
 const User = require("../../models/User.js")
 const NotificationAssCreateService = require("../../services/NotificationAssServices/NotificationAssCreateService.js")
 

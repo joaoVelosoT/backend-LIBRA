@@ -59,7 +59,7 @@ const NotificationAssCreateService = {
                     details: [
                         {
                             service: "NotificationAssCreateService",
-                            message: "Erro interno ao criar um NOtificação de assistência.",
+                            message: "Erro interno ao criar um Notificação de assistência.",
                         },
                     ],
                 },
