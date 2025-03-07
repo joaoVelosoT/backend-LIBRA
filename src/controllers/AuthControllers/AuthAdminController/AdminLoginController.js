@@ -1,5 +1,5 @@
 // controllers/AuthControllers/AdminLoginController.js
-const AdminLoginService = require("../../services/AuthServices/AdminLoginService");
+const AdminLoginService = require("../../../services/AuthServices/AdminLoginService");
 const AdminLoginController = async (req, res) => {
   try {
     const admin = await AdminLoginService(req.dataLogin);

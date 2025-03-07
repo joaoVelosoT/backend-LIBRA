@@ -1,6 +1,6 @@
 const crypto = require("crypto");
-const User = require("../../models/User");
-const sendResetPasswordEmail = require("../../services/AuthServices/emailService");
+const User = require("../../../models/User");
+const sendResetPasswordEmail = require("../../../services/AuthServices/emailService");
 
 const ForgotPasswordController = async (req, res) => {
   try {
@@ -17,7 +17,7 @@ const ForgotPasswordController = async (req, res) => {
     // Gerar token único para redefinição de senha
     const resetToken = crypto.randomBytes(32).toString("hex");
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 3600000; 
+    user.resetPasswordExpires = Date.now() + 3600000;
     await user.save();
 
     // Enviar e-mail com o link de redefinição

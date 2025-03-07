@@ -24,6 +24,10 @@ const User = db.define("user", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  validToken: {
+    type: DataTypes.STRING, 
+    allowNull: true,
+  },
   resetPasswordToken: {
     type: DataTypes.STRING,
     allowNull: true,

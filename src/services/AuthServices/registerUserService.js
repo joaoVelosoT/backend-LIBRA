@@ -3,10 +3,9 @@ const jwt = require("jsonwebtoken");
 
 const RegisterUserService = async (dataUser) => {
   try {
-
     console.log(dataUser);
 
-    // Criar o usuario
+    // Criar o usuário
     const user = await UserCreateService(dataUser);
 
     // Se der algum erro na criação, retornar
@@ -14,7 +13,7 @@ const RegisterUserService = async (dataUser) => {
       return user;
     }
 
-    // Criar o token de autenticação -> token com alto tempo de duração para facilitar nos testes
+    // Criar o token de autenticação
     const token = await jwt.sign(
       {
         id: user.user.id,
@@ -26,13 +25,20 @@ const RegisterUserService = async (dataUser) => {
       { expiresIn: "10h" }
     );
 
+    // Atualizar o campo validToken no banco de dados
+    await user.user.update({ validToken: token });
+
+    // Remover o campo validToken do objeto user antes de retornar
+    const userResponse = { ...user.user.dataValues };
+    delete userResponse.validToken;
+
     return {
       code: 201,
       data: {
-        token,
-        user: user.user,
+        token, // Retorna apenas o token aqui
+        user: userResponse, // Retorna o usuário sem o campo validToken
       },
-      message: "User cadastrado com sucesso",
+      message: "Usuário cadastrado com sucesso",
       success: true,
     };
   } catch (error) {

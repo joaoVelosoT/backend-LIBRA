@@ -3,16 +3,12 @@ const bycrpt = require("bcryptjs");
 const UserDisabled = require("../../models/UsersDisableds");
 const UsersDisabledCreateService = require("../UsersDisabledServices/UsersDisabledCreateService");
 const sequelize = require("../../database/config");
+
 const UserCreateService = async (dataUser) => {
   const transaction = await sequelize.transaction();
 
   try {
-    //name
-    //email -> validar se ja existe alguem com esse email
-    //password -> criptografar a senha
-    //isDisabled
-    //techAss
-
+    // Verificar se o email já existe
     const existsEmail = await User.findOne({
       where: { email: dataUser.email },
     });
@@ -24,25 +20,25 @@ const UserCreateService = async (dataUser) => {
           details: [
             {
               field: "email",
-              message: "O email enviado ja existe",
+              message: "O email enviado já existe",
             },
           ],
         },
-        message: "Erro ao validar user",
+        message: "Erro ao validar usuário",
         success: false,
       };
     }
 
-    // criptografar a senha
+    // Criptografar a senha
     const passwordCript = await bycrpt.hashSync(dataUser.password, 12);
 
-    // Mudando o password do dataUser para a senha criptografada
+    // Substituir a senha no dataUser pela senha criptografada
     dataUser.password = passwordCript;
 
-    // Criando o usuario
+    // Criar o usuário
     const user = await User.create(dataUser, { transaction });
-    console.log(user);
-    // Se o usuario for deficiente, criar ele na tabela UsersDisabled
+
+    // Se o usuário for deficiente, criar ele na tabela UsersDisabled
     if (dataUser.isDisabled) {
       const userDisabled = await UsersDisabledCreateService(
         {
@@ -52,21 +48,20 @@ const UserCreateService = async (dataUser) => {
         transaction
       );
 
-      console.log(await userDisabled.error);
-
-      // Se tiver tido algum problema ao criar o usuario com deficiencia, deletar o usuario ja criado
+      // Se houver erro ao criar o usuário deficiente, desfazer a transação
       if (!userDisabled.success) {
         await transaction.rollback();
         return userDisabled;
       }
     }
 
-    // Confirmando a transação
+    // Confirmar a transação
     await transaction.commit();
+
     return {
       code: 201,
-      user,
-      message: "User criado com sucesso",
+      user, // Retornar o usuário criado
+      message: "Usuário criado com sucesso",
       success: true,
     };
   } catch (error) {
@@ -75,4 +70,5 @@ const UserCreateService = async (dataUser) => {
     throw new Error(error.message);
   }
 };
+
 module.exports = UserCreateService;
