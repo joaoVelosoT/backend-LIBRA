@@ -6,11 +6,7 @@ const notificationAssGetAllController = require("../controllers/NotificationAssi
 
 const router = Router();
 
-
 router.post("/", notificationAssCreateController);
 router.get("/", notificationAssGetAllController);
-
-
-
 
 module.exports = router;
