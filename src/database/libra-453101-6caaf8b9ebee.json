@@ -1,0 +1,14 @@
+{
+    "type": "service_account",
+    "project_id": "libra-453101",
+    "private_key_id": "6caaf8b9ebee773bf43b8066bfd5e3996d054ae4",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC/LSzvt/B2+wpy\ncfVy/b4u6JC2mxk/Mx1O8i/iitYOtfeUQwI/RaAGcvoo5S3l1vwhZ++KcO2ptyJ+\nkumaH4q1eFVX5HeUCwQrF6NPOH2kDko7PYghHb6Ms0+0Ep5EuBl8HjrEfDl78/pm\nuruIA3S1wN5tgJdsG7+LcAW5wJSr5cRARL031MPM07p8V7gI5e1DZ9ZdwyFawxVo\nJHpwISPTAvREng9hHvHtbpCp5kP2hHluIk1n1ENCW+J4ozpdTkCVvVHEhIu5Nozl\nCewdm6ZbuyZpf22TB4t+rIlgt/4LxhOlthsFIrDodWK1O4EmhVkb8T6swzuzwzn2\nyU1nIKirAgMBAAECggEALXup/T5dz3Dag2/pXXpRDQf3pfowf4DBsE6eZd9yHf3c\n8UEf/72o3N/t9FzSFqSXR7tami1T3dTcOBDr0uc+MP54D3kjme0lCLuO9wIRoj5k\nGsQA5yAUfZULmWP0k5TZO1ZV1PlZE8xv/pDenPV1huhkAtldLTNM1vfH5PGUbXDL\nX6p6b00kgmkrBwcxlkOjmP5zgafeD6pols7tMi5iZqWi0j+8OrDeEnPrTcsbaV0j\nq7pWCDzASg/PzdBgtzsalIPiFmYKhmY1mml/HsET7ltrIIu8g7OtVm7a9d4BBSK8\nK9Wti0EUAt1lLdP4FoyxXnUzp7GZk8MrnU8Wx3QggQKBgQDpAsZA5ina69rsO1nh\nGX7LmohfJyuSt0GLosHz1ZRGOGRdoRZtpeOqy8kQiYe15mksFxqM1ABdZ7/tMn9o\nSYZlLwCS1GAW/GH/NtLEk1MTfFkIy99oCNPq1fCbgEtn8p8BIYJsDN+Vl7lOtuXE\nMpe9DLnaZGJmAb08krbx5k8ccwKBgQDSCccWXNbZYwvDFgD7XFZJxsl02OJuVZus\nKiNH7o4amU4tsUeO6JhCvg0KaMTbORQgZ3tPkyASZqBDEmKhOMIt5R7jBYzdFmYF\n2uOXUHyLQ3txFr92YNLOVYVldVvKt8LUzkCqGDPh2dciptZdBsOUQhJyppnRzFjA\nCvjwm9Qs6QKBgQDZFSWhFw3NkMjQJ2dQKNGRXLJKfBLDSIn/Tq4Fvmi6lxUiic58\nbv3RhLQY/Rh7ZmN7mTa6F1UTsHIFyXMbtMxJ/mU5ZjTzlUSzYd8xFtRiJgpJAK9t\nnDPa6GCWbwtRl599jTuV8NRo6QbSh+E+TahCj9Wi2r01rc8g3MsmSNxRcwKBgB8k\nTf111HE060iImaqrPSwBKluF0MTVMpirQsHmj/FHq7zAnUCGIhU7Qom5kP6EDwTi\n8viQct/nkXmAX1lSJhBR+WtlpkYdjRDvLHGCAIVRgxr4aXju0DLBoV6ysOJ0rpGI\n5zORFRg2iVxc6kmuuA7iYQPYydO+faYzukdKg4IJAoGBAMY1ZpjUaT7+eB1fWjf0\nkpgUTzqwwQQECVuQffO65trQBTbnJdH9gNne5zX5Ql5JYZVjC+Z2VRkbXVXYoHy1\n1Z04DS3IJxPuZWwIM73EeRt+9m+L4Lkx6+L8W3w8A69+D6jjdMcGYlJs7f/iiNnU\nLyn9XcqdLPJ1vSXxFay8I9hj\n-----END PRIVATE KEY-----\n",
+    "client_email": "libra-storage-service@libra-453101.iam.gserviceaccount.com",
+    "client_id": "109613090787250218971",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/libra-storage-service%40libra-453101.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+  }
+  

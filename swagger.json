@@ -2,8 +2,8 @@
   "openapi": "3.1.1",
   "info": {
     "title": "backend-LIBRA",
-    "version": "2.2.1",
-    "description": "A versão 2.2.1 inclui: \n- FIX: formatação e padronização da documentação. \n- ADD: nova rota de notificações e rotas \n- ADD: novas rotas de logout de user e de admin."
+    "version": "2.3.0",
+    "description": "A versão 2.3.0 inclui: \n- FIX: formatação e padronização da documentação. \n- ADD: novas rotas de notificações, eventos e assistência. \n- ADD: integração de notificações com livros solicitados e eventos."
   },
   "servers": [
     {
@@ -1350,11 +1350,239 @@
           }
         }
       }
+    },
+    "/notificationAss": {
+      "post": {
+        "summary": "Criar uma notificação de assistência",
+        "description": "Essa rota cria uma nova notificação de assistência.",
+        "tags": ["NotificationAssistence"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationAssistence"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Notificação de assistência criada com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou faltando."
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todas as notificações de assistência",
+        "description": "Essa rota retorna todas as notificações de assistência cadastradas.",
+        "tags": ["NotificationAssistence"],
+         "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de notificações de assistência encontrada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificationAssistence"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/eventos": {
+      "post": {
+        "summary": "Criar um evento",
+        "description": "Essa rota cria um novo evento.",
+        "tags": ["Eventos"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Evento"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Evento criado com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou faltando."
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os eventos",
+        "description": "Essa rota retorna todos os eventos cadastrados.",
+        "tags": ["Eventos"],
+        "responses": {
+          "200": {
+            "description": "Lista de eventos encontrada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Evento"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/eventos/{id}": {
+      "get": {
+        "summary": "Buscar um evento pelo ID",
+        "description": "Essa rota retorna os detalhes de um evento pelo ID.",
+        "tags": ["Eventos"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evento encontrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evento"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Evento não encontrado."
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar um evento",
+        "description": "Essa rota atualiza as informações de um evento pelo ID.",
+        "tags": ["Eventos"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Evento"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Evento atualizado com sucesso."
+          },
+          "404": {
+            "description": "Evento não encontrado."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir um evento",
+        "description": "Essa rota exclui um evento pelo ID.",
+        "tags": ["Eventos"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evento excluído com sucesso."
+          },
+          "404": {
+            "description": "Evento não encontrado."
+          }
+        }
+      }
+    },
+    "/notifications/books": {
+      "get": {
+        "summary": "Listar todas as notificações de livro",
+        "description": "Essa rota retorna todas as notificações relacionadas a livros solicitados.",
+        "tags": ["Notifications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de notificações de livro encontrada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificationRequestedBook"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Nenhuma notificação de livro encontrada."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "User ": {
+      "User": {
         "type": "object",
         "properties": {
           "name": {
@@ -1419,10 +1647,10 @@
           }
         }
       },
-      "User Disabled": {
+      "UserDisabled": {
         "type": "object",
         "properties": {
-          "idUser ": {
+          "idUser": {
             "type": "integer"
           },
           "idDisabled": {
@@ -1456,8 +1684,56 @@
           "gender": {
             "type": "string"
           }
-        },
-        "required": ["title", "description", "gender"]
+        }
+      },
+      "NotificationAssistence": {
+        "type": "object",
+        "properties": {
+          "notificao_id": {
+            "type": "integer"
+          },
+          "user_id": {
+            "type": "integer"
+          },
+          "evento_id": {
+            "type": "integer"
+          }
+        }
+      },
+          "NotificationRequestedBook": {
+            "type": "object",
+            "properties": {
+              "idNotification": {
+                "type": "integer",
+                "description": "ID da notificação associada."
+              },
+              "idRequestedBook": {
+                "type": "integer",
+                "description": "ID do livro solicitado associado."
+              }
+            }
+          },
+      "Evento": {
+        "type": "object",
+        "properties": {
+          "titulo": {
+            "type": "string"
+          },
+          "categoria": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "data_evento": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "banner": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
       }
     },
     "securitySchemes": {
