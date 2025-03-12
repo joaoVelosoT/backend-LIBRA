@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const fileUpload = require("express-fileupload");
 const PORT = process.env.PORT || 8080;
 const router = require("./routers/router");
 const valENV = require("./utils/valENV");
@@ -10,8 +9,8 @@ const swaggerDocs = require("../swagger.json");
 const cors = require("cors");
 
 // app.use(fileUpload());
-const multer = require("multer");
-const upload = multer({ storage: multer.memoryStorage() });
+// const multer = require("multer");
+// const upload = multer({ storage: multer.memoryStorage() });
 // app.use(upload.single("file")); // Middleware do Multer
 
 
@@ -33,8 +32,6 @@ const funcValidENV = async () => {
 
 funcValidENV();
 
-const uploadRoutes = require('./upload');
-app.use('/api', uploadRoutes); // Adiciona as rotas de upload
 
 try {
   app.listen(PORT, () => {

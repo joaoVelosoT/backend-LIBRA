@@ -45,7 +45,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 
         // Normaliza o nome do arquivo
         const normalizedFileName = normalizeFileName(originalname);
-        const fileName = `diversos/${Date.now()}-${normalizedFileName}`; // Adiciona um timestamp para evitar conflitos
+        const fileName = `harryPotter/${Date.now()}-${normalizedFileName}`; // Adiciona um timestamp para evitar conflitos
         const file = bucket.file(fileName);
 
         // Upload do arquivo para o Cloud Storage
