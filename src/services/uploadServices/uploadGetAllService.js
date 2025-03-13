@@ -20,7 +20,7 @@ const uploadGetAllService = {
                         },
                     ],
                 },
-                message: "Erro ao fazer upload do arquivo",
+                message: "Erro ao buscar arquivos",
                 success: false,
             };
         }
