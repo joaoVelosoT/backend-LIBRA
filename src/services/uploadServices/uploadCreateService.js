@@ -39,7 +39,7 @@ const uploadCreateService = {
 
             // Normaliza o nome do arquivo
             const normalizedFileName = normalizeFileName(originalname);
-            const fileName = `harryPotter/${Date.now()}-${normalizedFileName}`; // Adiciona um timestamp para evitar conflitos
+            const fileName = `teste/${Date.now()}-${normalizedFileName}`; // Adiciona um timestamp para evitar conflitos
             const file = bucket.file(fileName);
 
             // Upload do arquivo para o Cloud Storage

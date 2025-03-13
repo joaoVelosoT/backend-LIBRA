@@ -6,16 +6,21 @@ const uploadCreateController = async (req, res) => {
             return res.status(400).json({ error: "Nenhum arquivo enviado." });
         }
 
+        const { url } = req.body
+        console.log(req.file);
+
+        console.log(url);
+
         const { originalname, buffer, mimetype } = req.file;
 
-        const result = await uploadCreateService.create(originalname, buffer, mimetype);
+        const result = await uploadCreateService.create(originalname, buffer, mimetype, url);
 
         if (result.success) {
             res.json({ message: "Upload bem-sucedido!", fileUrl: result.fileUrl });
         } else {
             res.status(result.code).json(result);
         }
-        
+
     } catch (error) {
         console.error(error);
         res.status(500).json({
