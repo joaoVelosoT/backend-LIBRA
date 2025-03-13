@@ -11,14 +11,13 @@ const bucket = storage.bucket(bucketName);
 
 // Tipos de arquivo permitidos
 const allowedMimeTypes = ['image/jpeg', 'image/png', 'application/pdf', 'video/mp4', 'audio/mpeg'];
-
-// Função para normalizar nomes de arquivos (remover acentos e caracteres especiais)
+ 
 const normalizeFileName = (fileName) => {
-    return fileName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // Remove acentos
+    return fileName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); 
 };
 
 const uploadCreateService = {
-    create: async (originalname, buffer, mimetype) => {
+    create: async (originalname, buffer, mimetype, tipoArquivo, nomeLivro) => {
         try {
             // Valida o tipo de arquivo
             if (!allowedMimeTypes.includes(mimetype)) {
@@ -36,24 +35,14 @@ const uploadCreateService = {
                     success: false,
                 };
             }
-
-            // Normaliza o nome do arquivo
             const normalizedFileName = normalizeFileName(originalname);
-            const fileName = `teste/${Date.now()}-${normalizedFileName}`; // Adiciona um timestamp para evitar conflitos
+            const fileName = `${nomeLivro}/${tipoArquivo}/${Date.now()}-${normalizedFileName}`;
             const file = bucket.file(fileName);
-
-            // Upload do arquivo para o Cloud Storage
             await file.save(buffer, { metadata: { contentType: mimetype } });
-
-            // Torna o arquivo público
             await file.makePublic();
-
-            // URL pública do arquivo
             const publicUrl = `https://storage.googleapis.com/${bucketName}/${fileName}`;
-
-            // Salvar no MySQL com Sequelize
-            await Arquivos.create({
-                nome: normalizedFileName, // Salva o nome normalizado
+            const arquivo = await Arquivos.create({
+                nome: normalizedFileName,
                 url: publicUrl,
                 tipo: mimetype,
             });
@@ -61,6 +50,7 @@ const uploadCreateService = {
             return {
                 success: true,
                 fileUrl: publicUrl,
+                arquivoId: arquivo.id,
             };
         } catch (error) {
             console.error(error);
