@@ -11,8 +11,9 @@ const routerEventos = require("./routerEvento");
 const routerNotification = require("./routerNotificarion");
 const routerRequestedBook = require("./routerRequestedBook");
 const routerNotificationAssistence = require("./routerNotificationAssistence");
+const bookRouter = require("./routerBook");
 
-
+router.use("/books", bookRouter);
 router.use("/users", routerUser);
 router.use("/admin", routerAdmin);
 router.use("/disableds", routerDisableds);
