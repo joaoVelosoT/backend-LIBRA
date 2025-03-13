@@ -3,7 +3,7 @@ const router = Router();
 const multer = require("multer");
 
 const uploadCreateController = require("../controllers/uploadController/uploadCreateController.js");
-// const uploadGetAllController = require("../controllers/uploadController/uploadGetAllController.js");
+const uploadGetAllController = require("../controllers/uploadController/uploadGetAllController.js");
 // const uploadDeleteController = require("../controllers/uploadController/uploadDeleteController.js");
 
 // Configuração do Multer para upload em memória
@@ -13,7 +13,7 @@ const upload = multer({
 });
 
 router.post("/upload", upload.single("file"), uploadCreateController);
-// router.get("/", uploadGetAllController);
+router.get("/arquivos", uploadGetAllController);
 // router.delete("/", uploadDeleteController);
 
 module.exports = router;

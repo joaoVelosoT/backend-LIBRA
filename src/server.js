@@ -8,11 +8,6 @@ const swaggerUI = require("swagger-ui-express");
 const swaggerDocs = require("../swagger.json");
 const cors = require("cors");
 
-// app.use(fileUpload());
-// const multer = require("multer");
-// const upload = multer({ storage: multer.memoryStorage() });
-// app.use(upload.single("file")); // Middleware do Multer
-
 
 app.use(express.json());
 app.use(cors());
