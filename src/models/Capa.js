@@ -7,13 +7,13 @@ const Capa = db.define("capa", {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: Arquivos, 
+      model: Arquivos,
       key: "id",
     },
     onDelete: "CASCADE",
   },
 });
 
-Capa.belongsTo(Arquivos, { foreignKey: "id_link", as: "arquivo" });
+Capa.belongsTo(Arquivos, { foreignKey: 'id_link', as: 'arquivo' });
 
 module.exports = Capa;

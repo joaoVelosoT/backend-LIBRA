@@ -2,9 +2,8 @@ const { Storage } = require("@google-cloud/storage");
 const path = require("path");
 const Arquivos = require('../../models/Arquivos');
 
-// Configuração do Google Cloud Storage
 const storage = new Storage({
-    keyFilename: path.join(__dirname, "../../database/libra-453101-6caaf8b9ebee.json"), // Caminho das credenciais
+    keyFilename: path.join(__dirname, "../../database/libra-453101-6caaf8b9ebee.json"),
 });
 const bucketName = "libra_tcc";
 const bucket = storage.bucket(bucketName);
@@ -12,8 +11,6 @@ const bucket = storage.bucket(bucketName);
 const uploadDeleteService = {
     delete: async (id) => {
         try {
-
-            // Busca o arquivo no banco de dados pelo ID
             const arquivo = await Arquivos.findByPk(id);
 
             if (!arquivo) {
@@ -32,20 +29,14 @@ const uploadDeleteService = {
                 };
             }
 
-            // Extrai o nome do arquivo no Google Cloud Storage
             const fileName = arquivo.url.split(`${bucketName}/`)[1];
-
-            // Deleta o arquivo do Google Cloud Storage
             await bucket.file(fileName).delete();
-
-            // Deleta o registro do arquivo no banco de dados
             await arquivo.destroy();
 
             return {
                 success: true,
                 message: "Arquivo deletado com sucesso!",
             };
-
         } catch (error) {
             console.error(error);
             return {
@@ -54,7 +45,7 @@ const uploadDeleteService = {
                     details: [
                         {
                             service: "UploadDeleteService",
-                            message: error.message, // Mostra a mensagem de erro real
+                            message: error.message, 
                         },
                     ],
                 },
@@ -62,7 +53,34 @@ const uploadDeleteService = {
                 success: false,
             };
         }
-    }
-}
+    },
 
-module.exports = uploadDeleteService
+    deleteFolder: async (folderPath) => {
+        try {
+            const [files] = await bucket.getFiles({ prefix: folderPath });
+            await Promise.all(files.map(file => file.delete()));
+
+            return {
+                success: true,
+                message: "Pasta e todos os arquivos deletados com sucesso!",
+            };
+        } catch (error) {
+            console.error(error);
+            return {
+                code: 500,
+                error: {
+                    details: [
+                        {
+                            service: "UploadDeleteService",
+                            message: error.message, 
+                        },
+                    ],
+                },
+                message: "Erro ao deletar pasta",
+                success: false,
+            };
+        }
+    }
+};
+
+module.exports = uploadDeleteService;

@@ -1,6 +1,8 @@
 const { Router } = require("express");
 const BookCreateValidator = require("../middlewares/Validators/BooksValidators/BookCreateValidator");
 const BookCreateController = require("../controllers/BooksControllers/BookCreateController");
+const BookDeleteController = require("../controllers/BooksControllers/BookDeleteController");
+const BookGetAllController = require("../controllers/BooksControllers/BookGetAllController");
 const multer = require("multer");
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -15,5 +17,7 @@ router.post(
   BookCreateValidator,
   BookCreateController
 );
+router.delete("/:id", BookDeleteController);
+router.get("/", BookGetAllController);
 
 module.exports = router;

@@ -28,7 +28,7 @@ const Book = db.define("Books", {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: Capa, // Referência ao modelo Capa
+      model: Capa,
       key: "id",
     },
     onDelete: "SET NULL",
@@ -69,7 +69,7 @@ const Book = db.define("Books", {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: Banner, // Referência ao modelo Banner
+      model: Banner,
       key: "id",
     },
     onDelete: "SET NULL",
@@ -79,7 +79,7 @@ const Book = db.define("Books", {
   timestamps: true,
 });
 
-Book.belongsTo(Capa, { foreignKey: "id_capa", as: "capa" });
-Book.belongsTo(Banner, { foreignKey: "id_banner", as: "banner" });
+Book.belongsTo(Capa, { foreignKey: 'id_capa', as: 'capa' });
+Book.belongsTo(Banner, { foreignKey: 'id_banner', as: 'banner' });
 
 module.exports = Book;
