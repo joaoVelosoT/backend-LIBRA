@@ -37,8 +37,6 @@ const AudioBookDeleteService = {
                 },
             });
 
-            console.log(book);
-
             if (!book) {
                 await transaction.rollback();
                 return {
@@ -55,7 +53,7 @@ const AudioBookDeleteService = {
                 };
             }
 
-            
+
             await book.update(
                 { id_Audiobook: null },
                 { where: { id_Audiobook: id }, transaction }
