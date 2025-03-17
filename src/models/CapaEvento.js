@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const db = require("../database/config");
 const Arquivos = require("./Arquivos");
 
-const BannerEvento = db.define("BannerEvento", {
+const CapaEvento = db.define("CapaEvento", {
   id_link: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -14,5 +14,5 @@ const BannerEvento = db.define("BannerEvento", {
   },
 });
 
-BannerEvento.belongsTo(Arquivos, { foreignKey: 'id_link', as: 'arquivo' });
-module.exports = BannerEvento;
+CapaEvento.belongsTo(Arquivos, { foreignKey: 'id_link', as: 'arquivo' });
+module.exports = CapaEvento;
