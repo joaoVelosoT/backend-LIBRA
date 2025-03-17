@@ -25,6 +25,7 @@ const Book = db.define("Books", {
       key: "id"
     },
     allowNull: true,
+    onDelete: "SET NULL"
   },
   id_ebook: {
     type: DataTypes.INTEGER,
@@ -33,6 +34,7 @@ const Book = db.define("Books", {
       key: "id"
     },
     allowNull: true,
+    onDelete: "SET NULL"
   },
   id_capa: {
     type: DataTypes.INTEGER,

@@ -2,14 +2,7 @@ const AudioBookCreateService = require("../../services/AudioBookServices/AudioBo
 
 const AudioBookCreateController = async (req, res) => {
     try {
-
-        console.log(req.body);
-
         const { nomeLivro, publicacao } = req.body;
-
-        console.log(nomeLivro);
-
-        console.log(publicacao);
 
         const files = req.files;
 
@@ -43,5 +36,6 @@ const AudioBookCreateController = async (req, res) => {
         });
     }
 }
+
 
 module.exports = AudioBookCreateController;
