@@ -2,11 +2,7 @@ const { DataTypes } = require("sequelize");
 const db = require("../database/config");
 const Arquivos = require("./Arquivos");
 
-const AdminFoto = db.define("adminFoto", {
-    Image: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-    },
+const AudioBook = db.define("Audiobook", {
     id_arquivo: {
         type: DataTypes.INTEGER,
         references: {
@@ -16,7 +12,10 @@ const AdminFoto = db.define("adminFoto", {
         onDelete: "SET NULL",
         allowNull: true
     },
-
+    publicacao: {
+        type: DataTypes.DATEONLY,
+        allowNull: true
+    }
 });
 
-module.exports = AdminFoto;
+module.exports = AudioBook;

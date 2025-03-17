@@ -13,7 +13,12 @@ const routerRequestedBook = require("./routerRequestedBook");
 const routerNotificationAssistence = require("./routerNotificationAssistence");
 const bookRouter = require("./routerBook");
 const routerUploads = require("./routerUploads.js")
+const ebookRouter = require("./routerEbook.js")
+const audiobookRouter = require("./routerAudioBook.js")
 
+
+router.use("/ebook", ebookRouter);
+router.use("/audiobook", audiobookRouter);
 router.use("/books", bookRouter);
 router.use('/api', routerUploads); 
 router.use("/users", routerUser);
