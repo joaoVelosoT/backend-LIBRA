@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const router = Router();
+const multer = require("multer");
 const AdminCreateController = require("../controllers/AdminControllers/AdminCreateController");
 const AdminCreateValidator = require("../middlewares/Validators/AdminValidators/AdminCreateValidator");
 const AdminDeleteController = require("../controllers/AdminControllers/AdminDeleteController");
@@ -7,15 +8,29 @@ const AdminGetAllController = require("../controllers/AdminControllers/AdminGetA
 const AdminGetByIdController = require("../controllers/AdminControllers/AdminGetByIdController");
 const AdminUpdateController = require("../controllers/AdminControllers/AdminUpdateController");
 const AdminUpdateValidator = require("../middlewares/Validators/AdminValidators/AdminUpdateValidator");
-const ValidatorID = require("../middlewares/Validators/ValidatorID");
-const AdminAddPicture = require("../controllers/AdminControllers/AdminAddPictureController");
-const AdminUpdatePicture = require("../controllers/AdminControllers/AdminUpdatePictureController");
+const AdminAddPictureController = require("../controllers/AdminControllers/AdminAddPictureController");
+const AdminAddPictureValidator = require("../middlewares/Validators/AdminValidators/AdminAddPictureValidator")
 
-const AdminPictureValidator = require("../middlewares/Validators/AdminValidators/AdminPictureValidator");
-const AdminPictureUpdateValidator = require("../middlewares/Validators/AdminValidators/AdminUpdatePictureValidator");
+const ValidatorID = require("../middlewares/Validators/ValidatorID");
+const upload = multer({ storage: multer.memoryStorage() });
+
 
 // Create Admin 
-router.post("/", AdminCreateValidator, AdminCreateController);
+router.post(
+    "/",
+    upload.single("imagemPerfil"), // Processa o arquivo enviado no campo "imagemPerfil"
+    AdminCreateValidator, // Valida os dados
+    AdminCreateController // Cria o admin
+  );
+  
+
+  router.post(
+    "/:id/addpicture",
+    ValidatorID,
+    upload.single("imagemPerfil"),
+    AdminAddPictureValidator, 
+    AdminAddPictureController
+  );
 
 // getAll Admin
 router.get("/", AdminGetAllController);
@@ -28,11 +43,5 @@ router.patch("/:id", ValidatorID, AdminUpdateValidator, AdminUpdateController);
 
 // delete Admin
 router.delete("/:id", ValidatorID, AdminDeleteController);
-
-// adicionar foto do admin em perfil já criado -> enviar id do admin
-router.post("/image/:id", ValidatorID, AdminPictureValidator, AdminAddPicture);
-
-// atualizar foto do admin
-router.put("/image/:id", ValidatorID, AdminPictureUpdateValidator, AdminUpdatePicture);
 
 module.exports = router;

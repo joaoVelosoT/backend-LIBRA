@@ -3,20 +3,15 @@ const db = require("../database/config");
 const Arquivos = require("./Arquivos");
 
 const AdminFoto = db.define("adminFoto", {
-    Image: {
+    id_link: {
         type: DataTypes.INTEGER,
-        allowNull: true
-    },
-    id_arquivo: {
-        type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
-            model: Arquivos,
-            key: "id"
+          model: Arquivos,
+          key: "id",
         },
-        onDelete: "SET NULL",
-        allowNull: true
-    },
-
+        onDelete: "CASCADE",
+      },
 });
 
 module.exports = AdminFoto;
