@@ -1,13 +1,17 @@
-const AudiobookDeleteService = require("../../services/AudioBookServices/AudioBookDeleteService")
+const AudiobookDeleteService = require("../../services/AudioBookServices/AudioBookDeleteService");
 
 const AudiobookDeleteController = async (req, res) => {
     try {
-        const { id } = req.params; // Pega o ID do livro a ser deletado
+        const { id } = req.params; // Pega o ID do audiobook a ser deletado
 
         const result = await AudiobookDeleteService.delete(id);
 
         if (result.success) {
-            res.json({ message: result.message });
+            res.status(result.code).json({
+                message: result.message,
+                data: result.audiobook,
+                success: true,
+            });
         } else {
             res.status(result.code).json(result);
         }
@@ -19,12 +23,12 @@ const AudiobookDeleteController = async (req, res) => {
             error: {
                 details: [
                     {
-                        controller: "audioBookDeleteController",
+                        controller: "AudiobookDeleteController",
                         message: "Erro interno",
                     },
                 ],
             },
-            message: "Erro no audioBookDeleteController",
+            message: "Erro no AudiobookDeleteController",
             success: false,
         });
     }

@@ -1,48 +1,39 @@
 const AudioBookCreateService = require("../../services/AudioBookServices/AudioBookCreateService.js");
 const Book = require("../../models/Book.js");
-const { where } = require("sequelize");
 
 const AudioBookCreateController = async (req, res) => {
     try {
-        const { nomeLivro, publicacao } = req.body;
-
-        const result = await Book.findOne({
-            where: {
-                titulo: nomeLivro
-            }
-        })
-
-        if (!result) {
-            res.status(500).json({
-                erro: "Falha ao buscar livro!"
-            })
-        }
-
-        console.log(result);
-
+        const { idLivro, publicacao } = req.body;
         const files = req.files;
 
-        console.log(result.data.titulo);
+        // Busca o livro pelo ID
+        const book = await Book.findByPk(idLivro);
 
-        const nomeLivroCorrect = result.data.titulo.replace(/\s+/g, "_");
-
-
-        const audioBook = await AudioBookCreateService.create(nomeLivroCorrect, publicacao, files)
-
-        if (!audioBook.success) {
-            return res.status(audioBook.code).json(audioBook);
+        if (!book) {
+            return res.status(404).json({
+                error: "Livro não encontrado!"
+            });
         }
 
-        // const updateBook = await Book.update({
-        //     where: {
-        //         titulo: nomeLivro
-        //     }, 
-        // })
+        const nomeLivro = book.dataValues.titulo.replace(/\s+/g, "_");
 
-        return res.status(audioBook.code).json({
-            code: audioBook.code,
-            data: audioBook.AudioBooks,
-            message: audioBook.message,
+        // Cria o audiobook
+        const audioBookResult = await AudioBookCreateService.create(nomeLivro, publicacao, files);
+
+        if (!audioBookResult.success) {
+            return res.status(audioBookResult.code).json(audioBookResult);
+        }
+
+        // Atualiza o livro com o ID do audiobook criado
+        await book.update({ id_Audiobook: audioBookResult.AudioBooks.id });
+
+        return res.status(audioBookResult.code).json({
+            code: audioBookResult.code,
+            data: {
+                book: book,
+                audioBook: audioBookResult.AudioBooks
+            },
+            message: "Audiobook criado e livro atualizado com sucesso!",
             success: true,
         });
 
@@ -63,6 +54,5 @@ const AudioBookCreateController = async (req, res) => {
         });
     }
 }
-
 
 module.exports = AudioBookCreateController;

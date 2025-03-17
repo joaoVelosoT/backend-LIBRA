@@ -45,7 +45,7 @@ const uploadDeleteService = {
                     details: [
                         {
                             service: "UploadDeleteService",
-                            message: error.message, 
+                            message: error.message,
                         },
                     ],
                 },
@@ -57,6 +57,9 @@ const uploadDeleteService = {
 
     deleteFolder: async (folderPath) => {
         try {
+
+            console.log(folderPath);
+
             const [files] = await bucket.getFiles({ prefix: folderPath });
             await Promise.all(files.map(file => file.delete()));
 
@@ -72,7 +75,7 @@ const uploadDeleteService = {
                     details: [
                         {
                             service: "UploadDeleteService",
-                            message: error.message, 
+                            message: error.message,
                         },
                     ],
                 },
