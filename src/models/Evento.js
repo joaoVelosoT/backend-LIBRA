@@ -1,6 +1,8 @@
 const { DataTypes } = require("sequelize");
 const db = require("../database/config");
 
+const Banner = require("../models/Banner");
+
 const Evento = db.define("eventos", {
     titulo: {
         type: DataTypes.STRING(50),
@@ -18,9 +20,14 @@ const Evento = db.define("eventos", {
         type: DataTypes.DATE,
         allowNull: false
     },
-    banner: {
-        type: DataTypes.BLOB,
-        allowNull: true
+    id_banner: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: Banner,
+            key: "id",
+        },
+        onDelete: "SET NULL",
     }
 });
 

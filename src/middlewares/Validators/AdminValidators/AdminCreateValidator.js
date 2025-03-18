@@ -4,14 +4,12 @@ const AdminCreateValidator = async (req, res, next) => {
   try {
     const { name, email, password } = req.body; 
     const errors = [];
-
     if (!name) {
       errors.push({
         field: "name",
         message: "O 'name' é obrigatório",
       });
     }
-
     if (!email) {
       errors.push({
         field: "email",
@@ -26,14 +24,12 @@ const AdminCreateValidator = async (req, res, next) => {
         });
       }
     }
-
     if (!password) {
       errors.push({
         field: "password",
         message: "O 'password' é obrigatório",
       });
     }
-
     if (errors.length > 0) {
       return res.status(400).json({
         code: 400,
@@ -42,13 +38,11 @@ const AdminCreateValidator = async (req, res, next) => {
         success: false,
       });
     }
-
-    req.admin = {
+    req.adminData = {
       name,
       email,
       password,
     };
-
     return next();
   } catch (error) {
     console.error(error);

@@ -5,14 +5,16 @@ const EventoGetAllController = require("../controllers/EventosControllers/Evento
 const EventoGetByIdController = require("../controllers/EventosControllers/EventoGetByIdController");
 const EventoUpdateController = require("../controllers/EventosControllers/EventoUpdateController");
 const EventoDeleteController = require("../controllers/EventosControllers/EventoDeleteController");
+const ValidatorID = require("../middlewares/Validators/ValidatorID");
+
 
 const router = Router();
 
 router.post("/", EventoCreateController);
 router.get('/', EventoGetAllController);
-router.get('/:id', EventoGetByIdController);
-router.put('/:id', EventoUpdateController);
-router.delete('/:id', EventoDeleteController);
+router.get('/:id', ValidatorID, EventoGetByIdController);
+router.put('/:id', ValidatorID, EventoUpdateController);
+router.delete('/:id', ValidatorID, EventoDeleteController);
 
 
 module.exports = router;

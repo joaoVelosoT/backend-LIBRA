@@ -21,7 +21,7 @@ const Admin = db.define("admin", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  IDimagemPerfil: {
+  id_AdminFoto: {
     type: DataTypes.INTEGER,
     references: {
       model: AdminFoto,

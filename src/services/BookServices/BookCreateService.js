@@ -4,12 +4,16 @@ const Banner = require("../../models/Banner");
 const sequelize = require("../../database/config");
 const uploadCreateService = require("../uploadServices/uploadCreateService");
 
+
 const BookCreateService = async (bookData, files) => {
   const transaction = await sequelize.transaction();
 
   try {
     const book = await Book.create(bookData, { transaction });
     const nomeLivro = book.titulo.replace(/\s+/g, "_");
+
+    console.log(nomeLivro);
+
 
     if (files.capa) {
       const { originalname, buffer, mimetype } = files.capa[0];
@@ -24,12 +28,12 @@ const BookCreateService = async (bookData, files) => {
 
       if (!uploadResult.success) {
         await transaction.rollback();
-        return uploadResult; 
+        return uploadResult;
       }
 
       const capa = await Capa.create(
         {
-          id_link: uploadResult.arquivoId, 
+          id_link: uploadResult.arquivoId,
         },
         { transaction }
       );
@@ -51,7 +55,7 @@ const BookCreateService = async (bookData, files) => {
 
       if (!uploadResult.success) {
         await transaction.rollback();
-        return uploadResult; 
+        return uploadResult;
       }
 
       const banner = await Banner.create(

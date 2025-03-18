@@ -2,6 +2,8 @@ const { DataTypes } = require("sequelize");
 const db = require("../database/config");
 const Capa = require("./Capa");
 const Banner = require("./Banner");
+const EBook = require("./Ebook");
+const AudioBook = require("./AudioBook");
 
 const Book = db.define("Books", {
   titulo: {
@@ -18,11 +20,21 @@ const Book = db.define("Books", {
   },
   id_Audiobook: {
     type: DataTypes.INTEGER,
+    references: {
+      model: AudioBook,
+      key: "id"
+    },
     allowNull: true,
+    onDelete: "SET NULL"
   },
   id_ebook: {
     type: DataTypes.INTEGER,
+    references: {
+      model: EBook,
+      key: "id"
+    },
     allowNull: true,
+    onDelete: "SET NULL"
   },
   id_capa: {
     type: DataTypes.INTEGER,
