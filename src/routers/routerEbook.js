@@ -6,11 +6,16 @@ const router = Router();
 const EbookCreateController = require("../controllers/EbooksControllers/EbookCreateController.js");
 const EbookDeleteController = require("../controllers/EbooksControllers/EbookDeleteController.js");
 const EbookGetAllController = require("../controllers/EbooksControllers/EbookGetAllController.js");
+const EbookUpdateController = require("../controllers/EbooksControllers/EbookupdateController");
 
 router.post("/", upload.fields([
     { name: "Ebook", maxCount: 10 },
 ]), EbookCreateController);
+
 router.get("/", EbookGetAllController);
+
+router.put("/:id", EbookUpdateController);
+
 router.delete("/:id", EbookDeleteController);
 
 module.exports = router

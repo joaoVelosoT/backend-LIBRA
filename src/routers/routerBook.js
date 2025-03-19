@@ -3,6 +3,7 @@ const BookCreateValidator = require("../middlewares/Validators/BooksValidators/B
 const BookCreateController = require("../controllers/BooksControllers/BookCreateController");
 const BookDeleteController = require("../controllers/BooksControllers/BookDeleteController");
 const BookGetAllController = require("../controllers/BooksControllers/BookGetAllController");
+const BookUpdateController = require("../controllers/BooksControllers/BookUpdateController");
 const multer = require("multer");
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -17,7 +18,16 @@ router.post(
   BookCreateValidator,
   BookCreateController
 );
-router.delete("/:id", BookDeleteController);
+
 router.get("/", BookGetAllController);
+
+router.patch("/:id", upload.fields([
+  { name: "capa", maxCount: 1 },
+  { name: "banner", maxCount: 1 },
+]),
+  BookUpdateController
+);
+
+router.delete("/:id", BookDeleteController);
 
 module.exports = router;
