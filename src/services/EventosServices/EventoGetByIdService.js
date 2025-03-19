@@ -1,45 +1,61 @@
 const Evento = require("../../models/Evento");
 
 const EventoGetByIdService = {
+  getById: async (id) => {
+    try {
+      const evento = await Evento.findByPk(id, {
+        include: [
+          {
+            association: "capa", 
+            include: [
+              {
+                association: "arquivo", 
+              },
+            ],
+          },
+          {
+            association: "gif", 
+            include: [
+              {
+                association: "arquivo", 
+              },
+            ],
+          },
+        ],
+      });
 
-    getById: async (id) => {
-        try {
+      if (!evento) {
+        return {
+          code: 404,
+          data: null,
+          message: "Nenhum evento encontrado",
+          success: true,
+        };
+      }
 
-            const eventos = await Evento.findByPk(id);
-
-            if (eventos === null) {
-                return {
-                    code: 404,
-                    data: eventos,
-                    message: "Nenhum evento encontrado",
-                    success: true,
-                };
-            }
-            return {
-                code: 200,
-                data: eventos,
-                message: "Evento obtida com sucesso",
-                success: true,
-            };
-
-        } catch (error) {
-            console.error(error);
-            return {
-                code: 500,
-                error: {
-                    details: [
-                        {
-                            service: "EventoGetByIdService",
-                            message: "Erro interno ao buscar o Evento",
-                        },
-                    ],
-                },
-                message: "Erro ao buscar evento",
-                success: false,
-            };
-        }
+      return {
+        code: 200,
+        data: evento,
+        message: "Evento obtido com sucesso",
+        success: true,
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        code: 500,
+        error: {
+          details: [
+            {
+              service: "EventoGetByIdService",
+              message: error.message,
+            },
+          ],
+        },
+        message: "Erro ao buscar evento",
+        success: false,
+      };
     }
-
+  },
 };
 
 module.exports = EventoGetByIdService;

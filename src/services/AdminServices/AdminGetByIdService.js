@@ -2,8 +2,19 @@ const Admin = require("../../models/Admin");
 
 const AdminGetByIdService = async (idAdmin) => {
   try {
+    const admin = await Admin.findByPk(idAdmin, {
+      include: [
+        {
+          association: "foto", 
+          include: [
+            {
+              association: "arquivo", 
+            },
+          ],
+        },
+      ],
+    });
 
-    const admin = await Admin.findByPk(idAdmin);
     if (!admin) {
       return {
         code: 404,
@@ -27,7 +38,19 @@ const AdminGetByIdService = async (idAdmin) => {
     };
   } catch (error) {
     console.error(error);
-    throw new Error(error.message);
+    return {
+      code: 500,
+      error: {
+        details: [
+          {
+            service: "AdminGetByIdService",
+            message: error.message,
+          },
+        ],
+      },
+      message: "Erro ao buscar admin",
+      success: false,
+    };
   }
 };
 

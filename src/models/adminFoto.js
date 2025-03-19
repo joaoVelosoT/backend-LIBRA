@@ -14,4 +14,7 @@ const AdminFoto = db.define("adminFoto", {
       },
 });
 
+AdminFoto.belongsTo(Arquivos, { foreignKey: "id_link", as: "arquivo" });
+
+
 module.exports = AdminFoto;

@@ -14,7 +14,7 @@ const Evento = db.define("eventos", {
         allowNull: false
     },
     descricao: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING(500),
         allowNull: false
     },
     data_evento: {
@@ -30,7 +30,6 @@ const Evento = db.define("eventos", {
         },
         onDelete: "SET NULL",
     },
-
     id_Gif: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -41,6 +40,9 @@ const Evento = db.define("eventos", {
         onDelete: "SET NULL",
     }
 });
+
+Evento.belongsTo(CapaEvento, { foreignKey: "id_capa", as: "capa" });
+Evento.belongsTo(GifEvento, { foreignKey: "id_Gif", as: "gif" });
 
 
 module.exports = Evento;

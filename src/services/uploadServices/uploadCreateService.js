@@ -8,48 +8,38 @@ const storage = new Storage({
 });
 const bucketName = "libra_tcc";
 const bucket = storage.bucket(bucketName);
-const allowedMimeTypes = ['image/jpeg', 'image/png', 'application/pdf', 'video/mp4', 'audio/mpeg'];
+const allowedMimeTypes = [
+  'image/jpeg', 
+  'image/png',  
+  'image/gif',  
+  'application/pdf',
+  'video/mp4',  
+  'audio/mpeg', 
+];
 const normalizeFileName = (fileName) => {
-  return fileName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // Remove acentos
+  return fileName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); 
 };
 
 const uploadCreateService = {
   create: async (originalname, buffer, mimetype, tipoArquivo, nomePasta) => {
     try {
-      // Verifica se o tipo de arquivo é permitido
       if (!allowedMimeTypes.includes(mimetype)) {
         return {
           code: 400,
-          error: {
-            details: [
-              {
-                service: "UploadCreateService",
-                message: "Tipo de arquivo não permitido.",
-              },
-            ],
-          },
+          error: { details: [{ service: "UploadCreateService", message: "Tipo de arquivo não permitido." }] },
           message: "Tipo de arquivo não permitido.",
           success: false,
         };
       }
 
-      // Normaliza o nome do arquivo
       const normalizedFileName = normalizeFileName(originalname);
-
-      // Define o caminho do arquivo no Google Cloud Storage
       const fileName = `${nomePasta}/${tipoArquivo}/${Date.now()}-${normalizedFileName}`;
-
-      // Faz o upload do arquivo
       const file = bucket.file(fileName);
-      await file.save(buffer, { metadata: { contentType: mimetype } });
 
-      // Torna o arquivo público
+      await file.save(buffer, { metadata: { contentType: mimetype } });
       await file.makePublic();
 
-      // Gera a URL pública do arquivo
       const publicUrl = `https://storage.googleapis.com/${bucketName}/${fileName}`;
-
-      // Salva o arquivo no banco de dados
       const arquivo = await Arquivos.create({
         nome: normalizedFileName,
         url: publicUrl,
@@ -65,14 +55,7 @@ const uploadCreateService = {
       console.error(error);
       return {
         code: 500,
-        error: {
-          details: [
-            {
-              service: "UploadCreateService",
-              message: error.message,
-            },
-          ],
-        },
+        error: { details: [{ service: "UploadCreateService", message: error.message }] },
         message: "Erro ao fazer upload do arquivo",
         success: false,
       };
