@@ -37,6 +37,24 @@ const BookCreateValidator = async (req, res, next) => {
       });
     }
 
+    if (!paginas) {
+      errors.push({
+        field: "autor",
+        message: "O número de 'paginas' é obrigatório",
+      });
+    }
+    if (!capitulos) {
+      errors.push({
+        field: "autor",
+        message: "O número de 'capitulos' é obrigatório",
+      });
+    }
+    if (!publicacao) {
+      errors.push({
+        field: "autor",
+        message: "A data de 'publicacao' é obrigatória",
+      });
+    }
 
     if (ISBN13 && ISBN13.length !== 13) {
       errors.push({

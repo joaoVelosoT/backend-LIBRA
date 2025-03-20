@@ -1578,7 +1578,92 @@
           }
         }
       }
+    },
+    "/books": {
+  "post": {
+    "summary": "Criar um livro",
+    "description": "Essa rota cria um novo livro.",
+    "tags": ["Books"],
+    "requestBody": {
+      "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "titulo": { "type": "string" },
+              "subtitulo": { "type": "string" },
+              "descricao": { "type": "string" },
+              "autor": { "type": "string" },
+              "editora": { "type": "string" },
+              "edicao": { "type": "string" },
+              "ISBN13": { "type": "string" },
+              "ISBN10": { "type": "string" },
+              "publicacao": { "type": "string", "format": "date" },
+              "paginas": { "type": "integer" },
+              "capitulos": { "type": "integer" },
+              "capa": { "type": "string", "format": "binary" },
+              "banner": { "type": "string", "format": "binary" }
+            },
+            "required": ["titulo", "descricao", "autor", "publicacao", "capitulos", "paginas"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "201": {
+        "description": "Livro criado com sucesso."
+      },
+      "400": {
+        "description": "Dados inválidos ou faltando."
+      }
     }
+  },
+  "get": {
+    "summary": "Listar todos os livros",
+    "description": "Essa rota retorna todos os livros cadastrados.",
+    "tags": ["Books"],
+    "responses": {
+      "200": {
+        "description": "Lista de livros encontrada com sucesso.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Book"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/books/{id}": {
+  "delete": {
+    "summary": "Excluir um livro",
+    "description": "Essa rota exclui um livro pelo ID.",
+    "tags": ["Books"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Livro excluído com sucesso."
+      },
+      "404": {
+        "description": "Livro não encontrado."
+      }
+    }
+  }
+}
   },
   "components": {
     "schemas": {
@@ -1734,7 +1819,83 @@
             "format": "binary"
           }
         }
-      }
+      },
+
+      "Book": {
+  "type": "object",
+  "properties": {
+    "titulo": {
+      "type": "string",
+      "description": "Título do livro."
+    },
+    "subtitulo": {
+      "type": "string",
+      "description": "Subtítulo do livro.",
+      "nullable": true
+    },
+    "descricao": {
+      "type": "string",
+      "description": "Descrição do livro."
+    },
+    "autor": {
+      "type": "string",
+      "description": "Autor do livro."
+    },
+    "editora": {
+      "type": "string",
+      "description": "Editora do livro.",
+      "nullable": true
+    },
+    "edicao": {
+      "type": "string",
+      "description": "Edição do livro.",
+      "nullable": true
+    },
+    "ISBN13": {
+      "type": "string",
+      "description": "ISBN-13 do livro.",
+      "nullable": true
+    },
+    "ISBN10": {
+      "type": "string",
+      "description": "ISBN-10 do livro.",
+      "nullable": true
+    },
+    "publicacao": {
+      "type": "string",
+      "format": "date",
+      "description": "Data de publicação do livro."
+    },
+    "paginas": {
+      "type": "integer",
+      "description": "Número de páginas do livro."
+    },
+    "capitulos": {
+      "type": "integer",
+      "description": "Número de capítulos do livro."
+    },
+    "id_capa": {
+      "type": "integer",
+      "description": "ID da capa do livro.",
+      "nullable": true
+    },
+    "id_banner": {
+      "type": "integer",
+      "description": "ID do banner do livro.",
+      "nullable": true
+    },
+    "id_ebook": {
+      "type": "integer",
+      "description": "ID do e-book associado ao livro.",
+      "nullable": true
+    },
+    "id_audiobook": {
+      "type": "integer",
+      "description": "ID do áudio-livro associado ao livro.",
+      "nullable": true
+    }
+  }
+}
     },
     "securitySchemes": {
       "bearerAuth": {
