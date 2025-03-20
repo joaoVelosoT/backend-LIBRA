@@ -1,4 +1,4 @@
-const EBook = require("../../models/Ebook");
+const AudioBook = require("../../models/AudioBook");
 const Arquivos = require("../../models/Arquivos");
 const Book = require("../../models/Book");
 const sequelize = require("../../database/config");
@@ -26,24 +26,24 @@ const moveFileInGCS = async (oldPath, newPath) => {
     }
 };
 
-const EbookUpdateService = async (id, files) => {
+const AudioBookUpdateService = async (id, files) => {
     const transaction = await sequelize.transaction();
 
     try {
-        const ebook = await EBook.findByPk(id, { transaction });
+        const audioBook = await AudioBook.findByPk(id, { transaction });
 
-        if (!ebook) {
+        if (!audioBook) {
             await transaction.rollback();
             return {
                 code: 404,
-                message: "Ebook não encontrado",
+                message: "AudioBook não encontrado",
                 success: false,
             };
         }
 
         const book = await Book.findOne({
             where: {
-                id_ebook: ebook.dataValues.id,
+                id_audiobook: audioBook.dataValues.id,
             },
         });
 
@@ -51,7 +51,7 @@ const EbookUpdateService = async (id, files) => {
             await transaction.rollback();
             return {
                 code: 404,
-                message: "Livro associado ao Ebook não encontrado",
+                message: "Livro associado ao AudioBook não encontrado",
                 success: false,
             };
         }
@@ -59,12 +59,12 @@ const EbookUpdateService = async (id, files) => {
         const bookName = book.dataValues.titulo.replace(/\s+/g, "_");
 
         // Verifica se o arquivo foi enviado
-        if (files?.Ebook?.[0]) {
-            const { originalname, buffer, mimetype } = files.Ebook[0];
+        if (files?.audiobook?.[0]) {
+            const { originalname, buffer, mimetype } = files.audiobook[0];
 
-            if (ebook.id_arquivo) {
-                // Consulta o arquivo associado ao Ebook
-                const arquivo = await Arquivos.findByPk(ebook.id_arquivo, { transaction });
+            if (audioBook.id_arquivo) {
+                // Consulta o arquivo associado ao AudioBook
+                const arquivo = await Arquivos.findByPk(audioBook.id_arquivo, { transaction });
 
                 if (arquivo) {
                     // Extrai o caminho do arquivo no GCS a partir da URL
@@ -72,7 +72,7 @@ const EbookUpdateService = async (id, files) => {
                     const filePathAntigo = url.replace(`https://storage.googleapis.com/${bucketName}/`, '');
 
                     // Define o novo caminho do arquivo no GCS
-                    const filePathNovo = `${bookName}/ebook/${originalname}`;
+                    const filePathNovo = `${bookName}/audioBook/${originalname}`;
 
                     // Move o arquivo no GCS para o novo caminho
                     await moveFileInGCS(filePathAntigo, filePathNovo);
@@ -93,8 +93,8 @@ const EbookUpdateService = async (id, files) => {
                     originalname,
                     buffer,
                     mimetype,
-                    "ebook",
-                    `${bookName}/ebook`
+                    "audiobook",
+                    `${bookName}/audioBook`
                 );
 
                 if (!uploadResult.success) {
@@ -106,15 +106,15 @@ const EbookUpdateService = async (id, files) => {
                 const arquivo = await Arquivos.create(
                     {
                         nome: originalname,
-                        url: `https://storage.googleapis.com/${bucketName}/${bookName}/ebook/${originalname}`,
+                        url: `https://storage.googleapis.com/${bucketName}/${bookName}/audioBook/${originalname}`,
                         tipo: mimetype,
                     },
                     { transaction }
                 );
 
-                // Associa o novo arquivo ao Ebook
-                ebook.id_arquivo = arquivo.id;
-                await ebook.save({ transaction });
+                // Associa o novo arquivo ao AudioBook
+                audioBook.id_arquivo = arquivo.id;
+                await audioBook.save({ transaction });
             }
         }
 
@@ -122,8 +122,8 @@ const EbookUpdateService = async (id, files) => {
 
         return {
             code: 200,
-            ebook,
-            message: "Ebook atualizado com sucesso",
+            audioBook,
+            message: "AudioBook atualizado com sucesso",
             success: true,
         };
     } catch (error) {
@@ -131,10 +131,10 @@ const EbookUpdateService = async (id, files) => {
         console.error(error);
         return {
             code: 500,
-            message: "Erro ao atualizar o Ebook",
+            message: "Erro ao atualizar o AudioBook",
             success: false,
         };
     }
 };
 
-module.exports = EbookUpdateService;
+module.exports = AudioBookUpdateService;

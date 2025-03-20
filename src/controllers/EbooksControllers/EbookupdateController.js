@@ -3,11 +3,10 @@ const EbookUpdateService = require("../../services/EbookServices/EbookUpdateServ
 const EbookUpdateController = async (req, res) => {
     try {
         const { id } = req.params;
-        const id_arquivo = req.body;
         const files = req.files;
 
         // Chama o serviço de atualização
-        const updatedEbook = await EbookUpdateService(id, id_arquivo, files);
+        const updatedEbook = await EbookUpdateService(id, files);
 
         if (!updatedEbook.success) {
             return res.status(updatedEbook.code).json(updatedEbook);

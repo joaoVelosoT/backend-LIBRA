@@ -9,12 +9,14 @@ const EbookGetAllController = require("../controllers/EbooksControllers/EbookGet
 const EbookUpdateController = require("../controllers/EbooksControllers/EbookupdateController");
 
 router.post("/", upload.fields([
-    { name: "Ebook", maxCount: 10 },
+    { name: "Ebook", maxCount: 1 },
 ]), EbookCreateController);
 
 router.get("/", EbookGetAllController);
 
-router.put("/:id", EbookUpdateController);
+router.patch("/:id", upload.fields([
+    { name: "Ebook", maxCount: 1 },
+]), EbookUpdateController);
 
 router.delete("/:id", EbookDeleteController);
 
