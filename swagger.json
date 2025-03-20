@@ -2,8 +2,8 @@
   "openapi": "3.1.1",
   "info": {
     "title": "backend-LIBRA",
-    "version": "2.3.0",
-    "description": "A versão 2.3.0 inclui: \n- FIX: formatação e padronização da documentação. \n- ADD: novas rotas de notificações, eventos e assistência. \n- ADD: integração de notificações com livros solicitados e eventos."
+    "version": "3.2.0",
+    "description": "A versão 3.2.0 inclui: \n- FIX: formatação e padronização da documentação. \n- ADD: novas rotas de atualizar as imagens de Eventos e Admins. \n- ADD: integração de Livros, Ebooks e Audiobooks na documentação."
   },
   "servers": [
     {
@@ -16,7 +16,9 @@
       "post": {
         "summary": "Cadastro de usuário",
         "description": "Essa rota será responsável por cadastrar um novo usuário.",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -56,7 +58,9 @@
       "post": {
         "summary": "Login de usuário",
         "description": "Essa rota será responsável por autenticar um usuário.",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -85,7 +89,9 @@
       "post": {
         "summary": "Login de admin",
         "description": "Essa rota será responsável por autenticar um administrador.",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -114,7 +120,9 @@
       "post": {
         "summary": "Solicitar redefinição de senha",
         "description": "Essa rota envia um e-mail com um link para redefinir a senha.",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -125,7 +133,9 @@
                     "type": "string"
                   }
                 },
-                "required": ["email"]
+                "required": [
+                  "email"
+                ]
               }
             }
           }
@@ -144,7 +154,9 @@
       "post": {
         "summary": "Redefinir senha",
         "description": "Essa rota redefine a senha do usuário usando um token.",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "parameters": [
           {
             "name": "token",
@@ -165,7 +177,9 @@
                     "type": "string"
                   }
                 },
-                "required": ["newPassword"]
+                "required": [
+                  "newPassword"
+                ]
               }
             }
           }
@@ -184,7 +198,9 @@
       "post": {
         "summary": "Logout de usuário",
         "description": "Essa rota invalida o token do usuário, realizando o logout.",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "responses": {
           "200": {
             "description": "Logout realizado com sucesso."
@@ -199,7 +215,9 @@
       "post": {
         "summary": "Logout de admin",
         "description": "Essa rota invalida o token do admin, realizando o logout.",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "responses": {
           "200": {
             "description": "Logout realizado com sucesso."
@@ -213,36 +231,65 @@
     "/admin": {
       "post": {
         "summary": "Criar um administrador",
-        "description": "Essa rota cria um novo administrador.",
-        "tags": ["Admin"],
+        "description": "Essa rota cria um novo administrador com ou sem imagem de perfil.",
+        "tags": [
+          "Admin"
+        ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Admin"
-              },
-              "examples": {
-                "Admin": {
-                  "value": {
-                    "name": "Admin",
-                    "email": "admin@gmail.com",
-                    "password": "admin"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Nome completo do administrador."
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Endereço de e-mail do administrador."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Senha do administrador."
+                  },
+                  "imagemPerfil": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Arquivo de imagem de perfil (formatos suportados: JPEG, PNG)."
                   }
-                }
+                },
+                
+                "required": [
+                  "name",
+                  "email",
+                  "password",
+                  "NIF"
+                ]
               }
             }
+            
           }
         },
         "responses": {
           "201": {
             "description": "Administrador criado com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou faltando."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
           }
         }
       },
       "get": {
         "summary": "Listar todos os administradores",
         "description": "Essa rota retorna todos os administradores cadastrados.",
-        "tags": ["Admin"],
+        "tags": [
+          "Admin"
+        ],
         "responses": {
           "200": {
             "description": "Lista de administradores encontrada com sucesso.",
@@ -259,6 +306,9 @@
           },
           "404": {
             "description": "Nenhum administrador encontrado."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
           }
         }
       }
@@ -267,7 +317,9 @@
       "get": {
         "summary": "Buscar um administrador pelo ID",
         "description": "Essa rota retorna os detalhes de um administrador pelo ID.",
-        "tags": ["Admin"],
+        "tags": [
+          "Admin"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -291,36 +343,18 @@
           },
           "404": {
             "description": "Administrador não encontrado."
-          }
-        }
-      },
-      "delete": {
-        "summary": "Excluir um administrador",
-        "description": "Essa rota exclui um administrador pelo ID.",
-        "tags": ["Admin"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Administrador excluído com sucesso."
           },
-          "404": {
-            "description": "Administrador não encontrado."
+          "500": {
+            "description": "Erro interno no servidor."
           }
         }
       },
       "patch": {
-        "summary": "Atualizar o email de um administrador",
-        "description": "Essa rota atualiza o email de um administrador pelo ID.",
-        "tags": ["Admin"],
+        "summary": "Atualizar um administrador",
+        "description": "Essa rota atualiza as informações de um administrador pelo ID.",
+        "tags": [
+          "Admin"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -337,44 +371,78 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Nome completo do administrador."
+                  },
                   "email": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "email",
+                    "description": "Endereço de e-mail do administrador."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Senha do administrador."
+                  },
+                  "NIF": {
+                    "type": "string",
+                    "description": "Número de Identificação Fiscal (NIF) do administrador."
                   }
-                },
-                "required": ["email"]
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Email do administrador atualizado com sucesso.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Admin"
-                }
-              }
-            }
+            "description": "Administrador atualizado com sucesso."
           },
           "400": {
-            "description": "Email inválido ou já em uso."
+            "description": "Dados inválidos ou faltando."
           },
           "404": {
             "description": "Administrador não encontrado."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir um administrador",
+        "description": "Essa rota exclui um administrador pelo ID.",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Administrador excluído com sucesso."
+          },
+          "404": {
+            "description": "Administrador não encontrado."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
           }
         }
       }
     },
-    "/admin/image/{id}": {
+    "/admin/{id}/addpicture": {
       "post": {
-        "summary": "Adicionar imagem de perfil a um admin",
-        "description": "Essa rota permite adicionar uma imagem de perfil a um admin já existente.",
-        "tags": ["Admin"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
+        "summary": "Adicionar ou atualizar a imagem de perfil de um administrador",
+        "description": "Essa rota permite adicionar ou atualizar a imagem de perfil de um administrador.",
+        "tags": [
+          "Admin"
         ],
         "parameters": [
           {
@@ -383,8 +451,7 @@
             "required": true,
             "schema": {
               "type": "integer"
-            },
-            "description": "ID do admin que receberá a imagem."
+            }
           }
         ],
         "requestBody": {
@@ -396,72 +463,28 @@
                   "imagemPerfil": {
                     "type": "string",
                     "format": "binary",
-                    "description": "Arquivo de imagem (formatos suportados: JPEG, PNG)."
+                    "description": "Arquivo de imagem de perfil (formatos suportados: JPEG, PNG)."
                   }
                 },
-                "required": ["imagemPerfil"]
+                "required": [
+                  "imagemPerfil"
+                ]
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Imagem de perfil adicionada com sucesso."
+            "description": "Imagem de perfil adicionada ou atualizada com sucesso."
           },
           "400": {
             "description": "Arquivo inválido ou não enviado."
           },
           "404": {
-            "description": "Admin não encontrado."
-          }
-        }
-      },
-      "put": {
-        "summary": "Atualizar a imagem de perfil de um admin",
-        "description": "Essa rota permite atualizar a imagem de perfil de um admin já existente.",
-        "tags": ["Admin"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            },
-            "description": "ID do admin que terá a imagem atualizada."
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "imagemPerfil": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "Arquivo de imagem (formatos suportados: JPEG, PNG)."
-                  }
-                },
-                "required": ["imagemPerfil"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Imagem de perfil atualizada com sucesso."
+            "description": "Administrador não encontrado."
           },
-          "400": {
-            "description": "Arquivo inválido ou não enviado."
-          },
-          "404": {
-            "description": "Admin não encontrado ou não possui uma foto para atualizar."
+          "500": {
+            "description": "Erro interno no servidor."
           }
         }
       }
@@ -470,7 +493,9 @@
       "post": {
         "summary": "Criar uma deficiência",
         "description": "Essa rota cria uma nova deficiência no banco de dados.",
-        "tags": ["Disabled"],
+        "tags": [
+          "Disabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -496,13 +521,18 @@
         "responses": {
           "201": {
             "description": "Deficiência criada com sucesso no banco de dados."
+          },
+          "400": {
+            "description": "Dados inválidos ou faltando."
           }
         }
       },
       "get": {
         "summary": "Listar todas as deficiências",
         "description": "Essa rota retorna todas as deficiências cadastradas.",
-        "tags": ["Disabled"],
+        "tags": [
+          "Disabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -521,38 +551,9 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/disableds/type/{id}": {
-      "get": {
-        "summary": "Buscar deficiências pelo tipo",
-        "description": "Essa rota retorna as deficiências por tipo.",
-        "tags": ["Disabled"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Deficiências encontradas com sucesso.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Disabled"
-                }
-              }
-            }
           },
           "404": {
-            "description": "Deficiência não encontrada."
+            "description": "Nenhuma deficiência encontrada."
           }
         }
       }
@@ -561,7 +562,9 @@
       "get": {
         "summary": "Buscar uma deficiência pelo ID",
         "description": "Essa rota retorna os detalhes de uma deficiência pelo ID.",
-        "tags": ["Disabled"],
+        "tags": [
+          "Disabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -587,13 +590,18 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Deficiência não encontrada."
           }
         }
       },
       "put": {
         "summary": "Atualizar uma deficiência",
         "description": "Essa rota atualiza as informações de uma deficiência pelo ID.",
-        "tags": ["Disabled"],
+        "tags": [
+          "Disabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -621,13 +629,21 @@
         "responses": {
           "200": {
             "description": "Deficiência atualizada com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou faltando."
+          },
+          "404": {
+            "description": "Deficiência não encontrada."
           }
         }
       },
       "delete": {
         "summary": "Excluir uma deficiência",
         "description": "Essa rota exclui uma deficiência pelo ID.",
-        "tags": ["Disabled"],
+        "tags": [
+          "Disabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -646,6 +662,9 @@
         "responses": {
           "200": {
             "description": "Deficiência excluída com sucesso."
+          },
+          "404": {
+            "description": "Deficiência não encontrada."
           }
         }
       }
@@ -654,7 +673,9 @@
       "post": {
         "summary": "Criar um tipo de deficiência",
         "description": "Essa rota cria um novo tipo de deficiência.",
-        "tags": ["TypesDisabled"],
+        "tags": [
+          "TypesDisabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -679,13 +700,18 @@
         "responses": {
           "201": {
             "description": "Tipo de deficiência criado com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou faltando."
           }
         }
       },
       "get": {
         "summary": "Listar todos os tipos de deficiência",
         "description": "Essa rota retorna todos os tipos de deficiência cadastrados.",
-        "tags": ["TypesDisabled"],
+        "tags": [
+          "TypesDisabled"
+        ],
         "responses": {
           "200": {
             "description": "Lista de tipos de deficiência encontrada com sucesso.",
@@ -699,6 +725,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Nenhum tipo de deficiência encontrado."
           }
         }
       }
@@ -707,7 +736,9 @@
       "get": {
         "summary": "Buscar um tipo de deficiência pelo nome",
         "description": "Essa rota retorna os detalhes de um tipo de deficiência pelo nome.",
-        "tags": ["TypesDisabled"],
+        "tags": [
+          "TypesDisabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -733,13 +764,18 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Tipo de deficiência não encontrado."
           }
         }
       },
       "patch": {
         "summary": "Atualizar um tipo de deficiência",
         "description": "Essa rota atualiza as informações de um tipo de deficiência pelo nome.",
-        "tags": ["TypesDisabled"],
+        "tags": [
+          "TypesDisabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -767,13 +803,21 @@
         "responses": {
           "200": {
             "description": "Tipo de deficiência atualizado com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou faltando."
+          },
+          "404": {
+            "description": "Tipo de deficiência não encontrado."
           }
         }
       },
       "delete": {
         "summary": "Excluir um tipo de deficiência",
         "description": "Essa rota exclui um tipo de deficiência pelo nome.",
-        "tags": ["TypesDisabled"],
+        "tags": [
+          "TypesDisabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -792,6 +836,9 @@
         "responses": {
           "200": {
             "description": "Tipo de deficiência excluído com sucesso."
+          },
+          "404": {
+            "description": "Tipo de deficiência não encontrado."
           }
         }
       }
@@ -800,7 +847,9 @@
       "post": {
         "summary": "Criar um usuário",
         "description": "Essa rota cria um novo usuário.",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -833,13 +882,18 @@
         "responses": {
           "201": {
             "description": "Usuário criado com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou faltando."
           }
         }
       },
       "get": {
         "summary": "Listar todos os usuários",
         "description": "Essa rota retorna todos os usuários cadastrados.",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -868,6 +922,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Nenhum usuário encontrado."
           }
         }
       }
@@ -876,7 +933,9 @@
       "get": {
         "summary": "Buscar um usuário pelo ID",
         "description": "Essa rota retorna os detalhes de um usuário pelo ID.",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -902,13 +961,18 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Usuário não encontrado."
           }
         }
       },
       "put": {
         "summary": "Atualizar um usuário",
         "description": "Essa rota atualiza as informações de um usuário pelo ID.",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -936,13 +1000,21 @@
         "responses": {
           "200": {
             "description": "Usuário atualizado com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou faltando."
+          },
+          "404": {
+            "description": "Usuário não encontrado."
           }
         }
       },
       "delete": {
         "summary": "Excluir um usuário",
         "description": "Essa rota exclui um usuário pelo ID.",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -961,6 +1033,9 @@
         "responses": {
           "200": {
             "description": "Usuário excluído com sucesso."
+          },
+          "404": {
+            "description": "Usuário não encontrado."
           }
         }
       }
@@ -969,7 +1044,9 @@
       "post": {
         "summary": "Associar um usuário a uma deficiência",
         "description": "Essa rota associa um usuário a uma deficiência específica.",
-        "tags": ["UsersDisabled"],
+        "tags": [
+          "UsersDisabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -995,13 +1072,18 @@
         "responses": {
           "201": {
             "description": "Associação criada com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou faltando."
           }
         }
       },
       "get": {
         "summary": "Listar todas as associações entre usuários e deficiências",
         "description": "Essa rota retorna todas as associações entre usuários e deficiências cadastradas.",
-        "tags": ["UsersDisabled"],
+        "tags": [
+          "UsersDisabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1020,6 +1102,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Nenhuma associação encontrada."
           }
         }
       }
@@ -1028,7 +1113,9 @@
       "get": {
         "summary": "Buscar uma associação pelo ID",
         "description": "Essa rota retorna os detalhes de uma associação pelo ID.",
-        "tags": ["UsersDisabled"],
+        "tags": [
+          "UsersDisabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1054,13 +1141,18 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Associação não encontrada."
           }
         }
       },
       "delete": {
         "summary": "Excluir uma associação",
         "description": "Essa rota exclui uma associação entre usuário e deficiência pelo ID.",
-        "tags": ["UsersDisabled"],
+        "tags": [
+          "UsersDisabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1079,13 +1171,18 @@
         "responses": {
           "200": {
             "description": "Associação excluída com sucesso."
+          },
+          "404": {
+            "description": "Associação não encontrada."
           }
         }
       },
       "patch": {
         "summary": "Atualizar uma associação entre usuário e deficiência",
         "description": "Essa rota atualiza as informações de uma associação entre um usuário e uma deficiência.",
-        "tags": ["UsersDisabled"],
+        "tags": [
+          "UsersDisabled"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1113,6 +1210,12 @@
         "responses": {
           "200": {
             "description": "Associação atualizada com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou faltando."
+          },
+          "404": {
+            "description": "Associação não encontrada."
           }
         }
       }
@@ -1121,7 +1224,9 @@
       "post": {
         "summary": "Criar uma notificação",
         "description": "Essa rota cria uma nova notificação.",
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1141,7 +1246,11 @@
                     "description": "Tipo da notificação (ex: info, alerta, etc.)."
                   }
                 },
-                "required": ["title", "description", "type"]
+                "required": [
+                  "title",
+                  "description",
+                  "type"
+                ]
               }
             }
           }
@@ -1158,7 +1267,9 @@
       "get": {
         "summary": "Listar todas as notificações",
         "description": "Essa rota retorna todas as notificações cadastradas.",
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1177,6 +1288,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Nenhuma notificação encontrada."
           }
         }
       }
@@ -1185,7 +1299,9 @@
       "delete": {
         "summary": "Excluir uma notificação",
         "description": "Essa rota exclui uma notificação pelo ID.",
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1215,7 +1331,9 @@
       "post": {
         "summary": "Criar um livro solicitado",
         "description": "Essa rota será responsável por criar um novo livro solicitado.",
-        "tags": ["RequestedBooks"],
+        "tags": [
+          "RequestedBooks"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1249,7 +1367,9 @@
       "get": {
         "summary": "Listar todos os livros solicitados",
         "description": "Essa rota retorna todos os livros solicitados cadastrados.",
-        "tags": ["RequestedBooks"],
+        "tags": [
+          "RequestedBooks"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1282,7 +1402,9 @@
       "get": {
         "summary": "Buscar um livro solicitado pelo ID",
         "description": "Essa rota retorna os detalhes de um livro solicitado pelo ID.",
-        "tags": ["RequestedBooks"],
+        "tags": [
+          "RequestedBooks"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1321,7 +1443,9 @@
       "delete": {
         "summary": "Excluir um livro solicitado",
         "description": "Essa rota exclui um livro solicitado pelo ID.",
-        "tags": ["RequestedBooks"],
+        "tags": [
+          "RequestedBooks"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1355,7 +1479,9 @@
       "post": {
         "summary": "Criar uma notificação de assistência",
         "description": "Essa rota cria uma nova notificação de assistência.",
-        "tags": ["NotificationAssistence"],
+        "tags": [
+          "NotificationAssistence"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1377,8 +1503,10 @@
       "get": {
         "summary": "Listar todas as notificações de assistência",
         "description": "Essa rota retorna todas as notificações de assistência cadastradas.",
-        "tags": ["NotificationAssistence"],
-         "security": [
+        "tags": [
+          "NotificationAssistence"
+        ],
+        "security": [
           {
             "bearerAuth": []
           }
@@ -1396,6 +1524,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Nenhuma notificação de assistência encontrada."
           }
         }
       }
@@ -1403,18 +1534,50 @@
     "/eventos": {
       "post": {
         "summary": "Criar um evento",
-        "description": "Essa rota cria um novo evento.",
-        "tags": ["Eventos"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
+        "description": "Essa rota cria um novo evento com ou sem capa e GIF.",
+        "tags": [
+          "Eventos"
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Evento"
+                "type": "object",
+                "properties": {
+                  "titulo": {
+                    "type": "string",
+                    "description": "Título do evento."
+                  },
+                  "categoria": {
+                    "type": "string",
+                    "description": "Categoria do evento."
+                  },
+                  "descricao": {
+                    "type": "string",
+                    "description": "Descrição do evento."
+                  },
+                  "data_evento": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Data e hora do evento."
+                  },
+                  "capa": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Arquivo de imagem da capa do evento (formatos suportados: JPEG, PNG)."
+                  },
+                  "gif": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Arquivo de GIF do evento (formato suportado: GIF)."
+                  }
+                },
+                "required": [
+                  "titulo",
+                  "categoria",
+                  "descricao",
+                  "data_evento"
+                ]
               }
             }
           }
@@ -1425,13 +1588,18 @@
           },
           "400": {
             "description": "Dados inválidos ou faltando."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
           }
         }
       },
       "get": {
         "summary": "Listar todos os eventos",
         "description": "Essa rota retorna todos os eventos cadastrados.",
-        "tags": ["Eventos"],
+        "tags": [
+          "Eventos"
+        ],
         "responses": {
           "200": {
             "description": "Lista de eventos encontrada com sucesso.",
@@ -1445,6 +1613,12 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Nenhum evento encontrado."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
           }
         }
       }
@@ -1453,7 +1627,9 @@
       "get": {
         "summary": "Buscar um evento pelo ID",
         "description": "Essa rota retorna os detalhes de um evento pelo ID.",
-        "tags": ["Eventos"],
+        "tags": [
+          "Eventos"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1477,17 +1653,17 @@
           },
           "404": {
             "description": "Evento não encontrado."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
           }
         }
       },
       "put": {
         "summary": "Atualizar um evento",
         "description": "Essa rota atualiza as informações de um evento pelo ID.",
-        "tags": ["Eventos"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
+        "tags": [
+          "Eventos"
         ],
         "parameters": [
           {
@@ -1503,7 +1679,26 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Evento"
+                "type": "object",
+                "properties": {
+                  "titulo": {
+                    "type": "string",
+                    "description": "Título do evento."
+                  },
+                  "categoria": {
+                    "type": "string",
+                    "description": "Categoria do evento."
+                  },
+                  "descricao": {
+                    "type": "string",
+                    "description": "Descrição do evento."
+                  },
+                  "data_evento": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Data e hora do evento."
+                  }
+                }
               }
             }
           }
@@ -1512,19 +1707,22 @@
           "200": {
             "description": "Evento atualizado com sucesso."
           },
+          "400": {
+            "description": "Dados inválidos ou faltando."
+          },
           "404": {
             "description": "Evento não encontrado."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
           }
         }
       },
       "delete": {
         "summary": "Excluir um evento",
         "description": "Essa rota exclui um evento pelo ID.",
-        "tags": ["Eventos"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
+        "tags": [
+          "Eventos"
         ],
         "parameters": [
           {
@@ -1542,6 +1740,63 @@
           },
           "404": {
             "description": "Evento não encontrado."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
+          }
+        }
+      }
+    },
+    "/eventos/{id}/addpicture": {
+      "post": {
+        "summary": "Adicionar ou atualizar capa e/ou GIF de um evento",
+        "description": "Essa rota permite adicionar ou atualizar a capa e/ou o GIF de um evento.",
+        "tags": [
+          "Eventos"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "capa": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Arquivo de imagem da capa do evento (formatos suportados: JPEG, PNG)."
+                  },
+                  "gif": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Arquivo de GIF do evento (formato suportado: GIF)."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Capa e/ou GIF adicionados ou atualizados com sucesso."
+          },
+          "400": {
+            "description": "Arquivo inválido ou não enviado."
+          },
+          "404": {
+            "description": "Evento não encontrado."
+          },
+          "500": {
+            "description": "Erro interno no servidor."
           }
         }
       }
@@ -1550,7 +1805,9 @@
       "get": {
         "summary": "Listar todas as notificações de livro",
         "description": "Essa rota retorna todas as notificações relacionadas a livros solicitados.",
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1580,328 +1837,592 @@
       }
     },
     "/books": {
-  "post": {
-    "summary": "Criar um livro",
-    "description": "Essa rota cria um novo livro.",
-    "tags": ["Books"],
-    "requestBody": {
-      "content": {
-        "multipart/form-data": {
-          "schema": {
-            "type": "object",
-            "properties": {
-              "titulo": { "type": "string" },
-              "subtitulo": { "type": "string" },
-              "descricao": { "type": "string" },
-              "autor": { "type": "string" },
-              "editora": { "type": "string" },
-              "edicao": { "type": "string" },
-              "ISBN13": { "type": "string" },
-              "ISBN10": { "type": "string" },
-              "publicacao": { "type": "string", "format": "date" },
-              "paginas": { "type": "integer" },
-              "capitulos": { "type": "integer" },
-              "capa": { "type": "string", "format": "binary" },
-              "banner": { "type": "string", "format": "binary" }
-            },
-            "required": ["titulo", "descricao", "autor", "publicacao", "capitulos", "paginas"]
+      "post": {
+        "summary": "Criar um livro",
+        "description": "Essa rota cria um novo livro.",
+        "tags": [
+          "Books"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "titulo": {
+                    "type": "string"
+                  },
+                  "subtitulo": {
+                    "type": "string"
+                  },
+                  "descricao": {
+                    "type": "string"
+                  },
+                  "autor": {
+                    "type": "string"
+                  },
+                  "editora": {
+                    "type": "string"
+                  },
+                  "edicao": {
+                    "type": "string"
+                  },
+                  "ISBN13": {
+                    "type": "string"
+                  },
+                  "ISBN10": {
+                    "type": "string"
+                  },
+                  "publicacao": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "paginas": {
+                    "type": "integer"
+                  },
+                  "capitulos": {
+                    "type": "integer"
+                  },
+                  "capa": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "banner": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "titulo",
+                  "descricao",
+                  "autor",
+                  "publicacao",
+                  "capitulos",
+                  "paginas"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Livro criado com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou faltando."
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os livros",
+        "description": "Essa rota retorna todos os livros cadastrados.",
+        "tags": [
+          "Books"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de livros encontrada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Nenhum livro encontrado."
           }
         }
       }
     },
-    "responses": {
-      "201": {
-        "description": "Livro criado com sucesso."
-      },
-      "400": {
-        "description": "Dados inválidos ou faltando."
-      }
-    }
-  },
-  "get": {
-    "summary": "Listar todos os livros",
-    "description": "Essa rota retorna todos os livros cadastrados.",
-    "tags": ["Books"],
-    "responses": {
-      "200": {
-        "description": "Lista de livros encontrada com sucesso.",
-        "content": {
-          "application/json": {
+    "/books/{id}": {
+      "delete": {
+        "summary": "Excluir um livro",
+        "description": "Essa rota exclui um livro pelo ID.",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/Book"
-              }
+              "type": "integer"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Livro excluído com sucesso."
+          },
+          "404": {
+            "description": "Livro não encontrado."
           }
         }
       }
     }
-  }
-},
-"/books/{id}": {
-  "delete": {
-    "summary": "Excluir um livro",
-    "description": "Essa rota exclui um livro pelo ID.",
-    "tags": ["Books"],
-    "parameters": [
-      {
-        "name": "id",
-        "in": "path",
-        "required": true,
-        "schema": {
-          "type": "integer"
-        }
-      }
-    ],
-    "responses": {
-      "200": {
-        "description": "Livro excluído com sucesso."
-      },
-      "404": {
-        "description": "Livro não encontrado."
-      }
-    }
-  }
-}
   },
   "components": {
     "schemas": {
       "User": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string"
+          "id": {
+            "type": "integer",
+            "description": "ID único do usuário."
           },
-          "password": {
-            "type": "string"
+          "name": {
+            "type": "string",
+            "description": "Nome completo do usuário."
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "format": "email",
+            "description": "Endereço de e-mail do usuário."
+          },
+          "password": {
+            "type": "string",
+            "description": "Senha do usuário (armazenada de forma criptografada)."
           },
           "isDisabled": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Indica se o usuário possui alguma deficiência."
           },
           "idDisabled": {
-            "type": "integer"
+            "type": "integer",
+            "nullable": true,
+            "description": "ID da deficiência associada ao usuário (se houver)."
           },
           "techAss": {
-            "type": "string"
+            "type": "string",
+            "nullable": true,
+            "description": "Tecnologia assistiva utilizada pelo usuário (se aplicável)."
           },
           "resetPasswordToken": {
-            "type": "string"
+            "type": "string",
+            "nullable": true,
+            "description": "Token para redefinição de senha."
           },
           "resetPasswordExpires": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Data de expiração do token de redefinição de senha."
+          },
+          "validToken": {
+            "type": "string",
+            "nullable": true,
+            "description": "Token de autenticação válido."
           }
-        }
+        },
+        "required": [
+          "name",
+          "email",
+          "password"
+        ]
       },
       "Admin": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string"
+          "id": {
+            "type": "integer",
+            "description": "ID único do administrador."
           },
-          "NIF": {
-            "type": "string"
+          "name": {
+            "type": "string",
+            "description": "Nome completo do administrador."
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "format": "email",
+            "description": "Endereço de e-mail do administrador."
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "description": "Senha do administrador (armazenada de forma criptografada)."
+          },
+          "NIF": {
+            "type": "string",
+            "description": "Número de Identificação Fiscal (NIF) do administrador."
+          },
+          "id_AdminFoto": {
+            "type": "integer",
+            "nullable": true,
+            "description": "ID da foto de perfil do administrador."
+          },
+          "resetPasswordToken": {
+            "type": "string",
+            "nullable": true,
+            "description": "Token para redefinição de senha."
+          },
+          "resetPasswordExpires": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Data de expiração do token de redefinição de senha."
+          },
+          "validToken": {
+            "type": "string",
+            "nullable": true,
+            "description": "Token de autenticação válido."
           }
-        }
+        },
+        "required": [
+          "name",
+          "email",
+          "password"
+        ]
       },
       "Disabled": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único da deficiência."
+          },
           "idDisabledTypes": {
-            "type": "integer"
+            "type": "integer",
+            "description": "ID do tipo de deficiência associada."
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Nome da deficiência."
           }
-        }
+        },
+        "required": [
+          "idDisabledTypes",
+          "name"
+        ]
       },
       "TypesDisabled": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único do tipo de deficiência."
+          },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Nome do tipo de deficiência."
           }
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "UserDisabled": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único da associação entre usuário e deficiência."
+          },
           "idUser": {
-            "type": "integer"
+            "type": "integer",
+            "description": "ID do usuário associado."
           },
           "idDisabled": {
-            "type": "integer"
+            "type": "integer",
+            "description": "ID da deficiência associada."
           }
-        }
+        },
+        "required": [
+          "idUser",
+          "idDisabled"
+        ]
       },
       "Notification": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único da notificação."
+          },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Título da notificação."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Descrição da notificação."
           },
           "type": {
-            "type": "string"
+            "type": "string",
+            "description": "Tipo da notificação (ex: info, alerta, etc.)."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação da notificação."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de atualização da notificação."
           }
-        }
+        },
+        "required": [
+          "title",
+          "description",
+          "type"
+        ]
       },
       "RequestedBook": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único do livro solicitado."
+          },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Título do livro solicitado."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Descrição do livro solicitado."
           },
           "gender": {
-            "type": "string"
+            "type": "string",
+            "description": "Gênero do livro solicitado."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação do livro solicitado."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de atualização do livro solicitado."
           }
-        }
+        },
+        "required": [
+          "title",
+          "description",
+          "gender"
+        ]
       },
       "NotificationAssistence": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único da notificação de assistência."
+          },
           "notificao_id": {
-            "type": "integer"
+            "type": "integer",
+            "description": "ID da notificação associada."
           },
           "user_id": {
-            "type": "integer"
+            "type": "integer",
+            "description": "ID do usuário associado."
           },
           "evento_id": {
-            "type": "integer"
-          }
-        }
-      },
-          "NotificationRequestedBook": {
-            "type": "object",
-            "properties": {
-              "idNotification": {
-                "type": "integer",
-                "description": "ID da notificação associada."
-              },
-              "idRequestedBook": {
-                "type": "integer",
-                "description": "ID do livro solicitado associado."
-              }
-            }
+            "type": "integer",
+            "description": "ID do evento associado."
           },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação da notificação de assistência."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de atualização da notificação de assistência."
+          }
+        },
+        "required": [
+          "notificao_id",
+          "user_id",
+          "evento_id"
+        ]
+      },
+      "NotificationRequestedBook": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único da associação entre notificação e livro solicitado."
+          },
+          "idNotification": {
+            "type": "integer",
+            "description": "ID da notificação associada."
+          },
+          "idRequestedBook": {
+            "type": "integer",
+            "description": "ID do livro solicitado associado."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação da associação."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de atualização da associação."
+          }
+        },
+        "required": [
+          "idNotification",
+          "idRequestedBook"
+        ]
+      },
       "Evento": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único do evento."
+          },
           "titulo": {
-            "type": "string"
+            "type": "string",
+            "description": "Título do evento."
           },
           "categoria": {
-            "type": "string"
+            "type": "string",
+            "description": "Categoria do evento."
           },
           "descricao": {
-            "type": "string"
+            "type": "string",
+            "description": "Descrição do evento."
           },
           "data_evento": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Data e hora do evento."
           },
-          "banner": {
+          "id_capa": {
+            "type": "integer",
+            "nullable": true,
+            "description": "ID da capa do evento."
+          },
+          "id_Gif": {
+            "type": "integer",
+            "nullable": true,
+            "description": "ID do GIF do evento."
+          },
+          "createdAt": {
             "type": "string",
-            "format": "binary"
+            "format": "date-time",
+            "description": "Data de criação do evento."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de atualização do evento."
           }
-        }
+        },
+        "required": [
+          "titulo",
+          "categoria",
+          "descricao",
+          "data_evento"
+        ]
       },
-
       "Book": {
-  "type": "object",
-  "properties": {
-    "titulo": {
-      "type": "string",
-      "description": "Título do livro."
-    },
-    "subtitulo": {
-      "type": "string",
-      "description": "Subtítulo do livro.",
-      "nullable": true
-    },
-    "descricao": {
-      "type": "string",
-      "description": "Descrição do livro."
-    },
-    "autor": {
-      "type": "string",
-      "description": "Autor do livro."
-    },
-    "editora": {
-      "type": "string",
-      "description": "Editora do livro.",
-      "nullable": true
-    },
-    "edicao": {
-      "type": "string",
-      "description": "Edição do livro.",
-      "nullable": true
-    },
-    "ISBN13": {
-      "type": "string",
-      "description": "ISBN-13 do livro.",
-      "nullable": true
-    },
-    "ISBN10": {
-      "type": "string",
-      "description": "ISBN-10 do livro.",
-      "nullable": true
-    },
-    "publicacao": {
-      "type": "string",
-      "format": "date",
-      "description": "Data de publicação do livro."
-    },
-    "paginas": {
-      "type": "integer",
-      "description": "Número de páginas do livro."
-    },
-    "capitulos": {
-      "type": "integer",
-      "description": "Número de capítulos do livro."
-    },
-    "id_capa": {
-      "type": "integer",
-      "description": "ID da capa do livro.",
-      "nullable": true
-    },
-    "id_banner": {
-      "type": "integer",
-      "description": "ID do banner do livro.",
-      "nullable": true
-    },
-    "id_ebook": {
-      "type": "integer",
-      "description": "ID do e-book associado ao livro.",
-      "nullable": true
-    },
-    "id_audiobook": {
-      "type": "integer",
-      "description": "ID do áudio-livro associado ao livro.",
-      "nullable": true
-    }
-  }
-}
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único do livro."
+          },
+          "titulo": {
+            "type": "string",
+            "description": "Título do livro."
+          },
+          "subtitulo": {
+            "type": "string",
+            "nullable": true,
+            "description": "Subtítulo do livro."
+          },
+          "descricao": {
+            "type": "string",
+            "description": "Descrição do livro."
+          },
+          "autor": {
+            "type": "string",
+            "description": "Autor do livro."
+          },
+          "editora": {
+            "type": "string",
+            "nullable": true,
+            "description": "Editora do livro."
+          },
+          "edicao": {
+            "type": "string",
+            "nullable": true,
+            "description": "Edição do livro."
+          },
+          "ISBN13": {
+            "type": "string",
+            "nullable": true,
+            "description": "ISBN-13 do livro."
+          },
+          "ISBN10": {
+            "type": "string",
+            "nullable": true,
+            "description": "ISBN-10 do livro."
+          },
+          "publicacao": {
+            "type": "string",
+            "format": "date",
+            "description": "Data de publicação do livro."
+          },
+          "paginas": {
+            "type": "integer",
+            "description": "Número de páginas do livro."
+          },
+          "capitulos": {
+            "type": "integer",
+            "description": "Número de capítulos do livro."
+          },
+          "id_capa": {
+            "type": "integer",
+            "nullable": true,
+            "description": "ID da capa do livro."
+          },
+          "id_banner": {
+            "type": "integer",
+            "nullable": true,
+            "description": "ID do banner do livro."
+          },
+          "id_ebook": {
+            "type": "integer",
+            "nullable": true,
+            "description": "ID do e-book associado ao livro."
+          },
+          "id_audiobook": {
+            "type": "integer",
+            "nullable": true,
+            "description": "ID do áudio-livro associado ao livro."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação do livro."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de atualização do livro."
+          }
+        },
+        "required": [
+          "titulo",
+          "descricao",
+          "autor",
+          "publicacao",
+          "paginas",
+          "capitulos"
+        ]
       }
     }
   }
