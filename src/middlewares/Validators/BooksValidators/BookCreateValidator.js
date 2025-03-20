@@ -10,8 +10,7 @@ const BookCreateValidator = async (req, res, next) => {
       ISBN13,
       ISBN10,
       paginas,
-      capitulos,
-      id_Audiobook
+      capitulos
     } = req.body;
 
     const errors = [];
@@ -89,7 +88,6 @@ const BookCreateValidator = async (req, res, next) => {
       ISBN10,
       paginas,
       capitulos,
-      id_Audiobook
     };
 
     return next();
@@ -109,5 +107,5 @@ const BookCreateValidator = async (req, res, next) => {
       success: false,
     });
   }
-}; 
+};
 module.exports = BookCreateValidator;
