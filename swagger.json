@@ -1965,7 +1965,295 @@
           }
         }
       }
+    },
+    "/ebooks": {
+  "post": {
+    "summary": "Criar um Ebook",
+    "description": "Essa rota cria um novo Ebook com um arquivo associado.",
+    "tags": ["Ebooks"],
+    "requestBody": {
+      "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "Ebook": {
+                "type": "string",
+                "format": "binary",
+                "description": "Arquivo do Ebook (formatos suportados: PDF, EPUB)."
+              },
+              "publicacao": {
+                "type": "string",
+                "format": "date",
+                "description": "Data de publicação do Ebook."
+              }
+            },
+            "required": ["Ebook"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "201": {
+        "description": "Ebook criado com sucesso."
+      },
+      "400": {
+        "description": "Dados inválidos ou faltando."
+      },
+      "500": {
+        "description": "Erro interno no servidor."
+      }
     }
+  },
+  "get": {
+    "summary": "Listar todos os Ebooks",
+    "description": "Essa rota retorna todos os Ebooks cadastrados.",
+    "tags": ["Ebooks"],
+    "responses": {
+      "200": {
+        "description": "Lista de Ebooks encontrada com sucesso.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/EBook"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Nenhum Ebook encontrado."
+      },
+      "500": {
+        "description": "Erro interno no servidor."
+      }
+    }
+  }
+},
+"/ebooks/{id}": {
+  "patch": {
+    "summary": "Atualizar um Ebook",
+    "description": "Essa rota atualiza as informações de um Ebook pelo ID.",
+    "tags": ["Ebooks"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "Ebook": {
+                "type": "string",
+                "format": "binary",
+                "description": "Arquivo do Ebook (formatos suportados: PDF, EPUB)."
+              },
+              "publicacao": {
+                "type": "string",
+                "format": "date",
+                "description": "Data de publicação do Ebook."
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Ebook atualizado com sucesso."
+      },
+      "400": {
+        "description": "Dados inválidos ou faltando."
+      },
+      "404": {
+        "description": "Ebook não encontrado."
+      },
+      "500": {
+        "description": "Erro interno no servidor."
+      }
+    }
+  },
+  "delete": {
+    "summary": "Excluir um Ebook",
+    "description": "Essa rota exclui um Ebook pelo ID.",
+    "tags": ["Ebooks"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Ebook excluído com sucesso."
+      },
+      "404": {
+        "description": "Ebook não encontrado."
+      },
+      "500": {
+        "description": "Erro interno no servidor."
+      }
+    }
+  }
+},
+"/audiobooks": {
+  "post": {
+    "summary": "Criar um Audiobook",
+    "description": "Essa rota cria um novo Audiobook com um arquivo de áudio associado.",
+    "tags": ["Audiobooks"],
+    "requestBody": {
+      "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "audioBook": {
+                "type": "string",
+                "format": "binary",
+                "description": "Arquivo de áudio do Audiobook (formatos suportados: MP3, WAV)."
+              },
+              "publicacao": {
+                "type": "string",
+                "format": "date",
+                "description": "Data de publicação do Audiobook."
+              }
+            },
+            "required": ["audioBook"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "201": {
+        "description": "Audiobook criado com sucesso."
+      },
+      "400": {
+        "description": "Dados inválidos ou faltando."
+      },
+      "500": {
+        "description": "Erro interno no servidor."
+      }
+    }
+  },
+  "get": {
+    "summary": "Listar todos os Audiobooks",
+    "description": "Essa rota retorna todos os Audiobooks cadastrados.",
+    "tags": ["Audiobooks"],
+    "responses": {
+      "200": {
+        "description": "Lista de Audiobooks encontrada com sucesso.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/AudioBook"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Nenhum Audiobook encontrado."
+      },
+      "500": {
+        "description": "Erro interno no servidor."
+      }
+    }
+  }
+},
+"/audiobooks/{id}": {
+  "patch": {
+    "summary": "Atualizar um Audiobook",
+    "description": "Essa rota atualiza as informações de um Audiobook pelo ID.",
+    "tags": ["Audiobooks"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "audiobook": {
+                "type": "string",
+                "format": "binary",
+                "description": "Arquivo de áudio do Audiobook (formatos suportados: MP3, WAV)."
+              },
+              "publicacao": {
+                "type": "string",
+                "format": "date",
+                "description": "Data de publicação do Audiobook."
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Audiobook atualizado com sucesso."
+      },
+      "400": {
+        "description": "Dados inválidos ou faltando."
+      },
+      "404": {
+        "description": "Audiobook não encontrado."
+      },
+      "500": {
+        "description": "Erro interno no servidor."
+      }
+    }
+  },
+  "delete": {
+    "summary": "Excluir um Audiobook",
+    "description": "Essa rota exclui um Audiobook pelo ID.",
+    "tags": ["Audiobooks"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Audiobook excluído com sucesso."
+      },
+      "404": {
+        "description": "Audiobook não encontrado."
+      },
+      "500": {
+        "description": "Erro interno no servidor."
+      }
+    }
+  }
+}
   },
   "components": {
     "schemas": {
@@ -2423,7 +2711,67 @@
           "paginas",
           "capitulos"
         ]
-      }
+      },
+      "EBook": {
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "ID único do Ebook."
+    },
+    "id_arquivo": {
+      "type": "integer",
+      "nullable": true,
+      "description": "ID do arquivo associado ao Ebook."
+    },
+    "publicacao": {
+      "type": "string",
+      "format": "date",
+      "nullable": true,
+      "description": "Data de publicação do Ebook."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Data de criação do Ebook."
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Data de atualização do Ebook."
+    }
+  }
+},
+"AudioBook": {
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "ID único do Audiobook."
+    },
+    "id_arquivo": {
+      "type": "integer",
+      "nullable": true,
+      "description": "ID do arquivo associado ao Audiobook."
+    },
+    "publicacao": {
+      "type": "string",
+      "format": "date",
+      "nullable": true,
+      "description": "Data de publicação do Audiobook."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Data de criação do Audiobook."
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Data de atualização do Audiobook."
+    }
+  }
+}
     }
   }
 }
