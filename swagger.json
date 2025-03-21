@@ -1966,7 +1966,7 @@
         }
       }
     },
-    "/ebooks": {
+    "/ebook": {
   "post": {
     "summary": "Criar um Ebook",
     "description": "Essa rota cria um novo Ebook com um arquivo associado.",
@@ -1980,12 +1980,16 @@
               "Ebook": {
                 "type": "string",
                 "format": "binary",
-                "description": "Arquivo do Ebook (formatos suportados: PDF, EPUB)."
+                "description": "Arquivo do Ebook (formatos suportados: PDF)."
               },
               "publicacao": {
                 "type": "string",
                 "format": "date",
                 "description": "Data de publicação do Ebook."
+              },
+              "idLivro": {
+                "type": "integer",
+                "description": "Id do Book Relacionado."
               }
             },
             "required": ["Ebook"]
@@ -2032,7 +2036,7 @@
     }
   }
 },
-"/ebooks/{id}": {
+"/ebook/{id}": {
   "patch": {
     "summary": "Atualizar um Ebook",
     "description": "Essa rota atualiza as informações de um Ebook pelo ID.",
@@ -2056,7 +2060,7 @@
               "Ebook": {
                 "type": "string",
                 "format": "binary",
-                "description": "Arquivo do Ebook (formatos suportados: PDF, EPUB)."
+                "description": "Arquivo do Ebook (formatos suportados: PDF)."
               },
               "publicacao": {
                 "type": "string",
@@ -2110,7 +2114,7 @@
     }
   }
 },
-"/audiobooks": {
+"/audiobook": {
   "post": {
     "summary": "Criar um Audiobook",
     "description": "Essa rota cria um novo Audiobook com um arquivo de áudio associado.",
@@ -2124,12 +2128,16 @@
               "audioBook": {
                 "type": "string",
                 "format": "binary",
-                "description": "Arquivo de áudio do Audiobook (formatos suportados: MP3, WAV)."
+                "description": "Arquivo de áudio do Audiobook (formatos suportados: MP3)."
               },
               "publicacao": {
                 "type": "string",
                 "format": "date",
                 "description": "Data de publicação do Audiobook."
+              },
+              "idLivro": {
+                "type": "integer",
+                "description": "Id do Book Relacionado."
               }
             },
             "required": ["audioBook"]
@@ -2176,7 +2184,7 @@
     }
   }
 },
-"/audiobooks/{id}": {
+"/audiobook/{id}": {
   "patch": {
     "summary": "Atualizar um Audiobook",
     "description": "Essa rota atualiza as informações de um Audiobook pelo ID.",
@@ -2200,7 +2208,7 @@
               "audiobook": {
                 "type": "string",
                 "format": "binary",
-                "description": "Arquivo de áudio do Audiobook (formatos suportados: MP3, WAV)."
+                "description": "Arquivo de áudio do Audiobook (formatos suportados: MP3)."
               },
               "publicacao": {
                 "type": "string",
