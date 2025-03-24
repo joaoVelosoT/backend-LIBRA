@@ -4,10 +4,15 @@ const BookCreateController = require("../controllers/BooksControllers/BookCreate
 const BookDeleteController = require("../controllers/BooksControllers/BookDeleteController");
 const BookGetAllController = require("../controllers/BooksControllers/BookGetAllController");
 const BookUpdateController = require("../controllers/BooksControllers/BookUpdateController");
+const BookGetByIdController = require("../controllers/BooksControllers/BookGetByIdController");
+
 const multer = require("multer");
 
 const upload = multer({ storage: multer.memoryStorage() });
 const router = Router();
+
+
+router.get("/:id", BookGetByIdController);
 
 router.post(
   "/",
