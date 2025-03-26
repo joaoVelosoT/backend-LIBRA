@@ -10,6 +10,7 @@ const EventoCreateService = {
     const transaction = await sequelize.transaction();
 
     try {
+
       // Cria o evento no banco de dados
       const evento = await Evento.create(data, { transaction });
 
@@ -73,6 +74,9 @@ const EventoCreateService = {
 
         idGif = gif.id;
       }
+
+      console.log(idCapa);
+
 
       // Atualiza o evento com os IDs da capa e do GIF
       evento.id_capa = idCapa;

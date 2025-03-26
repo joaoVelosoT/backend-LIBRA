@@ -29,6 +29,7 @@ const Evento = db.define("eventos", {
             key: "id",
         },
         onDelete: "SET NULL",
+        onUpdate: "CASCADE"
     },
     id_Gif: {
         type: DataTypes.INTEGER,
@@ -38,6 +39,7 @@ const Evento = db.define("eventos", {
             key: "id",
         },
         onDelete: "SET NULL",
+        onUpdate: "CASCADE"
     }
 });
 
