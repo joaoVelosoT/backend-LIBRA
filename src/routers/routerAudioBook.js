@@ -9,12 +9,12 @@ const AudiobookUpdateController = require("../controllers/AudiobooksControllers/
 const AudiobookGetAllController = require("../controllers/AudiobooksControllers/AudiobookGetAllController.js");
 
 router.post("/", upload.fields([
-    { name: "audioBook", maxCount: 1 },
+    { name: "audioBook" },
 ]), AudiobookCreateController);
 router.get("/", AudiobookGetAllController);
 
 router.patch("/:id", upload.fields([
-    { name: "audiobook", maxCount: 1 },
+    { name: "audiobook" },
 ]), AudiobookUpdateController); 
 
 router.delete("/:id", AudiobookDeleteController);
