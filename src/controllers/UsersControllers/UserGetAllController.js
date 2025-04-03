@@ -2,18 +2,13 @@ const UserGetAllService = require("../../services/UsersServices/UserGetAllServic
 
 const UserGetAllController = async (req, res) => {
   try {
-    const users = await UserGetAllService(req.query);
-    if (!users.success) {
-      return users;
-    }
-
-    console.log(users);
-
-    return res.status(200).json({
-      code: users.code,
-      data: users.users,
-      message: users.message,
-      success: users.success,
+    const result = await UserGetAllService(req.query);
+    
+    return res.status(result.code).json({
+      code: result.code,
+      data: result.data, // Alterado de users para data
+      message: result.message,
+      success: result.success,
     });
   } catch (error) {
     console.error(error);

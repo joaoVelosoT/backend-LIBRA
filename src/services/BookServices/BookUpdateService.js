@@ -46,6 +46,19 @@ const BookUpdateService = async (id, bookData, files) => {
     const nomeLivroAntigo = book.titulo.replace(/\s+/g, "_");
     const nomeLivroNovo = bookData.titulo ? bookData.titulo.replace(/\s+/g, "_") : nomeLivroAntigo;
 
+    // Se generos foram fornecidos, atualiza
+if (bookData.generos !== undefined) {
+  if (!Array.isArray(bookData.generos)) {
+    await transaction.rollback();
+    return {
+      code: 400,
+      message: "Gêneros devem ser um array",
+      success: false,
+    };
+  }
+  book.generos = bookData.generos;
+}
+
     // Atualiza os campos do livro
     if (bookData) {
       await book.update(bookData, { transaction });

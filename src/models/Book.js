@@ -86,6 +86,26 @@ const Book = db.define("Books", {
     },
     onDelete: "SET NULL",
   },
+  generos: {
+    type: DataTypes.JSON,
+    allowNull: true,
+    defaultValue: []
+  },
+  notas: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+    allowNull: true
+  },
+  notaMedia: {
+    type: DataTypes.FLOAT,
+    defaultValue: 0,
+    allowNull: true
+  },
+  totalAvaliacoes: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    allowNull: true
+  }
 }, {
   tableName: "Books",
   timestamps: true,

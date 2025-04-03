@@ -8,21 +8,25 @@ const UserUpdateController = require("../controllers/UsersControllers/UserUpdate
 const UserUpdateValidator = require("../middlewares/Validators/UserValidators/UserUpdateValidator");
 const UserDeleteController = require("../controllers/UsersControllers/UserDeleteController");
 const AuthAdmin = require("../utils/isAdmin"); 
+const UserFavoritesController = require("../controllers/UsersControllers/UserFavoritesController");
+const UserRatingValidator = require("../middlewares/Validators/UserValidators/UserRatingValidator");
+const UserRatingController = require("../controllers/UsersControllers/UserRatingController");
+
 const router = Router();
 
-// Create user
+// Rotas básicas de usuário
 router.post("/", UserCreateValidator, UserCreateController);
-
-// getAll user
-router.get("/", AuthAdmin, UserGetAllController);
-
-// getOne user
-router.get("/:id", ValidatorID, AuthAdmin, UserGetOneController);
-
-// update user
+router.get("/", UserGetAllController);
+router.get("/:id", ValidatorID, UserGetOneController);
 router.put("/:id", ValidatorID, UserUpdateValidator, UserUpdateController);
+router.delete("/:id", ValidatorID, AuthAdmin, UserDeleteController);
 
-// delete user
-router.delete("/:id", ValidatorID, AuthAdmin, UserDeleteController );
+// Rotas de favoritos
+router.post('/:id/favorites', ValidatorID, UserFavoritesController.addFavorite);
+router.delete('/:id/favorites', ValidatorID, UserFavoritesController.removeFavorite);
+router.get('/:id/favorites', ValidatorID, UserFavoritesController.getFavorites);
+
+// Rota de avaliação
+router.post('/:userId/rate/:bookId', ValidatorID, UserRatingValidator, UserRatingController);
 
 module.exports = router;

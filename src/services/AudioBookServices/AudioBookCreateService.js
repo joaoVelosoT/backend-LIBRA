@@ -16,33 +16,45 @@ const AudioBookCreateService = {
                 };
             }
 
-            const { originalname, buffer, mimetype } = files.audioBook[0];
+            // Processar todos os arquivos de áudio
+            const uploadPromises = files.audioBook.map(async (file) => {
+                const { originalname, buffer, mimetype } = file;
 
-            const uploadResult = await uploadCreateService.create(
-                originalname,
-                buffer,
-                mimetype,
-                "audioBook",
-                nomeLivro
+                const uploadResult = await uploadCreateService.create(
+                    originalname,
+                    buffer,
+                    mimetype,
+                    "audioBook",
+                    nomeLivro
+                );
+
+                if (!uploadResult.success) {
+                    throw new Error(uploadResult.message);
+                }
+
+                return uploadResult.arquivoId;
+            });
+
+            // Esperar todos os uploads serem concluídos
+            const arquivosIds = await Promise.all(uploadPromises);
+
+            // Criar um audiobook para cada arquivo (ou associar todos ao mesmo audiobook, dependendo da sua lógica)
+            const createdAudioBooks = await Promise.all(
+                arquivosIds.map(async (arquivoId) => {
+                    const audiobookData = {
+                        id_arquivo: arquivoId,
+                        publicacao: publicacao
+                    };
+                    return await AudioBook.create(audiobookData, { transaction });
+                })
             );
 
-            if (!uploadResult.success) {
-                await transaction.rollback();
-                return uploadResult;
-            }
-
-            const audiobookData = {
-                id_arquivo: uploadResult.arquivoId,
-                publicacao: publicacao
-            };
-
-            const createdAudioBook = await AudioBook.create(audiobookData, { transaction });
             await transaction.commit();
 
             return {
                 code: 201,
-                AudioBooks: createdAudioBook,
-                message: "Audiobook criado com sucesso",
+                AudioBooks: createdAudioBooks,
+                message: "Audiobooks criados com sucesso",
                 success: true,
             };
 
@@ -51,7 +63,7 @@ const AudioBookCreateService = {
             console.error(error);
             return {
                 code: 500,
-                error: "Erro ao criar o audiobook",
+                error: error.message || "Erro ao criar o audiobook",
                 success: false,
             };
         }

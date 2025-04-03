@@ -1,39 +1,41 @@
 const ValidatorID = async (req, res, next) => {
   try {
+    const { id, userId, bookId } = req.params;
     const errors = [];
 
-    if (!req.params.id) {
-      errors.push({
-        field: "id",
-        message: "O id e obrigatorio",
+    const checkId = (value, name) => {
+      if (!value) {
+        errors.push({
+          field: name,
+          message: `O ${name} é obrigatório`,
+        });
+      } else if (!Number(value)) {
+        errors.push({
+          field: name,
+          message: `O ${name} deve ser um número válido`,
+        });
+      } else if (Number(value) <= 0) {
+        errors.push({
+          field: name,
+          message: `O ${name} não pode ser negativo ou zero`,
+        });
+      }
+    };
+
+    if (id) checkId(id, 'id');
+    if (userId) checkId(userId, 'userId');
+    if (bookId) checkId(bookId, 'bookId');
+
+    if (errors.length > 0) {
+      return res.status(400).json({
+        code: 400,
+        errors,
+        message: "Erro ao validar ID(s)",
+        success: false,
       });
     }
 
-    if (req.params.id) {
-      if (!Number(req.params.id)) {
-        errors.push({
-          field: "id",
-          message: "O id enviado não e um numero",
-        });
-      }
-      if (req.params.id <= 0) {
-        errors.push({
-          field: "id",
-          message: "O id e não pode ser negativo, ou igual a 0",
-        });
-      }
-
-      if (errors.length !== 0) {
-        return res.status(400).json({
-          code: 400,
-          errors,
-          message: "Erro ao validar id",
-          success: false,
-        });
-      }
-
-      return next();
-    }
+    return next();
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -42,7 +44,7 @@ const ValidatorID = async (req, res, next) => {
         details: [
           {
             validator: "ValidatorID",
-            message: "Erro interno",
+            message: error.message,
           },
         ],
       },

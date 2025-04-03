@@ -18,4 +18,11 @@ const Disabled = sequelize.define("Disabled", {
   },
 });
 
+Disabled.associate = function(models) {
+  Disabled.belongsTo(models.TypesDisabled, {
+    foreignKey: 'idDisabledTypes',
+    as: 'typeDisabled'
+  });
+};
+
 module.exports = Disabled;
