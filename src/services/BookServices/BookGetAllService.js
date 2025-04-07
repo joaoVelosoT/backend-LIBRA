@@ -2,7 +2,10 @@ const Book = require("../../models/Book");
 const Capa = require("../../models/Capa");
 const Banner = require("../../models/Banner");
 const Arquivos = require("../../models/Arquivos");
+const AudioBook = require("../../models/Audiobook");
+const Ebook = require("../../models/Ebook");
 
+// services/BookServices/BookGetAllService.js
 const BookGetAllService = async (query) => {
   try {
     const books = await Book.findAll({
@@ -10,25 +13,26 @@ const BookGetAllService = async (query) => {
         {
           model: Capa,
           as: 'capa',
-          include: [
-            {
-              model: Arquivos,
-              as: 'arquivo',
-            },
-          ],
+          include: [{ model: Arquivos, as: 'arquivo' }]
         },
         {
           model: Banner,
           as: 'banner',
-          include: [
-            {
-              model: Arquivos,
-              as: 'arquivo',
-            },
-          ],
+          include: [{ model: Arquivos, as: 'arquivo' }]
         },
+        {
+          model: AudioBook,
+          as: 'audiobook', // Usando o singular
+          include: [{ model: Arquivos, as: 'arquivo' }]
+        },
+        {
+          model: Ebook,
+          as: 'ebook', // Usando o singular
+          include: [{ model: Arquivos, as: 'arquivo' }]
+        }
       ],
     });
+
     if (books.length === 0) {
       return {
         code: 200,
@@ -47,14 +51,7 @@ const BookGetAllService = async (query) => {
     console.error(error);
     return {
       code: 500,
-      error: {
-        details: [
-          {
-            service: "BookGetAllService",
-            message: error.message,
-          },
-        ],
-      },
+      error: { details: [{ service: "BookGetAllService", message: error.message }] },
       message: "Erro ao buscar livros",
       success: false,
     };

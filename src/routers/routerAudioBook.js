@@ -3,21 +3,30 @@ const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 const router = Router();
 
-const AudiobookCreateController = require("../controllers/AudiobooksControllers/AudiobookCreateController.js");
-const AudiobookDeleteController = require("../controllers/AudiobooksControllers/AudiobookDeleteController.js");
-const AudiobookUpdateController = require("../controllers/AudiobooksControllers/AudiobookUpdateController.js")
-const AudiobookGetAllController = require("../controllers/AudiobooksControllers/AudiobookGetAllController.js");
+const AudioBookCreateValidator = require("../middlewares/Validators/AudioBookValidators/AudioBookCreateValidator");
+const AudioBookCreateController = require("../controllers/AudioBooksControllers/AudioBookCreateController");
+const AudioBookDeleteController = require("../controllers/AudioBooksControllers/AudioBookDeleteController");
+const AudioBookUpdateController = require("../controllers/AudioBooksControllers/AudioBookUpdateController");
+const AudioBookGetAllController = require("../controllers/AudioBooksControllers/AudioBookGetAllController");
+const AudioBookGetByBookController = require("../controllers/AudioBooksControllers/AudioBookGetByBookController");
+const AudioBookDeleteByBookController = require("../controllers/AudioBooksControllers/AudioBookDeleteByBookController");
 
-router.post("/", upload.fields([
-    { name: "audioBook" },
-]), AudiobookCreateController);
-router.get("/", AudiobookGetAllController);
+// Rotas existentes
+router.post(
+  "/",
+  upload.fields([{ name: "audioBook" }]),
+  AudioBookCreateValidator,
+  AudioBookCreateController
+);
 
-router.patch("/:id", upload.fields([
-    { name: "audiobook" },
-]), AudiobookUpdateController); 
+router.get("/", AudioBookGetAllController);
 
-router.delete("/:id", AudiobookDeleteController);
+router.patch("/:id", upload.fields([{ name: "audiobook" }]), AudioBookUpdateController);
 
+router.delete("/:id", AudioBookDeleteController);
 
-module.exports = router
+// Novas rotas
+router.get("/book/:idLivro", AudioBookGetByBookController);
+router.delete("/book/:idLivro", AudioBookDeleteByBookController);
+
+module.exports = router;

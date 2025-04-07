@@ -1,73 +1,70 @@
+// services/AudioBookServices/AudioBookCreateService.js
 const AudioBook = require("../../models/AudioBook");
+const Book = require("../../models/Book");
 const sequelize = require("../../database/config");
 const uploadCreateService = require("../uploadServices/uploadCreateService");
 
 const AudioBookCreateService = {
-    create: async (nomeLivro, publicacao, files) => {
-        const transaction = await sequelize.transaction();
+  create: async (nomeLivro, audioBookData, files) => {
+    const transaction = await sequelize.transaction();
+    try {
+      const { idLivro, publicacao } = audioBookData;
+      
+      // Verifica se o livro existe
+      const book = await Book.findByPk(idLivro, { transaction });
+      if (!book) {
+        await transaction.rollback();
+        return {
+          code: 404,
+          message: "Livro não encontrado",
+          success: false
+        };
+      }
 
-        try {
-            if (!files || !files.audioBook || files.audioBook.length === 0) {
-                await transaction.rollback();
-                return {
-                    code: 400,
-                    error: "Nenhum arquivo de áudio enviado.",
-                    success: false,
-                };
-            }
+      // Processa todos os arquivos de áudio
+      const createdAudioBooks = await Promise.all(
+        files.audioBook.map(async (file) => {
+          const { originalname, buffer, mimetype } = file;
 
-            // Processar todos os arquivos de áudio
-            const uploadPromises = files.audioBook.map(async (file) => {
-                const { originalname, buffer, mimetype } = file;
+          const uploadResult = await uploadCreateService.create(
+            originalname,
+            buffer,
+            mimetype,
+            "audioBook",
+            nomeLivro
+          );
 
-                const uploadResult = await uploadCreateService.create(
-                    originalname,
-                    buffer,
-                    mimetype,
-                    "audioBook",
-                    nomeLivro
-                );
+          if (!uploadResult.success) {
+            throw new Error(uploadResult.message);
+          }
 
-                if (!uploadResult.success) {
-                    throw new Error(uploadResult.message);
-                }
+          return await AudioBook.create({
+            id_arquivo: uploadResult.arquivoId,
+            id_livro: idLivro,
+            publicacao
+          }, { transaction });
+        })
+      );
 
-                return uploadResult.arquivoId;
-            });
+      await transaction.commit();
+      
+      return {
+        code: 201,
+        data: createdAudioBooks,
+        message: "Audiobooks criados com sucesso",
+        success: true
+      };
 
-            // Esperar todos os uploads serem concluídos
-            const arquivosIds = await Promise.all(uploadPromises);
-
-            // Criar um audiobook para cada arquivo (ou associar todos ao mesmo audiobook, dependendo da sua lógica)
-            const createdAudioBooks = await Promise.all(
-                arquivosIds.map(async (arquivoId) => {
-                    const audiobookData = {
-                        id_arquivo: arquivoId,
-                        publicacao: publicacao
-                    };
-                    return await AudioBook.create(audiobookData, { transaction });
-                })
-            );
-
-            await transaction.commit();
-
-            return {
-                code: 201,
-                AudioBooks: createdAudioBooks,
-                message: "Audiobooks criados com sucesso",
-                success: true,
-            };
-
-        } catch (error) {
-            await transaction.rollback();
-            console.error(error);
-            return {
-                code: 500,
-                error: error.message || "Erro ao criar o audiobook",
-                success: false,
-            };
-        }
+    } catch (error) {
+      await transaction.rollback();
+      console.error(error);
+      return {
+        code: 500,
+        message: error.message || "Erro ao criar audiobooks",
+        success: false
+      };
     }
+  }
 };
 
 module.exports = AudioBookCreateService;

@@ -114,6 +114,10 @@ const Book = db.define("Books", {
 Book.belongsTo(Capa, { foreignKey: 'id_capa', as: 'capa' });
 Book.belongsTo(Banner, { foreignKey: 'id_banner', as: 'banner' });
 Book.belongsTo(EBook, { foreignKey: 'id_ebook', as: 'ebook' }); 
-Book.belongsTo(AudioBook, { foreignKey: 'id_Audiobook', as: 'audiobook' }); 
+Book.hasMany(AudioBook, {
+  foreignKey: 'id_livro',
+  as: 'audiobook' // Mantendo no singular conforme sua preferência
+});
+
 
 module.exports = Book;

@@ -1,9 +1,9 @@
-// controllers/UsersControllers/UserGetOneController.js
-const UserGetOneService = require("../../services/UsersServices/UserGetOneService");
+// controllers/booksControllers/bookGetOneController.js
+const bookGetOneService = require("../../services/BookServices/BookGetByIdService");
 
-const UserGetOneController = async (req, res) => {
+const bookGetOneController = async (req, res) => {
   try {
-    const result = await UserGetOneService(req.params.id);
+    const result = await bookGetOneService(req.params.id);
     return res.status(result.code).json(result);
   } catch (error) {
     console.error(error);
@@ -12,15 +12,15 @@ const UserGetOneController = async (req, res) => {
       error: {
         details: [
           {
-            controller: "UserGetOneController",
+            controller: "bookGetOneController",
             message: "Erro interno",
           },
         ],
       },
-      message: "Erro no UserGetOneController",
+      message: "Erro no bookGetOneController",
       success: false,
     });
   }
 };
 
-module.exports = UserGetOneController;
+module.exports = bookGetOneController;
