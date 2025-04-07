@@ -35,5 +35,4 @@ router.patch("/:id", upload.fields([
 
 router.delete("/:id", BookDeleteController);
 
-
 module.exports = router;

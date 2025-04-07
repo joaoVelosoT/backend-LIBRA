@@ -6,7 +6,12 @@ const TypesDisabled = db.define("typesDisabled", {
         type: DataTypes.STRING(30),
         allowNull: false,
     },
-
 });
 
+TypesDisabled.associate = function(models) {
+    TypesDisabled.hasMany(models.Disabled, {
+      foreignKey: 'idDisabledTypes',
+      as: 'disableds'
+    });
+  };
 module.exports = TypesDisabled;

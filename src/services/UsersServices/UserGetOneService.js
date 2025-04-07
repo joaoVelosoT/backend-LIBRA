@@ -1,33 +1,60 @@
 const User = require("../../models/User");
+const Book = require("../../models/Book");
 
-const UserGetOneService = async (idUser) => {
+const UserGetOneService = async (userId) => {
   try {
-    // Buscar o usuario por id
-    const user = await User.findByPk(idUser);
+    // Busca o usuário com seus atributos básicos
+    const user = await User.findByPk(userId, {
+      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'createdAt', 'updatedAt']
+    });
+
     if (!user) {
       return {
         code: 404,
-        error: {
-          details: [
-            {
-              message: "Usuario não encontrado",
-            },
-          ],
-        },
-        message: "Erro ao buscar user por id",
-        success: false,
+        message: "Usuário não encontrado",
+        success: false
       };
     }
 
+    // Busca os livros favoritos se existirem
+    let livrosFavoritos = [];
+    if (user.favoritos && user.favoritos.length > 0) {
+      livrosFavoritos = await Book.findAll({
+        where: { id: user.favoritos },
+        attributes: ['id', 'titulo', 'autor', 'notaMedia']
+      });
+    }
+
+    // Formata a resposta corretamente
     return {
       code: 200,
-      user,
-      message: "User encontrado com sucesso",
-      success: true,
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        isDisabled: user.isDisabled,
+        favoritos: user.favoritos,
+        livrosFavoritos: livrosFavoritos,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      },
+      message: "Usuário encontrado com sucesso",
+      success: true
     };
+    
   } catch (error) {
-    console.error(error);
-    throw new Error(error.message);
+    console.error("Erro no UserGetOneService:", error);
+    return {
+      code: 500,
+      error: {
+        details: [{
+          service: "UserGetOneService",
+          message: error.message
+        }]
+      },
+      message: "Erro ao buscar usuário",
+      success: false
+    };
   }
 };
 

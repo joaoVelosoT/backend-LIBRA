@@ -24,4 +24,11 @@ const UserDisabled = db.define("userdisabled", {
   },
 });
 
+UserDisabled.associate = function(models) {
+  UserDisabled.belongsTo(models.Disabled, {
+    foreignKey: 'idDisabled',
+    as: 'disabledInfo'
+  });
+};
+
 module.exports = UserDisabled;
