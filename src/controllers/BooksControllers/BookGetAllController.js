@@ -2,6 +2,7 @@ const BookGetAllService = require("../../services/BookServices/BookGetAllService
 
 const BookGetAllController = async (req, res) => {
   try {
+    
     const result = await BookGetAllService(req.query);
     console.log("Resultado do serviço:", result);
 
