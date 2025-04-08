@@ -7,7 +7,8 @@ const userDisabledGetAllController = require("../controllers/UsersDisabledsContr
 const userDisabledGetOneController = require("../controllers/UsersDisabledsController/UsersDisabledGetOneController");
 const UserDisabledDeleteController = require("../controllers/UsersDisabledsController/UsersDisabledDeleteController");
 const UserDisabledUpdateController = require("../controllers/UsersDisabledsController/UsersDisabledUpdateController");
-const AuthAdmin = require("../utils/isAdmin"); 
+const UserDisabledSearchController = require("../controllers/UsersDisabledsController/UsersDisabledSearchController");
+const AuthAdmin = require("../utils/isAdmin");
 const router = Router();
 
 
@@ -27,5 +28,8 @@ router.patch("/:id", ValidatorID, AuthAdmin, UserDisabledUpdateValidator, UserDi
 
 // Delete userDisabled
 router.delete("/:id", ValidatorID, AuthAdmin, UserDisabledDeleteController);
+
+//Rota de buscar tipo e deficiencia
+router.get("/:idUser", UserDisabledSearchController);
 
 module.exports = router;
