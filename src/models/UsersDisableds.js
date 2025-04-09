@@ -1,33 +1,32 @@
 const { DataTypes } = require("sequelize");
 const db = require("../database/config");
-const User = require("./User");
-const Disabled = require("./Disabled");
 
-const UserDisabled = db.define("userdisabled", {
+const UserDisabled = db.define("UserDisabled", {
   idUser: {
     type: DataTypes.INTEGER,
-    references: {
-      model: User,
-      key: "id",
-    },
     allowNull: false,
-    onDelete: "CASCADE",
+    references: {
+      model: 'Users',
+      key: 'id'
+    }
   },
   idDisabled: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     references: {
-      model: Disabled,
-      key: "id",
-    },
-    // onDelete: "CASCADE",
-    allowNull: true,
-  },
+      model: 'Disableds',
+      key: 'id'
+    }
+  }
+}, {
+  tableName: "UsersDisableds",
+  timestamps: false
 });
 
 UserDisabled.associate = function(models) {
   UserDisabled.belongsTo(models.Disabled, {
     foreignKey: 'idDisabled',
-    as: 'disabledInfo'
+    as: 'disabled' 
   });
 };
 

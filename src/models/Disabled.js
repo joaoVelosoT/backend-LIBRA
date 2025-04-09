@@ -1,21 +1,22 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../database/config");
-const TypesDisabled = require("./typesDisabled");
+const db = require("../database/config");
 
-const Disabled = sequelize.define("Disabled", {
+const Disabled = db.define("Disabled", {
   idDisabledTypes: {
     type: DataTypes.INTEGER,
     references: {
-      model: TypesDisabled,
-      key: "id",
+      model: 'TypesDisableds',
+      key: 'id'
     },
-    onDelete: "CASCADE",
     allowNull: false,
   },
   name: {
     type: DataTypes.STRING(255),
     allowNull: false,
-  },
+  }
+}, {
+  tableName: "Disableds",
+  timestamps: false
 });
 
 Disabled.associate = function(models) {

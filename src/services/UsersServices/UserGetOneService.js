@@ -1,11 +1,32 @@
+// services/UsersServices/UserGetOneService.js
 const User = require("../../models/User");
 const Book = require("../../models/Book");
+const UserDisabled = require("../../models/UsersDisableds");
+const Disabled = require("../../models/Disabled");
+const TypesDisabled = require("../../models/TypesDisabled");
 
 const UserGetOneService = async (userId) => {
   try {
-    // Busca o usuário com seus atributos básicos
     const user = await User.findByPk(userId, {
-      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'createdAt', 'updatedAt']
+      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'createdAt', 'updatedAt'],
+      include: [
+        {
+          association: 'userDisabledInfo',
+          include: [
+            {
+              association: 'disabled',
+              include: [
+                {
+                  association: 'typeDisabled',
+                  attributes: ['id', 'name']
+                }
+              ],
+              attributes: ['id', 'name']
+            }
+          ],
+          required: false
+        }
+      ]
     });
 
     if (!user) {
@@ -16,32 +37,32 @@ const UserGetOneService = async (userId) => {
       };
     }
 
+    const userData = user.get({ plain: true });
+
     // Busca os livros favoritos se existirem
     let livrosFavoritos = [];
-    if (user.favoritos && user.favoritos.length > 0) {
+    if (userData.favoritos && userData.favoritos.length > 0) {
       livrosFavoritos = await Book.findAll({
-        where: { id: user.favoritos },
+        where: { id: userData.favoritos },
         attributes: ['id', 'titulo', 'autor', 'notaMedia']
       });
     }
 
-    // Formata a resposta corretamente
     return {
       code: 200,
       data: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        isDisabled: user.isDisabled,
-        favoritos: user.favoritos,
+        ...userData,
         livrosFavoritos: livrosFavoritos,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt
+        deficiencia: userData.userDisabledInfo ? {
+          tipo: userData.userDisabledInfo.disabled?.typeDisabled?.name,
+          deficiencia: userData.userDisabledInfo.disabled?.name,
+          idTipo: userData.userDisabledInfo.disabled?.typeDisabled?.id,
+          idDeficiencia: userData.userDisabledInfo.disabled?.id
+        } : null
       },
       message: "Usuário encontrado com sucesso",
       success: true
     };
-    
   } catch (error) {
     console.error("Erro no UserGetOneService:", error);
     return {

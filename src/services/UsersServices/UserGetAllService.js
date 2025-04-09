@@ -1,23 +1,45 @@
+// services/UsersServices/UserGetAllService.js
 const User = require("../../models/User");
 const Book = require("../../models/Book");
+const UserDisabled = require("../../models/UsersDisableds");
+const Disabled = require("../../models/Disabled");
+const TypesDisabled = require("../../models/TypesDisabled");
 
 const UserGetAllService = async (query) => {
   try {
     const { onlyDisabled = false } = query;
 
-    // Configuração base da query
     const baseOptions = {
-      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'createdAt', 'updatedAt']
+      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'createdAt', 'updatedAt'],
+      include: [
+        {
+          association: 'userDisabledInfo',
+          include: [
+            {
+              association: 'disabled',
+              include: [
+                {
+                  association: 'typeDisabled',
+                  attributes: ['id', 'name']
+                }
+              ],
+              attributes: ['id', 'name']
+            }
+          ],
+          required: false
+        }
+      ]
     };
 
     if (onlyDisabled === "true") {
       baseOptions.where = { isDisabled: true };
+      baseOptions.include[0].required = true;
     }
 
     const users = await User.findAll(baseOptions);
 
     // Para cada usuário, buscar os livros favoritos se existirem
-    const usersWithFavorites = await Promise.all(
+    const usersWithDetails = await Promise.all(
       users.map(async (user) => {
         const userData = user.get({ plain: true });
         let favoriteBooks = [];
@@ -31,12 +53,18 @@ const UserGetAllService = async (query) => {
 
         return {
           ...userData,
-          livrosFavoritos: favoriteBooks
+          livrosFavoritos: favoriteBooks,
+          deficiencia: userData.userDisabledInfo ? {
+            tipo: userData.userDisabledInfo.disabled?.typeDisabled?.name,
+            deficiencia: userData.userDisabledInfo.disabled?.name,
+            idTipo: userData.userDisabledInfo.disabled?.typeDisabled?.id,
+            idDeficiencia: userData.userDisabledInfo.disabled?.id
+          } : null
         };
       })
     );
 
-    if (usersWithFavorites.length === 0) {
+    if (usersWithDetails.length === 0) {
       return {
         code: 200,
         data: [],
@@ -49,7 +77,7 @@ const UserGetAllService = async (query) => {
 
     return {
       code: 200,
-      data: usersWithFavorites,
+      data: usersWithDetails,
       message: onlyDisabled === "true"
         ? "Todos os usuários desabilitados encontrados"
         : "Todos os usuários encontrados",
@@ -71,4 +99,5 @@ const UserGetAllService = async (query) => {
   }
 };
 
+// Exportação correta como módulo
 module.exports = UserGetAllService;

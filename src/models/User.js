@@ -47,13 +47,12 @@ const User = db.define("User", {
   timestamps: true,
 });
 
+
 User.associate = function(models) {
   User.hasOne(models.UserDisabled, {
     foreignKey: 'idUser',
     as: 'userDisabledInfo'
   });
 };
-
-
 
 module.exports = User;

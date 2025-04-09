@@ -3,15 +3,7 @@ const UserGetOneService = require("../../services/UsersServices/UserGetOneServic
 const UserGetOneController = async (req, res) => {
   try {
     const result = await UserGetOneService(req.params.id);
-    
-    // Ajuste na resposta para garantir que os dados sejam enviados
-    return res.status(result.code).json({
-      code: result.code,
-      data: result.data || null, // Garante que os dados sejam enviados mesmo se forem null
-      message: result.message,
-      success: result.success
-    });
-    
+    return res.status(result.code).json(result);
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -19,7 +11,7 @@ const UserGetOneController = async (req, res) => {
       error: {
         details: [{
           controller: "UserGetOneController",
-          message: "Erro interno"
+          message: error.message
         }]
       },
       message: "Erro no UserGetOneController",
