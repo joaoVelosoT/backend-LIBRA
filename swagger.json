@@ -1,10 +1,10 @@
 {
   "openapi": "3.1.1",
-  "info": {
-    "title": "backend-LIBRA",
-    "version": "3.2.0",
-    "description": "A versão 3.2.0 inclui: \n- FIX: formatação e padronização da documentação. \n- ADD: novas rotas de atualizar as imagens de Eventos e Admins. \n- ADD: integração de Livros, Ebooks e Audiobooks na documentação."
-  },
+"info": {
+  "title": "backend-LIBRA",
+  "version": "3.4.0",
+  "description": "A versão 3.4.0 inclui:\n- ADD: Rotas completas para upload de arquivos\n- ADD: Sistema de favoritos e avaliação de livros\n- ADD: Endpoints de busca avançada\n- ADD: Rotas adicionais para gerenciamento de audiobooks/ebooks\n- FIX: Melhorias na documentação existente"
+},
   "servers": [
     {
       "url": "http://localhost:8080",
@@ -2261,10 +2261,410 @@
       }
     }
   }
+},
+
+
+
+
+
+"/users/{id}/favorites": {
+  "post": {
+    "summary": "Adicionar livro aos favoritos",
+    "description": "Essa rota adiciona um livro à lista de favoritos do usuário.",
+    "tags": ["Users"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "bookId": {
+                "type": "integer",
+                "description": "ID do livro a ser adicionado"
+              }
+            },
+            "required": ["bookId"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Livro adicionado aos favoritos."
+      },
+      "404": {
+        "description": "Usuário ou livro não encontrado."
+      }
+    }
+  },
+  "get": {
+    "summary": "Listar favoritos do usuário",
+    "description": "Essa rota retorna todos os livros favoritos do usuário.",
+    "tags": ["Users"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Lista de favoritos encontrada.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "delete": {
+    "summary": "Remover livro dos favoritos",
+    "description": "Essa rota remove um livro da lista de favoritos do usuário.",
+    "tags": ["Users"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "bookId": {
+                "type": "integer",
+                "description": "ID do livro a ser removido"
+              }
+            },
+            "required": ["bookId"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Livro removido dos favoritos."
+      },
+      "404": {
+        "description": "Usuário ou livro não encontrado."
+      }
+    }
+  }
+},
+"/users/{userId}/rate/{bookId}": {
+  "post": {
+    "summary": "Avaliar um livro",
+    "description": "Essa rota permite que um usuário avalie um livro.",
+    "tags": ["Users"],
+    "parameters": [
+      {
+        "name": "userId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      {
+        "name": "bookId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "rating": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5,
+                "description": "Nota dada ao livro (0 a 5)"
+              }
+            },
+            "required": ["rating"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Avaliação registrada com sucesso."
+      },
+      "400": {
+        "description": "Nota inválida."
+      }
+    }
+  }
+},
+
+
+
+
+
+
+
+
+
+"/api/upload": {
+  "post": {
+    "summary": "Fazer upload de arquivo",
+    "description": "Essa rota faz upload de um arquivo para o servidor.",
+    "tags": ["Uploads"],
+    "requestBody": {
+      "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "file": {
+                "type": "string",
+                "format": "binary",
+                "description": "Arquivo a ser enviado (formatos suportados: JPEG, PNG, PDF, MP3)."
+              }
+            },
+            "required": ["file"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Arquivo enviado com sucesso."
+      },
+      "400": {
+        "description": "Arquivo inválido ou não enviado."
+      },
+      "500": {
+        "description": "Erro interno no servidor."
+      }
+    }
+  }
+},
+"/api/arquivos": {
+  "get": {
+    "summary": "Listar todos os arquivos",
+    "description": "Essa rota retorna todos os arquivos cadastrados.",
+    "tags": ["Uploads"],
+    "responses": {
+      "200": {
+        "description": "Lista de arquivos encontrada com sucesso.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Arquivo"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Nenhum arquivo encontrado."
+      }
+    }
+  }
+},
+"/api/arquivos/{id}": {
+  "delete": {
+    "summary": "Excluir um arquivo",
+    "description": "Essa rota exclui um arquivo pelo ID.",
+    "tags": ["Uploads"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Arquivo excluído com sucesso."
+      },
+      "404": {
+        "description": "Arquivo não encontrado."
+      }
+    }
+  }
+},
+
+
+
+
+"/search": {
+  "get": {
+    "summary": "Buscar livros",
+    "description": "Essa rota permite buscar livros por diversos critérios.",
+    "tags": ["Search"],
+    "parameters": [
+      {
+        "name": "query",
+        "in": "query",
+        "description": "Termo de busca (título, autor, etc.)",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "genre",
+        "in": "query",
+        "description": "Gênero para filtrar",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Resultados da busca",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Book"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+
+
+
+
+
+
+
+"/audiobook/book/{idLivro}": {
+  "get": {
+    "summary": "Buscar audiobook por livro",
+    "description": "Essa rota retorna o audiobook associado a um livro específico.",
+    "tags": ["Audiobooks"],
+    "parameters": [
+      {
+        "name": "idLivro",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Audiobook encontrado.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AudioBook"
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Nenhum audiobook encontrado para este livro."
+      }
+    }
+  },
+  "delete": {
+    "summary": "Remover audiobook por livro",
+    "description": "Essa rota remove o audiobook associado a um livro específico.",
+    "tags": ["Audiobooks"],
+    "parameters": [
+      {
+        "name": "idLivro",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Audiobook removido."
+      },
+      "404": {
+        "description": "Nenhum audiobook encontrado para este livro."
+      }
+    }
+  }
 }
+
+
+
+
+
+
   },
   "components": {
     "schemas": {
+      "Arquivo": {
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "ID único do arquivo."
+    },
+    "nome": {
+      "type": "string",
+      "description": "Nome original do arquivo."
+    },
+    "url": {
+      "type": "string",
+      "description": "URL de acesso ao arquivo."
+    },
+    "tipo": {
+      "type": "string",
+      "description": "Tipo MIME do arquivo."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Data de upload do arquivo."
+    }
+  }
+},
       "User": {
         "type": "object",
         "properties": {
