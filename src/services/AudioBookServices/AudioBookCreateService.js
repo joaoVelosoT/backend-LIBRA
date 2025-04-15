@@ -8,8 +8,18 @@ const AudioBookCreateService = {
   create: async (nomeLivro, audioBookData, files) => {
     const transaction = await sequelize.transaction();
     try {
+
+      if (!files || !files.audioBook || files.audioBook.length === 0) {
+        await transaction.rollback();
+        return {
+          code: 400,
+          error: "Nenhum arquivo de áudio.",
+          success: false,
+        };
+      }
+
       const { idLivro, publicacao } = audioBookData;
-      
+
       // Verifica se o livro existe
       const book = await Book.findByPk(idLivro, { transaction });
       if (!book) {
@@ -47,7 +57,7 @@ const AudioBookCreateService = {
       );
 
       await transaction.commit();
-      
+
       return {
         code: 201,
         data: createdAudioBooks,

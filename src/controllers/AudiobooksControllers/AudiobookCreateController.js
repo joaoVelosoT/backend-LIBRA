@@ -19,6 +19,9 @@ const AudioBookCreateController = async (req, res) => {
     const nomeLivro = book.titulo.replace(/\s+/g, "_");
     const result = await AudioBookCreateService.create(nomeLivro, req.audioBookData, files);
 
+    // Atualiza o livro com o ID do audiobook criado
+    await book.update({ id_Audiobook: result.data[0].id });
+
     if (!result.success) {
       return res.status(result.code).json(result);
     }

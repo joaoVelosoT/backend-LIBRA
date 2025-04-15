@@ -1,4 +1,4 @@
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const Book = require("../../models/Book");
 const Capa = require("../../models/Capa");
 const Banner = require("../../models/Banner");
@@ -13,17 +13,22 @@ const BookSearchService = {
             const validFields = [
                 'titulo', 'subtitulo', 'descricao', 'autor',
                 'editora', 'edicao', 'ISBN13', 'ISBN10',
-                'publicacao', 'paginas', 'capitulos'
+                'publicacao', 'paginas', 'generos'
             ];
 
             const where = {};
 
             for (const field of validFields) {
                 if (query[field] !== undefined && query[field] !== '') {
-                    // Usa busca exata para todos os campos
-                    where[field] = query[field];
+
+                    if (field === 'generos') {
+                        where[field] = Sequelize.literal(`JSON_CONTAINS(generos, '["${query[field]}"]')`);
+                    } else {
+                        where[field] = query[field];
+                    }
                 }
             }
+
 
             // Busca simples sem paginação ou ordenação
             const livros = await Book.findAll({
