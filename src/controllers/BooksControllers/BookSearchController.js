@@ -3,7 +3,12 @@ const BookSearchService = require("../../services/BookServices/BookSearchService
 const BookSearchController = async (req, res) => {
     try {
 
+        console.log(req.query);
+
         const response = await BookSearchService.getByQuery(req.query);
+
+        console.log(response);
+
 
         return res.status(200).json({
             code: 200,

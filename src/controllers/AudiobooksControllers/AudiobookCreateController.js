@@ -20,7 +20,7 @@ const AudioBookCreateController = async (req, res) => {
     const result = await AudioBookCreateService.create(nomeLivro, req.audioBookData, files);
 
     // Atualiza o livro com o ID do audiobook criado
-    await book.update({ id_Audiobook: result.data[0].id });
+    // await book.update({ id_Audiobook: result.data[0].id });s
 
     if (!result.success) {
       return res.status(result.code).json(result);
