@@ -31,12 +31,12 @@ const UserRatingService = {
       }
 
       // Verifica favoritos
-      const favorites = user.favoritos || [];
-      if (!favorites.includes(parseInt(bookId))) {
+      const lidos = user.lidos || [];
+      if (!lidos.includes(parseInt(bookId))) {
         await transaction.rollback();
         return {
           code: 400,
-          message: "Adicione o livro aos favoritos antes de avaliar",
+          message: "Adicione o livro aos lidos antes de avaliar",
           success: false
         };
       }
@@ -44,7 +44,7 @@ const UserRatingService = {
       // Atualiza avaliações
       const existingRatings = book.notas || [];
       const updatedRatings = existingRatings.filter(r => r.userId !== parseInt(userId));
-      
+
       updatedRatings.push({
         userId: parseInt(userId),
         rating: parseFloat(rating),

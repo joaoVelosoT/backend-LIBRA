@@ -10,7 +10,7 @@ const UserGetAllService = async (query) => {
     const { onlyDisabled = false } = query;
 
     const baseOptions = {
-      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'lidos', 'createdAt', 'updatedAt'],
+      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'lidos', 'desejoLeitura', 'createdAt', 'updatedAt'],
       include: [
         {
           association: 'userDisabledInfo',
@@ -44,6 +44,7 @@ const UserGetAllService = async (query) => {
         const userData = user.get({ plain: true });
         let favoriteBooks = [];
         let readBooks = [];
+        let desejoLeitura = [];
 
         if (userData.favoritos && userData.favoritos.length > 0) {
           favoriteBooks = await Book.findAll({
@@ -61,10 +62,20 @@ const UserGetAllService = async (query) => {
           });
         }
 
+        if (userData.desejoLeitura && userData.desejoLeitura.length > 0) {
+          desejoLeitura = await Book.findAll({
+            where: {
+              id: userData.desejoLeitura
+            },
+            attributes: ['id', 'titulo', 'autor', 'notaMedia']
+          });
+        }
+
         return {
           ...userData,
           livrosFavoritos: favoriteBooks,
           livrosLidos: readBooks,
+          desejoLeitura: desejoLeitura,
           deficiencia: userData.userDisabledInfo ? {
             tipo: userData.userDisabledInfo.disabled?.typeDisabled?.name,
             deficiencia: userData.userDisabledInfo.disabled?.name,

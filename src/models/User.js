@@ -35,6 +35,11 @@ const User = db.define("User", {
     defaultValue: [],
     allowNull: false
   },
+  desejoLeitura: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+    allowNull: false
+  },
   validToken: {
     type: DataTypes.STRING,
     allowNull: true,
