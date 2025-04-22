@@ -7,10 +7,11 @@ const UserGetOneController = require("../controllers/UsersControllers/UserGetOne
 const UserUpdateController = require("../controllers/UsersControllers/UserUpdateController");
 const UserUpdateValidator = require("../middlewares/Validators/UserValidators/UserUpdateValidator");
 const UserDeleteController = require("../controllers/UsersControllers/UserDeleteController");
-const AuthAdmin = require("../utils/isAdmin"); 
+const AuthAdmin = require("../utils/isAdmin");
 const UserFavoritesController = require("../controllers/UsersControllers/UserFavoritesController");
 const UserRatingValidator = require("../middlewares/Validators/UserValidators/UserRatingValidator");
 const UserRatingController = require("../controllers/UsersControllers/UserRatingController");
+const UserLidosController = require("../controllers/UsersControllers/UserLidosController")
 
 const router = Router();
 
@@ -25,6 +26,9 @@ router.delete("/:id", ValidatorID, AuthAdmin, UserDeleteController);
 router.post('/:id/favorites', ValidatorID, UserFavoritesController.addFavorite);
 router.delete('/:id/favorites', ValidatorID, UserFavoritesController.removeFavorite);
 router.get('/:id/favorites', ValidatorID, UserFavoritesController.getFavorites);
+
+router.post("/:id/read", ValidatorID, UserLidosController.addRead)
+router.delete("/:id/read", ValidatorID, UserLidosController.removeRead)
 
 // Rota de avaliação
 router.post('/:userId/rate/:bookId', ValidatorID, UserRatingValidator, UserRatingController);

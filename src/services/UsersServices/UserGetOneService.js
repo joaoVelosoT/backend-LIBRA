@@ -8,7 +8,7 @@ const TypesDisabled = require("../../models/TypesDisabled");
 const UserGetOneService = async (userId) => {
   try {
     const user = await User.findByPk(userId, {
-      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'createdAt', 'updatedAt'],
+      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'lidos', 'createdAt', 'updatedAt'],
       include: [
         {
           association: 'userDisabledInfo',
@@ -48,11 +48,20 @@ const UserGetOneService = async (userId) => {
       });
     }
 
+    let livrosLidos = [];
+    if (userData.lidos && userData.lidos.length > 0) {
+      livrosLidos = await Book.findAll({
+        where: { id: userData.lidos },
+        attributes: ['id', 'titulo', 'autor', 'notaMedia']
+      });
+    }
+
     return {
       code: 200,
       data: {
         ...userData,
         livrosFavoritos: livrosFavoritos,
+        livrosLidos: livrosLidos,
         deficiencia: userData.userDisabledInfo ? {
           tipo: userData.userDisabledInfo.disabled?.typeDisabled?.name,
           deficiencia: userData.userDisabledInfo.disabled?.name,

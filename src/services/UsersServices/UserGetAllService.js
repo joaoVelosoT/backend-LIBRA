@@ -10,7 +10,7 @@ const UserGetAllService = async (query) => {
     const { onlyDisabled = false } = query;
 
     const baseOptions = {
-      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'createdAt', 'updatedAt'],
+      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'lidos', 'createdAt', 'updatedAt'],
       include: [
         {
           association: 'userDisabledInfo',
@@ -43,7 +43,8 @@ const UserGetAllService = async (query) => {
       users.map(async (user) => {
         const userData = user.get({ plain: true });
         let favoriteBooks = [];
-        
+        let readBooks = [];
+
         if (userData.favoritos && userData.favoritos.length > 0) {
           favoriteBooks = await Book.findAll({
             where: { id: userData.favoritos },
@@ -51,9 +52,19 @@ const UserGetAllService = async (query) => {
           });
         }
 
+        if (userData.lidos && userData.lidos.length > 0) {
+          readBooks = await Book.findAll({
+            where: {
+              id: userData.lidos
+            },
+            attributes: ['id', 'titulo', 'autor', 'notaMedia']
+          });
+        }
+
         return {
           ...userData,
           livrosFavoritos: favoriteBooks,
+          livrosLidos: readBooks,
           deficiencia: userData.userDisabledInfo ? {
             tipo: userData.userDisabledInfo.disabled?.typeDisabled?.name,
             deficiencia: userData.userDisabledInfo.disabled?.name,
@@ -68,8 +79,8 @@ const UserGetAllService = async (query) => {
       return {
         code: 200,
         data: [],
-        message: onlyDisabled === "true" 
-          ? "Nenhum usuário desabilitado encontrado" 
+        message: onlyDisabled === "true"
+          ? "Nenhum usuário desabilitado encontrado"
           : "Nenhum usuário encontrado",
         success: true,
       };
