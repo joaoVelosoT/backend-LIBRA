@@ -3,7 +3,7 @@ const path = require("path");
 const Arquivos = require('../../models/Arquivos');
 
 const storage = new Storage({
-    keyFilename: path.join(__dirname, "../../database/libra-453101-6caaf8b9ebee.json"), 
+    keyFilename: path.join(__dirname, "../../database/database"), 
 });
 const bucketName = "libra_tcc";
 const bucket = storage.bucket(bucketName);
