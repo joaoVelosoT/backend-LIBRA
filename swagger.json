@@ -1873,6 +1873,9 @@
                   "ISBN10": {
                     "type": "string"
                   },
+                  "generos": {
+                    "type": "string"
+                  },
                   "publicacao": {
                     "type": "string",
                     "format": "date"
@@ -1891,6 +1894,7 @@
                     "type": "string",
                     "format": "binary"
                   }
+                  
                 },
                 "required": [
                   "titulo",
@@ -1898,7 +1902,10 @@
                   "autor",
                   "publicacao",
                   "capitulos",
-                  "paginas"
+                  "paginas",
+                  "generos",
+                  "ISBN10",
+                  "ISBN13"
                 ]
               }
             }
@@ -3059,13 +3066,18 @@
           },
           "ISBN13": {
             "type": "string",
-            "nullable": true,
+            "nullable": false,
             "description": "ISBN-13 do livro."
           },
           "ISBN10": {
             "type": "string",
-            "nullable": true,
+            "nullable": false,
             "description": "ISBN-10 do livro."
+          },
+          "generos": {
+            "type": "string",
+            "nullable": false,
+            "description": "gênero do livro."
           },
           "publicacao": {
             "type": "string",
