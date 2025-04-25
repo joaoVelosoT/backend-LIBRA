@@ -1,14 +1,16 @@
 const Admin = require("../../models/Admin");
+const AdminFoto = require("../../models/AdminFoto");
 const bycrpt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sequelize = require("../../database/config");
+const uploadCreateService = require("../uploadServices/uploadCreateService");
 
-const AdminCreateService = async (dataAdmin) => {
+const AdminCreateService = async (adminData, files) => {
   const transaction = await sequelize.transaction();
 
   try {
     const existsEmail = await Admin.findOne({
-      where: { email: dataAdmin.email },
+      where: { email: adminData.email },
     });
 
     if (existsEmail) {
@@ -28,7 +30,7 @@ const AdminCreateService = async (dataAdmin) => {
     }
 
     const generateNIF = () => {
-      return Math.floor(100000 + Math.random() * 900000); 
+      return Math.floor(100000 + Math.random() * 900000);
     };
 
     const NIF = generateNIF();
@@ -39,30 +41,63 @@ const AdminCreateService = async (dataAdmin) => {
 
     if (existsNIF) {
       return {
-        generateNIF
+        generateNIF,
       };
     }
 
-    const passwordCript = await bycrpt.hashSync(dataAdmin.password, 12);
-    dataAdmin.password = passwordCript;
+    const passwordCript = await bycrpt.hashSync(adminData.password, 12);
+    adminData.password = passwordCript;
 
+    // Criar o admin no banco de dados
     const admin = await Admin.create(
       {
-        ...dataAdmin,
+        ...adminData,
         NIF,
       },
       { transaction }
     );
+
+    // Upload da foto do admin (se houver)
+    if (files && files.imagemPerfil) {
+      const { originalname, buffer, mimetype } = files.imagemPerfil; // Acessa diretamente o arquivo
+
+      const nomePasta = `admins/${admin.name.replace(/\s+/g, "_")}`;
+
+      const uploadResult = await uploadCreateService.create(
+        originalname,
+        buffer,
+        mimetype,
+        "foto",
+        nomePasta
+      );
+
+      if (!uploadResult.success) {
+        await transaction.rollback();
+        return uploadResult; // Retorna o erro do upload
+      }
+
+      // Criar a foto do admin na tabela AdminFoto
+      const adminFoto = await AdminFoto.create(
+        {
+          id_link: uploadResult.arquivoId,
+        },
+        { transaction }
+      );
+
+      // Atualizar o admin com o ID da foto
+      admin.id_AdminFoto = adminFoto.id;
+      await admin.save({ transaction });
+    }
 
     // Gerar token JWT
     const token = jwt.sign(
       {
         id: admin.id,
         email: admin.email,
-        role: "admin", 
+        role: "admin",
       },
       process.env.SECRET,
-      { expiresIn: "10h" } 
+      { expiresIn: "10h" }
     );
 
     // Confirmando a transação
@@ -70,13 +105,8 @@ const AdminCreateService = async (dataAdmin) => {
 
     return {
       code: 201,
-      admin: {
-        id: admin.id,
-        name: admin.name,
-        email: admin.email,
-        NIF: admin.NIF,
-      },
-      token, 
+      admin,
+      token,
       message: "Admin criado com sucesso",
       success: true,
     };

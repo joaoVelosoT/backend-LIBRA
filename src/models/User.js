@@ -1,7 +1,8 @@
+// models/User.js
 const { DataTypes } = require("sequelize");
 const db = require("../database/config");
 
-const User = db.define("user", {
+const User = db.define("User", {
   name: {
     type: DataTypes.STRING(30),
     allowNull: false,
@@ -24,8 +25,23 @@ const User = db.define("user", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  favoritos: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+    allowNull: false
+  },
+  lidos: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+    allowNull: false
+  },
+  desejoLeitura: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+    allowNull: false
+  },
   validToken: {
-    type: DataTypes.STRING, 
+    type: DataTypes.STRING,
     allowNull: true,
   },
   resetPasswordToken: {
@@ -35,30 +51,18 @@ const User = db.define("user", {
   resetPasswordExpires: {
     type: DataTypes.DATE,
     allowNull: true,
-  },  
+  }
+}, {
+  tableName: "Users",
+  timestamps: true,
 });
 
+
+User.associate = function (models) {
+  User.hasOne(models.UserDisabled, {
+    foreignKey: 'idUser',
+    as: 'userDisabledInfo'
+  });
+};
+
 module.exports = User;
-
-
-
-/*
-
-const [name, Setname] =useState=();
-
-const dataUser = {
-  name : name
-  passwod : adasn
-}
-
-if(!name){
-  alert("erro no nome")
-}
-
-
-  const reponse = await fetch("http://localhost:8080/auth/register", {
-  method : POST,
-  headers : {"Application-type : json"},
-  data : dataUser
-  })
-*/

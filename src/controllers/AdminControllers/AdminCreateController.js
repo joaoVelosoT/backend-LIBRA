@@ -2,7 +2,11 @@ const AdminCreateService = require("../../services/AdminServices/AdminCreateServ
 
 const AdminCreateController = async (req, res) => {
   try {
-    const admin = await AdminCreateService(req.admin);
+    const adminData = req.adminData; // Dados validados
+    const imagemPerfil = req.file; // Arquivo processado
+
+    const admin = await AdminCreateService(adminData, { imagemPerfil });
+
     if (!admin.success) {
       return res.status(admin.code).json(admin);
     }

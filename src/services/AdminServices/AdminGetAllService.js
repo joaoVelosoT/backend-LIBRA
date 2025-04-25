@@ -1,28 +1,53 @@
 const Admin = require("../../models/Admin");
 
-const AdminGetAllService = async (query) => {
-  try {
-    const admins = await Admin.findAll();
+const AdminGetAllService = {
+  getAll: async () => {
+    try {
+      const admins = await Admin.findAll({
+        include: [
+          {
+            association: "foto", 
+            include: [
+              {
+                association: "arquivo", 
+              },
+            ],
+          },
+        ],
+      });
 
-    if (admins.length === 0) {
+      if (admins.length === 0) {
+        return {
+          code: 200,
+          data: [],
+          message: "Nenhum administrador encontrado",
+          success: true,
+        };
+      }
+
       return {
-        code: 404,
-        admins,
-        message: "Nenhum admin encontrado",
+        code: 200,
+        data: admins,
+        message: "Lista de administradores obtida com sucesso",
         success: true,
       };
+    } catch (error) {
+      console.error(error);
+      return {
+        code: 500,
+        error: {
+          details: [
+            {
+              service: "AdminGetAllService",
+              message: error.message,
+            },
+          ],
+        },
+        message: "Erro ao buscar administradores",
+        success: false,
+      };
     }
-
-    return {
-      code: 200,
-      admins,
-      message: "Todos os admins encontrados",
-      success: true,
-    };
-  } catch (error) {
-    console.error(error);
-    throw new Error(error.message);
-  }
+  },
 };
 
 module.exports = AdminGetAllService;

@@ -2,33 +2,21 @@ const UserGetAllService = require("../../services/UsersServices/UserGetAllServic
 
 const UserGetAllController = async (req, res) => {
   try {
-    const users = await UserGetAllService(req.query);
-    if (!users.success) {
-      return users;
-    }
-
-    console.log(users);
-
-    return res.status(200).json({
-      code: users.code,
-      data: users.users,
-      message: users.message,
-      success: users.success,
-    });
+    const result = await UserGetAllService(req.query);
+    
+    return res.status(result.code).json(result);
   } catch (error) {
     console.error(error);
     return res.status(500).json({
       code: 500,
       error: {
-        details: [
-          {
-            controller: "UserGetAllController",
-            message: "Erro interno",
-          },
-        ],
+        details: [{
+          controller: "UserGetAllController",
+          message: error.message
+        }]
       },
       message: "Erro no UserGetAllController",
-      success: false,
+      success: false
     });
   }
 };

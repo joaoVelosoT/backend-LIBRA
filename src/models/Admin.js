@@ -1,7 +1,6 @@
-// models/Admin.js
 const { DataTypes } = require("sequelize");
 const db = require("../database/config");
-const AdminFoto = require("./adminFoto")
+const AdminFoto = require("./adminFoto");
 
 const Admin = db.define("admin", {
   name: {
@@ -21,17 +20,16 @@ const Admin = db.define("admin", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  IDimagemPerfil: {
+  id_AdminFoto: {
     type: DataTypes.INTEGER,
     references: {
       model: AdminFoto,
       key: "id",
     },
-    onDelete: "CASCADE",
-    allowNull: true
+    onDelete: "SET NULL", 
+    allowNull: true,
   },
   resetPasswordToken: {
-    
     type: DataTypes.STRING,
     allowNull: true,
   },
@@ -44,5 +42,7 @@ const Admin = db.define("admin", {
     allowNull: true,
   },
 });
+
+Admin.belongsTo(AdminFoto, { foreignKey: "id_AdminFoto", as: "foto" });
 
 module.exports = Admin;

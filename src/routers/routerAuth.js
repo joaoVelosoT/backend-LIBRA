@@ -12,7 +12,8 @@ const AdminLoginController = require("../controllers/AuthControllers/AuthAdminCo
 const AdminLogoutController = require("../controllers/AuthControllers/AuthAdminController/AdminLogoutController");
 const verifyTokenUser = require("../middlewares/Validators/AuthValidators/verifyTokenUser");
 const verifyTokenAdmin = require("../middlewares/Validators/AuthValidators/verifyTokenAdmin");
-
+const ForgotPasswordAdminController = require("../controllers/AuthControllers/AuthAdminController/forgotPasswordAdminController");
+const ResetPasswordAdminController = require("../controllers/AuthControllers/AuthAdminController/resetPasswordAdminController");
 
 
 const router = Router();
@@ -22,6 +23,11 @@ router.post("/forgot-password", ForgotPasswordController);
 
 // Redefinir a senha
 router.post("/reset-password/:token", ResetPasswordController);
+
+router.post("/admin/forgot-password", ForgotPasswordAdminController);
+
+// Redefinir a senha (admin)
+router.post("/admin/reset-password/:token", ResetPasswordAdminController);
 
 // User Register
 router.post("/register", UserCreateValidator, RegisterUserController);

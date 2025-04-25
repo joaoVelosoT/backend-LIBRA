@@ -2,20 +2,12 @@ const AdminGetAllService = require("../../services/AdminServices/AdminGetAllServ
 
 const AdminGetAllController = async (req, res) => {
   try {
-    const admins = await AdminGetAllService(req.query);
-    if (!admins.success) {
-      return res.status(admins.code).json(admins);
-    }
+    const admins = await AdminGetAllService.getAll();
 
-    return res.status(200).json({
-      code: admins.code,
-      data: admins.admins,
-      message: admins.message,
-      success: admins.success,
-    });
+    return res.status(admins.code).json(admins);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
+    res.status(500).json({
       code: 500,
       error: {
         details: [

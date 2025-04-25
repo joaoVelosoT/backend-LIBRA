@@ -1,31 +1,66 @@
-const UserCreateService = require("../UsersServices/UserCreateService");
+const User = require("../../models/User");
 const jwt = require("jsonwebtoken");
+const bycrpt = require("bcryptjs");
 
 const RegisterUserService = async (dataUser) => {
   try {
+
     console.log(dataUser);
 
-    // Criar o usuário
-    const user = await UserCreateService(dataUser);
 
-    // Se der algum erro na criação, retornar
-    if (!user.success) {
-      return user;
+    const { email, password } = dataUser;
+
+    const user = await User.findOne({ where: { email: email } });
+
+    console.log(user);
+
+    if (!user) {
+      return {
+        code: 400,
+        error: {
+          details: [
+            {
+              field: "email",
+              message: "Email não encontrado",
+            },
+          ],
+        },
+        message: "Erro ao validar login",
+        success: false,
+      };
+    }
+
+    // Validar a senha
+    const passwordDecode = await bycrpt.compareSync(password, user.dataValues.password);
+    if (!passwordDecode) {
+      return {
+        code: 401,
+        error: {
+          details: [
+            {
+              field: "password",
+              message: "Senha incorreta",
+            },
+          ],
+        },
+        message: "Erro ao validar login",
+        success: false,
+      };
     }
 
     // Criar o token de autenticação
     const token = await jwt.sign(
       {
-        id: user.user.id,
-        email: user.user.email,
-        isDisabled: user.user.isDisabled,
-        techAss: user.user.techAss,
+        id: user.dataValues.id,
+        email: user.dataValues.email,
+        isDisabled: user.dataValues.isDisabled,
+        techAss: user.dataValues.techAss,
       },
       process.env.SECRET,
       { expiresIn: "10h" }
     );
 
-    await user.user.update({ validToken: token });
+    await user.update({ validToken: token });
 
     return {
       code: 201,
@@ -33,7 +68,7 @@ const RegisterUserService = async (dataUser) => {
         token,
         user: user.user,
       },
-      message: "Usuário cadastrado com sucesso",
+      message: "Login usuário com sucesso",
       success: true,
     };
   } catch (error) {

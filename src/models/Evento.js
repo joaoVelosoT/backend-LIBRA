@@ -1,6 +1,9 @@
 const { DataTypes } = require("sequelize");
 const db = require("../database/config");
 
+const CapaEvento = require("../models/CapaEvento");
+const GifEvento = require("./GifEvento");
+
 const Evento = db.define("eventos", {
     titulo: {
         type: DataTypes.STRING(50),
@@ -11,18 +14,37 @@ const Evento = db.define("eventos", {
         allowNull: false
     },
     descricao: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING(500),
         allowNull: false
     },
     data_evento: {
         type: DataTypes.DATE,
         allowNull: false
     },
-    banner: {
-        type: DataTypes.BLOB,
-        allowNull: true
+    id_capa: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: CapaEvento,
+            key: "id",
+        },
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE"
+    },
+    id_Gif: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: GifEvento,
+            key: "id",
+        },
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE"
     }
 });
+
+Evento.belongsTo(CapaEvento, { foreignKey: "id_capa", as: "capa" });
+Evento.belongsTo(GifEvento, { foreignKey: "id_Gif", as: "gif" });
 
 
 module.exports = Evento;
