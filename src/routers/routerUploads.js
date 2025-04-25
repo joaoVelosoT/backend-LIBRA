@@ -9,7 +9,7 @@ const uploadDeleteController = require("../controllers/uploadController/uploadDe
 // Configuração do Multer para upload em memória
 const upload = multer({
     storage: multer.memoryStorage(),
-    limits: { fileSize: 50 * 1024 * 1024 }, // Limite de 50MB
+    limits: { fileSize: 1000 * 1024 * 1024 }, // Limite de 1000MB
 });
 
 router.post("/upload", upload.single("file"), uploadCreateController);
