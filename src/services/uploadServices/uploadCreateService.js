@@ -4,7 +4,7 @@ const Arquivos = require('../../models/Arquivos');
 
 // Configuração do Google Cloud Storage
 const storage = new Storage({
-  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS
+  keyFilename: path.join(__dirname, "../../database/database"),
 });
 const bucketName = "libra_tcc";
 const bucket = storage.bucket(bucketName);

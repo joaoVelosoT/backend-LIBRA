@@ -1,3 +1,4 @@
 node_modules
 .env
-src/database/credential.json
+src/database/database
+
