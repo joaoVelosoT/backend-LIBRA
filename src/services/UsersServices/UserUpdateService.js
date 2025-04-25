@@ -2,10 +2,8 @@ const User = require("../../models/User");
 const bycrpt = require("bcryptjs");
 const UserUpdateService = async (dataUpdate) => {
   try {
-    /*
-    idUser,
-    dataUpdate
-    */
+
+    console.log(dataUpdate.id_perfil_link);
 
     // Buscar o user
     const user = await User.findByPk(dataUpdate.idUser);
@@ -61,8 +59,14 @@ const UserUpdateService = async (dataUpdate) => {
       dataUpdate.dataUpdate.password = passwordCript;
     }
 
+
     // Atualizar o user
     await user.update(dataUpdate.dataUpdate);
+
+    await user.update({ id_perfil_link: dataUpdate.id_perfil_link})
+
+    console.log(user);
+    
 
     return {
       code: 200,

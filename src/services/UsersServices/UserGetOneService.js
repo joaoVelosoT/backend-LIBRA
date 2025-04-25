@@ -8,7 +8,7 @@ const TypesDisabled = require("../../models/TypesDisabled");
 const UserGetOneService = async (userId) => {
   try {
     const user = await User.findByPk(userId, {
-      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'lidos', 'desejoLeitura', 'createdAt', 'updatedAt'],
+      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'lidos', 'desejoLeitura', 'id_perfil_link', 'createdAt', 'updatedAt'],
       include: [
         {
           association: 'userDisabledInfo',

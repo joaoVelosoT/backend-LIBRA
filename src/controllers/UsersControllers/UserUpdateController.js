@@ -4,10 +4,16 @@ const UserUpdateController = async (req, res) => {
   try {
     // dataUpdate -> req.dataUpdate
 
+    const { id_perfil_link } = req.body;
+
     const dataUpdate = {
       idUser: req.params.id,
       dataUpdate: req.dataUpdate,
+      id_perfil_link
     };
+
+    console.log(dataUpdate);
+
 
     const user = await UserUpdateService(dataUpdate);
     if (!user.success) {

@@ -51,6 +51,10 @@ const User = db.define("User", {
   resetPasswordExpires: {
     type: DataTypes.DATE,
     allowNull: true,
+  },
+  id_perfil_link: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 }, {
   tableName: "Users",
