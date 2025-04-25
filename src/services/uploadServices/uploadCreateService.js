@@ -9,15 +9,15 @@ const storage = new Storage({
 const bucketName = "libra_tcc";
 const bucket = storage.bucket(bucketName);
 const allowedMimeTypes = [
-  'image/jpeg', 
-  'image/png',  
-  'image/gif',  
+  'image/jpeg',
+  'image/png',
+  'image/gif',
   'application/pdf',
-  'video/mp4',  
-  'audio/mpeg', 
+  'video/mp4',
+  'audio/mpeg',
 ];
 const normalizeFileName = (fileName) => {
-  return fileName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); 
+  return fileName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 };
 
 const uploadCreateService = {

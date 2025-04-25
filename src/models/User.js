@@ -30,8 +30,18 @@ const User = db.define("User", {
     defaultValue: [],
     allowNull: false
   },
+  lidos: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+    allowNull: false
+  },
+  desejoLeitura: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+    allowNull: false
+  },
   validToken: {
-    type: DataTypes.STRING, 
+    type: DataTypes.STRING,
     allowNull: true,
   },
   resetPasswordToken: {
@@ -48,7 +58,7 @@ const User = db.define("User", {
 });
 
 
-User.associate = function(models) {
+User.associate = function (models) {
   User.hasOne(models.UserDisabled, {
     foreignKey: 'idUser',
     as: 'userDisabledInfo'

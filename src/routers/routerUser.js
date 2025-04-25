@@ -7,10 +7,12 @@ const UserGetOneController = require("../controllers/UsersControllers/UserGetOne
 const UserUpdateController = require("../controllers/UsersControllers/UserUpdateController");
 const UserUpdateValidator = require("../middlewares/Validators/UserValidators/UserUpdateValidator");
 const UserDeleteController = require("../controllers/UsersControllers/UserDeleteController");
-const AuthAdmin = require("../utils/isAdmin"); 
+const AuthAdmin = require("../utils/isAdmin");
 const UserFavoritesController = require("../controllers/UsersControllers/UserFavoritesController");
 const UserRatingValidator = require("../middlewares/Validators/UserValidators/UserRatingValidator");
 const UserRatingController = require("../controllers/UsersControllers/UserRatingController");
+const UserLidosController = require("../controllers/UsersControllers/UserLidosController");
+const UserWishListController = require("../controllers/UsersControllers/UserWishListController")
 
 const router = Router();
 
@@ -26,7 +28,14 @@ router.post('/:id/favorites', ValidatorID, UserFavoritesController.addFavorite);
 router.delete('/:id/favorites', ValidatorID, UserFavoritesController.removeFavorite);
 router.get('/:id/favorites', ValidatorID, UserFavoritesController.getFavorites);
 
+// Rotas para adicionar livros a lista de lidos
+router.post("/:id/read", ValidatorID, UserLidosController.addRead)
+router.delete("/:id/read", ValidatorID, UserLidosController.removeRead)
+
 // Rota de avaliação
 router.post('/:userId/rate/:bookId', ValidatorID, UserRatingValidator, UserRatingController);
+
+// Rota para adicionar livroa a lista de desejos de leitura
+router.post("/:userId/wishList/:bookId", ValidatorID, UserWishListController.addBookWishList)
 
 module.exports = router;
