@@ -2,6 +2,7 @@ const { DataTypes } = require("sequelize");
 const db = require("../database/config");
 const AdminFoto = require("./adminFoto");
 
+// Criação do modelo Admin -> tabela Admin no Banco de Dados
 const Admin = db.define("admin", {
   name: {
     type: DataTypes.STRING(30),
@@ -42,6 +43,8 @@ const Admin = db.define("admin", {
     allowNull: true,
   },
 });
+
+// Declarando a relação da tabela Admin com Admin foto através da chave estrangeira
 
 Admin.belongsTo(AdminFoto, { foreignKey: "id_AdminFoto", as: "foto" });
 

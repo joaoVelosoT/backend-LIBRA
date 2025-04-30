@@ -1,6 +1,8 @@
 const { Router } = require("express");
 const router = Router();
 const multer = require("multer");
+
+// Controladores e validadores de dados
 const AdminCreateController = require("../controllers/AdminControllers/AdminCreateController");
 const AdminCreateValidator = require("../middlewares/Validators/AdminValidators/AdminCreateValidator");
 const AdminDeleteController = require("../controllers/AdminControllers/AdminDeleteController");
@@ -10,8 +12,9 @@ const AdminUpdateController = require("../controllers/AdminControllers/AdminUpda
 const AdminUpdateValidator = require("../middlewares/Validators/AdminValidators/AdminUpdateValidator");
 const AdminAddPictureController = require("../controllers/AdminControllers/AdminAddPictureController");
 const AdminAddPictureValidator = require("../middlewares/Validators/AdminValidators/AdminAddPictureValidator")
-
 const ValidatorID = require("../middlewares/Validators/ValidatorID");
+
+// Configurando o tratamento de arquivos pelo banco de dados
 const upload = multer({ storage: multer.memoryStorage() });
 
 
@@ -23,11 +26,10 @@ router.post(
     AdminCreateController // Cria o admin
   );
   
-
   router.post(
     "/:id/addpicture",
-    ValidatorID,
-    upload.single("imagemPerfil"),
+    ValidatorID, // Valida o id recebido 
+    upload.single("imagemPerfil"), 
     AdminAddPictureValidator, 
     AdminAddPictureController
   );
