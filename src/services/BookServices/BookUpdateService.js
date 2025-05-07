@@ -73,7 +73,7 @@ if (bookData.generos !== undefined) {
           const arquivoBanner = await Arquivos.findByPk(banner.id_link, { transaction });
           if (arquivoBanner) {
             const oldPathBanner = arquivoBanner.url.replace(`https://storage.googleapis.com/${bucketName}/`, '');
-            const newPathBanner = `${nomeLivroNovo}/banner/${arquivoBanner.nome}`;
+            const newPathBanner = `livro/${nomeLivroNovo}/banner/${arquivoBanner.nome}`;
 
             await moveFileInGCS(oldPathBanner, newPathBanner);
 
@@ -95,7 +95,7 @@ if (bookData.generos !== undefined) {
           const arquivoCapa = await Arquivos.findByPk(capa.id_link, { transaction });
           if (arquivoCapa) {
             const oldPathCapa = arquivoCapa.url.replace(`https://storage.googleapis.com/${bucketName}/`, '');
-            const newPathCapa = `${nomeLivroNovo}/capa/${arquivoCapa.nome}`;
+            const newPathCapa = `livros/${nomeLivroNovo}/capa/${arquivoCapa.nome}`;
 
             await moveFileInGCS(oldPathCapa, newPathCapa);
 
@@ -129,7 +129,7 @@ if (bookData.generos !== undefined) {
             const filePathAntigo = url.replace(`https://storage.googleapis.com/${bucketName}/`, '');
 
             // Define o novo caminho do arquivo no GCS
-            const filePathNovo = `${nomeLivroNovo}/banner/${originalname}`;
+            const filePathNovo = `livros/${nomeLivroNovo}/banner/${originalname}`;
 
             // Move o arquivo no GCS para o novo caminho
             await moveFileInGCS(filePathAntigo, filePathNovo);
@@ -164,7 +164,7 @@ if (bookData.generos !== undefined) {
         const arquivo = await Arquivos.create(
           {
             nome: originalname,
-            url: `https://storage.googleapis.com/${bucketName}/${nomeLivroNovo}/banner/${originalname}`,
+            url: `https://storage.googleapis.com/${bucketName}/livros/${nomeLivroNovo}/banner/${originalname}`,
             tipo: mimetype,
           },
           { transaction }
@@ -202,7 +202,7 @@ if (bookData.generos !== undefined) {
             const filePathAntigo = url.replace(`https://storage.googleapis.com/${bucketName}/`, '');
 
             // Define o novo caminho do arquivo no GCS
-            const filePathNovo = `${nomeLivroNovo}/capa/${originalname}`;
+            const filePathNovo = `livros/${nomeLivroNovo}/capa/${originalname}`;
 
             // Move o arquivo no GCS para o novo caminho
             await moveFileInGCS(filePathAntigo, filePathNovo);
@@ -237,7 +237,7 @@ if (bookData.generos !== undefined) {
         const arquivo = await Arquivos.create(
           {
             nome: originalname,
-            url: `https://storage.googleapis.com/${bucketName}/${nomeLivroNovo}/capa/${originalname}`,
+            url: `https://storage.googleapis.com/${bucketName}/livros/${nomelivrosssssNovo}/capa/${originalname}`,
             tipo: mimetype,
           },
           { transaction }

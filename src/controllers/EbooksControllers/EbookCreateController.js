@@ -16,7 +16,7 @@ const EbookCreateController = async (req, res) => {
       });
     }
 
-    const nomeLivro = book.dataValues.titulo.replace(/\s+/g, "_");
+    const nomeLivro = `livros/${book.dataValues.titulo.replace(/\s+/g, "_")}`;
 
     const ebookResult = await EbookCreateService.create(nomeLivro, publicacao, files);
 

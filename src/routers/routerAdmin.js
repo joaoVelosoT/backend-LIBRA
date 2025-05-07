@@ -17,7 +17,6 @@ const ValidatorID = require("../middlewares/Validators/ValidatorID");
 // Configurando o tratamento de arquivos pelo banco de dados
 const upload = multer({ storage: multer.memoryStorage() });
 
-
 // Create Admin 
 router.post(
     "/",
@@ -26,6 +25,7 @@ router.post(
     AdminCreateController // Cria o admin
   );
   
+  // rota para adicionar nova foto
   router.post(
     "/:id/addpicture",
     ValidatorID, // Valida o id recebido 
