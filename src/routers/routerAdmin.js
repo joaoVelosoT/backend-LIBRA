@@ -30,8 +30,8 @@ router.post(
     "/:id/addpicture",
     ValidatorID, // Valida o id recebido 
     upload.single("imagemPerfil"), 
-    AdminAddPictureValidator, 
-    AdminAddPictureController
+    AdminAddPictureValidator, // Valida informações de imagens recebidas
+    AdminAddPictureController // controllador para adicionar uma imagem ou atualizar
   );
 
 // getAll Admin

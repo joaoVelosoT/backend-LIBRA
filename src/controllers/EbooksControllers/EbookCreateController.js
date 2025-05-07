@@ -24,7 +24,7 @@ const EbookCreateController = async (req, res) => {
       return res.status(ebookResult.code).json(ebookResult);
     }
 
-    // Atualiza o livro com o ID do audiobook criado
+    // Atualiza o livro com o ID do Ebook criado
     await book.update({ id_ebook: ebookResult.ebooks.id });
 
     return res.status(ebookResult.code).json({

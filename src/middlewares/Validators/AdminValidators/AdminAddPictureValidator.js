@@ -27,7 +27,7 @@ const AdminAddPictureValidator = async (req, res, next) => {
           details: [
             {
               field: "imagemPerfil",
-              message: "Apenas arquivos JPEG e PNG são permitidos.",
+              message: "Apenas arquivos JPEG, PNG E JPG são permitidos.",
             },
           ],
         },

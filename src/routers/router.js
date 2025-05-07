@@ -32,6 +32,8 @@ router.use("/evento", routerEventos);
 router.use("/notifications", routerNotification);
 router.use("/requestedBooks", routerRequestedBook);
 router.use("/notificationAss", routerNotificationAssistence);
+
+// Rota de query para buscas
 router.use("/search", BookSearchController);
 
 module.exports = router;
