@@ -3,47 +3,47 @@ const jwt = require("jsonwebtoken");
 
 const RegisterUserService = async (dataUser) => {
   try {
-    console.log(dataUser);
+    console.log("Dados recebidos:", dataUser);
 
-    // Criar o usuário
     const user = await UserCreateService(dataUser);
-
-    // Se der algum erro na criação, retornar
+    
     if (!user.success) {
+      console.log("Erro na criação:", user.message);
       return user;
     }
 
-    // Criar o token de autenticação
-    const token = await jwt.sign(
+    const token = jwt.sign(
       {
         id: user.user.id,
         email: user.user.email,
         isDisabled: user.user.isDisabled,
-        techAss: user.user.techAss,
+        techAss: user.user.techAss
       },
       process.env.SECRET,
       { expiresIn: "10h" }
     );
 
-    // Atualizar o campo validToken no banco de dados
     await user.user.update({ validToken: token });
-
-    // Remover o campo validToken do objeto user antes de retornar
-    const userResponse = { ...user.user.dataValues };
+    
+    const userResponse = { ...user.user.get({ plain: true }) };
+    delete userResponse.password;
     delete userResponse.validToken;
 
+    console.log("Usuário criado com sucesso:", userResponse.email);
     return {
       code: 201,
-      data: {
-        token, // Retorna apenas o token aqui
-        user: userResponse, // Retorna o usuário sem o campo validToken
-      },
-      message: "Usuário cadastrado com sucesso",
-      success: true,
+      data: { token, user: userResponse },
+      message: "Cadastro realizado",
+      success: true
     };
   } catch (error) {
-    console.error(error);
-    throw new Error(error.message);
+    console.error("Erro no RegisterUserService:", error);
+    return {
+      code: 500,
+      message: "Erro interno",
+      success: false,
+      error: { details: error.message }
+    };
   }
 };
 

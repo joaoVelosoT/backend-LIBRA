@@ -6,68 +6,63 @@ const sequelize = require("../../database/config");
 
 const UserCreateService = async (dataUser) => {
   const transaction = await sequelize.transaction();
-
+  
   try {
-    // Verificar se o email já existe
+    // Verificar email ANTES de começar operações críticas
     const existsEmail = await User.findOne({
       where: { email: dataUser.email },
+      transaction
     });
 
     if (existsEmail) {
+      await transaction.rollback();
       return {
         code: 409,
-        error: {
-          details: [
-            {
-              field: "email",
-              message: "O email enviado já existe",
-            },
-          ],
-        },
-        message: "Erro ao validar usuário",
-        success: false,
+        error: { details: [{ field: "email", message: "Email já cadastrado" }] },
+        message: "Erro ao cadastrar usuário",
+        success: false
       };
     }
 
-    // Criptografar a senha
-    const passwordCript = await bycrpt.hashSync(dataUser.password, 12);
-
-    // Substituir a senha no dataUser pela senha criptografada
+    // Criptografar senha
+    const passwordCript = await bycrpt.hash(dataUser.password, 12);
     dataUser.password = passwordCript;
 
-    // Criar o usuário
+    // Criar usuário
     const user = await User.create(dataUser, { transaction });
 
-    // Se o usuário for deficiente, criar ele na tabela UsersDisabled
+    // Se for usuário com deficiência
     if (dataUser.isDisabled) {
       const userDisabled = await UsersDisabledCreateService(
-        {
-          idUser: user.id,
-          idDisabled: dataUser.idDisabled,
-        },
+        { idUser: user.id, idDisabled: dataUser.idDisabled },
         transaction
       );
 
-      // Se houver erro ao criar o usuário deficiente, desfazer a transação
       if (!userDisabled.success) {
         await transaction.rollback();
         return userDisabled;
       }
     }
 
-    // Confirmar a transação
+    // Commit apenas se tudo der certo
     await transaction.commit();
-
+    
     return {
       code: 201,
-      user, // Retornar o usuário criado
+      user,
       message: "Usuário criado com sucesso",
-      success: true,
+      success: true
     };
   } catch (error) {
+    // Rollback automático em caso de erro
     await transaction.rollback();
-    console.error(error);
-    throw new Error(error.message);
+    console.error("Erro no UserCreateService:", error);
+    return {
+      code: 500,
+      message: "Erro interno no servidor",
+      success: false,
+      error: { details: error.message }
+    };
   }
 };
 
