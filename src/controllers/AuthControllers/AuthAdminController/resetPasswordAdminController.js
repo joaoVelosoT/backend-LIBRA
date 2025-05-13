@@ -1,4 +1,4 @@
-const Admin = require("../../../models/admin");
+const Admin = require("../../../models/Admin");
 const bcrypt = require("bcryptjs");
 const { Op } = require("sequelize");
 

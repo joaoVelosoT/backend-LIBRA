@@ -3,7 +3,7 @@ const db = require("../database/config");
 const Capa = require("./Capa");
 const Banner = require("./Banner");
 const EBook = require("./Ebook");
-const AudioBook = require("./AudioBook");
+const AudioBook = require("./Audiobook");
 
 const Book = db.define("Books", {
   titulo: {
@@ -113,7 +113,7 @@ const Book = db.define("Books", {
 
 Book.belongsTo(Capa, { foreignKey: 'id_capa', as: 'capa' });
 Book.belongsTo(Banner, { foreignKey: 'id_banner', as: 'banner' });
-Book.belongsTo(EBook, { foreignKey: 'id_ebook', as: 'ebook' }); 
+Book.belongsTo(EBook, { foreignKey: 'id_ebook', as: 'ebook' });
 Book.hasMany(AudioBook, {
   foreignKey: 'id_livro',
   as: 'audiobook' // Mantendo no singular conforme sua preferência

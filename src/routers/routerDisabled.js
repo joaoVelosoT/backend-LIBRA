@@ -1,6 +1,6 @@
 const { Router } = require("express");
-const DisabledCreateValidator = require("../middlewares/validators/disabledValidators/DisabledCreateValidator");
-const DisabledUpdateValidator = require("../middlewares/validators/disabledValidators/DisabledUpdateValidator");
+const DisabledCreateValidator = require("../middlewares/Validators/disabledValidators/disabledCreateValidator");
+const DisabledUpdateValidator = require("../middlewares/Validators/disabledValidators/DisabledUpdateValidator");
 const DisabledCreateController = require("../controllers/DisabledsController/DisabledCreateController");
 const DisabledGetAllController = require("../controllers/DisabledsController/DisabledGetAllController");
 const DisabledGetByIdController = require("../controllers/DisabledsController/DisabledGetByIdController");
@@ -17,7 +17,7 @@ const router = Router();
 router.post("/", /*AuthAdmin,*/ DisabledCreateValidator, DisabledCreateController);
 router.get('/', AuthAdmin, DisabledGetAllController);
 router.get('/:id', AuthAdmin, DisabledGetByIdController);
-router.get("/type/:id", ValidatorID,  DisabledGetByTypeController);
+router.get("/type/:id", ValidatorID, DisabledGetByTypeController);
 router.put("/:id", ValidatorID, AuthAdmin, DisabledUpdateValidator, DisabledUpdateController);
 router.delete('/:id', ValidatorID, AuthAdmin, DisabledDeleteController);
 

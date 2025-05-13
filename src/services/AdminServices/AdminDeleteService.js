@@ -1,5 +1,5 @@
 const Admin = require("../../models/Admin");
-const AdminFoto = require("../../models/AdminFoto");
+const AdminFoto = require("../../models/adminFoto");
 const Arquivos = require("../../models/Arquivos");
 const sequelize = require("../../database/config");
 const uploadDeleteService = require("../uploadServices/uploadDeleteService");

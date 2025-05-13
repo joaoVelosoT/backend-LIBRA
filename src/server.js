@@ -12,7 +12,7 @@ const sequelize = require("./database/config");
 const User = require("./models/User");
 const UserDisabled = require("./models/UsersDisableds");
 const Disabled = require("./models/Disabled");
-const TypesDisabled = require("./models/TypesDisabled");
+const TypesDisabled = require("./models/typesDisabled");
 
 User.associate({ UserDisabled, Disabled, TypesDisabled });
 UserDisabled.associate({ User, Disabled });

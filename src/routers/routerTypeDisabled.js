@@ -1,10 +1,10 @@
 const { Router } = require("express");
 const router = Router();
 
-const validatorNameTypeDisabled = require("../middlewares/validators/TypesDisabledValidators/validatorNameTypeDisabled.js")
+const validatorNameTypeDisabled = require("../middlewares/Validators/TypesDisabledValidators/validatorNameTypeDisabled.js")
 
-const typesDisableCreateControllers = require("../controllers/typesDisableControllers/typesDisableCreateControllers.js");
-const typesDisableGetOneControllers = require("../controllers/typesDisableControllers/TypesDisabledGetOneControllers.js");
+const typesDisableCreateControllers = require("../controllers/TypesDisableControllers/typesDisableCreateControllers.js");
+const typesDisableGetOneControllers = require("../controllers/TypesDisableControllers/typesDisabledGetOneControllers.js");
 const typesDisableGetAllControllers = require("../controllers/TypesDisableControllers/typesDisableGetAllControllers.js");
 const typesDisabledUpdateController = require("../controllers/TypesDisableControllers/typesDisableUpdateController.js");
 const typesDisableDeleteControllers = require("../controllers/TypesDisableControllers/typesDisabledDeleteControllers.js");

@@ -8,7 +8,7 @@ const routerAuth = require("./routerAuth");
 const routerUsersDisabled = require("./routerUsersDisabled");
 const routerAdmin = require("./routerAdmin");
 const routerEventos = require("./routerEvento");
-const routerNotification = require("./routerNotificarion");
+const routerNotification = require("./routerNotification.js");
 const routerRequestedBook = require("./routerRequestedBook");
 const routerNotificationAssistence = require("./routerNotificationAssistence");
 const bookRouter = require("./routerBook");
@@ -16,6 +16,7 @@ const routerUploads = require("./routerUploads.js")
 const ebookRouter = require("./routerEbook.js")
 const audiobookRouter = require("./routerAudioBook.js")
 const BookSearchController = require("../controllers/BooksControllers/BookSearchController")
+const brailleRoutes = require('./routerBraille.js');
 
 
 router.use("/ebook", ebookRouter);
@@ -33,5 +34,8 @@ router.use("/notifications", routerNotification);
 router.use("/requestedBooks", routerRequestedBook);
 router.use("/notificationAss", routerNotificationAssistence);
 router.use("/search", BookSearchController);
+
+router.use('/converte', brailleRoutes);
+
 
 module.exports = router;

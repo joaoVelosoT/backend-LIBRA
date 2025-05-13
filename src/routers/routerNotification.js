@@ -5,7 +5,7 @@ const NotificationDeleteController = require("../controllers/NotificationControl
 
 const NotificationRequestedBookGetAllController = require("../controllers/NotificationRequestedBookControllers/NotificationRequestedBookGetAllController");
 
-const NotificationCreateValidator = require("../middlewares/Validators/NotificationValidators/NotificationCreateValidator");
+const NotificationCreateValidator = require("../middlewares/Validators/notificationValidators/NotificationCreateValidator");
 const ValidatorID = require("../middlewares/Validators/ValidatorID")
 
 const router = Router();

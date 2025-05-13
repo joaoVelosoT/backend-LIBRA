@@ -1,4 +1,4 @@
-const AdminUpdateService = require("../../services/AdminServices/AdminUpdateService");
+const AdminUpdateService = require("../../services/AdminServices/adminUpdateService");
 
 const AdminUpdateController = async (req, res) => {
   try {
