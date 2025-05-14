@@ -15,19 +15,19 @@ const router = Router();
 
 
 // Create userDisabled
-router.post("/", AuthAdmin, UsersDisabledCreateValidator, UsersDisabledCreateController);
+router.post("/", /* AuthAdmin , */ UsersDisabledCreateValidator, UsersDisabledCreateController);
 
 // GetOne userDisabled
-router.get("/:id", AuthAdmin, ValidatorID, userDisabledGetOneController.getOneById);
+router.get("/:id", /* AuthAdmin , */ ValidatorID, userDisabledGetOneController.getOneById);
 
 // GetAll userDisabled
-router.get("/", AuthAdmin, userDisabledGetAllController.getAll);
+router.get("/", /* AuthAdmin , */ userDisabledGetAllController.getAll);
 
 // Update userDisabled
-router.patch("/:id", ValidatorID, AuthAdmin, UserDisabledUpdateValidator, UserDisabledUpdateController);;
+router.patch("/:id", ValidatorID, /* AuthAdmin , */ UserDisabledUpdateValidator, UserDisabledUpdateController);;
 
 // Delete userDisabled
-router.delete("/:id", ValidatorID, AuthAdmin, UserDisabledDeleteController);
+router.delete("/:id", ValidatorID, /* AuthAdmin , */ UserDisabledDeleteController);
 
 //Rota de buscar tipo e deficiencia
 router.get("/:idUser", UserDisabledSearchController);

@@ -36,7 +36,7 @@ const DisabledUpdateService = async (id, data) => {
       const existingDisabled = await Disabled.findOne({
         where: {
           name: data.name,
-          id: { [Op.ne]: id }, 
+          id: { [Op.ne]: id },
         },
       });
       if (existingDisabled) {

@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../database/config");
-const AdminFoto = require("./adminFoto");
+const AdminFoto = require("./AdminFoto");
 
 const Admin = db.define("admin", {
   name: {
@@ -26,7 +26,7 @@ const Admin = db.define("admin", {
       model: AdminFoto,
       key: "id",
     },
-    onDelete: "SET NULL", 
+    onDelete: "SET NULL",
     allowNull: true,
   },
   resetPasswordToken: {

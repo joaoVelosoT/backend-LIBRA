@@ -1,5 +1,5 @@
 const Admin = require("../../models/Admin");
-const AdminFoto = require("../../models/adminFoto");
+const AdminFoto = require("../../models/AdminFoto");
 const bycrpt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sequelize = require("../../database/config");

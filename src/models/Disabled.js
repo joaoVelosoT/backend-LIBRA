@@ -5,7 +5,7 @@ const Disabled = db.define("Disabled", {
   idDisabledTypes: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'TypesDisableds',
+      model: 'TypesDisabled',
       key: 'id'
     },
     allowNull: false,
@@ -22,7 +22,7 @@ const Disabled = db.define("Disabled", {
 Disabled.associate = function(models) {
   Disabled.belongsTo(models.TypesDisabled, {
     foreignKey: 'idDisabledTypes',
-    as: 'typeDisabled'
+    as: 'TypesDisabled'
   });
 };
 

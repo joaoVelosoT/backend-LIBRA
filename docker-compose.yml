@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: libra-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: libra
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3406:3306"
+
+  backend:
+    build: .
+    container_name: libra-api
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      - PORT=8080
+      - DB_HOST=libra-mysql
+      - DB_NAME=libra
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - EMAIL_USER=librabibliotecadigital@gmail.com
+      - EMAIL_PASS=rnyx duvj kgqi eiwt
+      - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/app/src/database/credential.json
+      - SECRET=rapha
+    volumes:
+      - .:/usr/src/app
