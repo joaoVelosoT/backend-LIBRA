@@ -30,4 +30,10 @@ services:
       - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/app/src/database/credential.json
       - SECRET=rapha
     volumes:
-      - .:/usr/src/app
+      - type: bind
+        source: C:\Users\DevLibbs\desktop\backend-tcc\backend-libra\lib_Braille
+        target: /usr/src/app/lib_Braille
+      - type: bind
+        source: ./
+        target: /usr/src/app
+    working_dir: /usr/src/app
