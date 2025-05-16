@@ -8,7 +8,7 @@ const UserCreateService = async (dataUser) => {
   const transaction = await sequelize.transaction();
   
   try {
-    // Verificar email ANTES de começar operações críticas
+    // Verify email before critical operations
     const existsEmail = await User.findOne({
       where: { email: dataUser.email },
       transaction
@@ -24,37 +24,63 @@ const UserCreateService = async (dataUser) => {
       };
     }
 
-    // Criptografar senha
+    // Encrypt password
     const passwordCript = await bycrpt.hash(dataUser.password, 12);
-    dataUser.password = passwordCript;
 
-    // Criar usuário
-    const user = await User.create(dataUser, { transaction });
+    // Prepare user data
+    const userData = {
+      name: dataUser.name,
+      email: dataUser.email,
+      password: passwordCript,
+      isDisabled: dataUser.isDisabled || false,
+      techAss: dataUser.techAss || null
+    };
 
-    // Se for usuário com deficiência
-    if (dataUser.isDisabled) {
+    // Create user
+    const user = await User.create(userData, { transaction });
+
+    // For disabled users, create disability relationship
+    if (userData.isDisabled && dataUser.idDisabled) {
       const userDisabled = await UsersDisabledCreateService(
-        { idUser: user.id, idDisabled: dataUser.idDisabled },
+        { 
+          idUser: user.id, 
+          idDisabled: dataUser.idDisabled 
+        },
         transaction
       );
 
       if (!userDisabled.success) {
         await transaction.rollback();
-        return userDisabled;
+        return {
+          code: userDisabled.code || 400,
+          error: userDisabled.error || { details: [{ message: "Erro ao criar relação com deficiência" }] },
+          message: userDisabled.message || "Erro ao associar deficiência ao usuário",
+          success: false
+        };
       }
     }
 
-    // Commit apenas se tudo der certo
     await transaction.commit();
     
+    // Prepare response without sensitive data
+    const userResponse = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      isDisabled: user.isDisabled,
+      techAss: user.techAss,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
+    };
+
     return {
       code: 201,
-      user,
+      data: userResponse,
       message: "Usuário criado com sucesso",
       success: true
     };
+
   } catch (error) {
-    // Rollback automático em caso de erro
     await transaction.rollback();
     console.error("Erro no UserCreateService:", error);
     return {
