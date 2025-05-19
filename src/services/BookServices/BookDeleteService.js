@@ -28,7 +28,7 @@ const BookDeleteService = async (id) => {
     }
 
     const nomeLivro = book.titulo.replace(/\s+/g, "_");
-    const folderPath = `${nomeLivro}`;
+    const folderPath = `livros/${nomeLivro}`;
     const deleteFolderResult = await uploadDeleteService.deleteFolder(folderPath);
 
     if (!deleteFolderResult.success) {

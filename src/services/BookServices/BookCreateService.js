@@ -10,9 +10,7 @@ const BookCreateService = async (bookData, files) => {
 
   try {
     const book = await Book.create(bookData, { transaction });
-    const nomeLivro = book.titulo.replace(/\s+/g, "_");
-
-    console.log(nomeLivro);
+    const nomeLivro = `livros/${book.titulo.replace(/\s+/g, "_")}`;
 
 
     if (files.capa) {

@@ -18,12 +18,13 @@ const ResetPasswordAdminController = require("../controllers/AuthControllers/Aut
 
 const router = Router();
 
-// Esqueci minha senha (envia o e-mail)
+// Esqueci minha senha (envia o e-mail) User
 router.post("/forgot-password", ForgotPasswordController);
 
-// Redefinir a senha
+// Redefinir a senha User
 router.post("/reset-password/:token", ResetPasswordController);
 
+// Rota para solicitar email de esqueci a senha 
 router.post("/admin/forgot-password", ForgotPasswordAdminController);
 
 // Redefinir a senha (admin)

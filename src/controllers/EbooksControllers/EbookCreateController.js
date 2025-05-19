@@ -16,7 +16,7 @@ const EbookCreateController = async (req, res) => {
       });
     }
 
-    const nomeLivro = book.dataValues.titulo.replace(/\s+/g, "_");
+    const nomeLivro = `livros/${book.dataValues.titulo.replace(/\s+/g, "_")}`;
 
     const ebookResult = await EbookCreateService.create(nomeLivro, publicacao, files);
 
@@ -24,7 +24,7 @@ const EbookCreateController = async (req, res) => {
       return res.status(ebookResult.code).json(ebookResult);
     }
 
-    // Atualiza o livro com o ID do audiobook criado
+    // Atualiza o livro com o ID do Ebook criado
     await book.update({ id_ebook: ebookResult.ebooks.id });
 
     return res.status(ebookResult.code).json({

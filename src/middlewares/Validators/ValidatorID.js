@@ -1,30 +1,15 @@
+//Função que valida os IDs das tabelas
+
+//Controllador do Serviço
 const ValidatorID = async (req, res, next) => {
   try {
     const { id, userId, bookId } = req.params;
-    const errors = [];
 
-    const checkId = (value, name) => {
-      if (!value) {
-        errors.push({
-          field: name,
-          message: `O ${name} é obrigatório`,
-        });
-      } else if (!Number(value)) {
-        errors.push({
-          field: name,
-          message: `O ${name} deve ser um número válido`,
-        });
-      } else if (Number(value) <= 0) {
-        errors.push({
-          field: name,
-          message: `O ${name} não pode ser negativo ou zero`,
-        });
-      }
-    };
+    var errors = []
 
-    if (id) checkId(id, 'id');
-    if (userId) checkId(userId, 'userId');
-    if (bookId) checkId(bookId, 'bookId');
+    if (id) errors = checkId(id, 'id');
+    if (userId) errors = checkId(userId, 'userId');
+    if (bookId) errors = checkId(bookId, 'bookId');
 
     if (errors.length > 0) {
       return res.status(400).json({
@@ -52,6 +37,35 @@ const ValidatorID = async (req, res, next) => {
       success: false,
     });
   }
+};
+
+// Service do Serviço
+const checkId = (value, name) => {
+  const errors = [];
+
+  // Verifica se o valor existe
+  if (!value) {
+    errors.push({
+      field: name,
+      message: `O ${name} é obrigatório`,
+    });
+
+    // Verifica se o valor é um número (tipo esperado por um ID)
+  } else if (!Number(value)) {
+    errors.push({
+      field: name,
+      message: `O ${name} deve ser um número válido`,
+    });
+
+    // Verifica se o valor é negativo 
+  } else if (Number(value) <= 0) {
+    errors.push({
+      field: name,
+      message: `O ${name} não pode ser negativo ou zero`,
+    });
+  }
+
+  return errors
 };
 
 module.exports = ValidatorID;

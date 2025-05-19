@@ -48,23 +48,30 @@ const UserCreateValidator = async (req, res, next) => {
       });
     }
 
-    if (isDisabled) {
-      if (!idDisabled) {
+    // Modifique a validação para techAss ser opcional
+if (isDisabled) {
+    if (!idDisabled) {
         errors.push({
-          field: "idDisabled",
-          message: "O 'idDisabled' é obrigatório",
+            field: "idDisabled",
+            message: "O 'idDisabled' é obrigatório para usuários com deficiência",
         });
-      }
-      // techAss pode ser fornecido, mas não é obrigatório
-    } else {
-      // Se isDisabled for false, techAss não deve ser fornecido
-      if (techAss) {
-        errors.push({
-          field: "techAss",
-          message: "O 'techAss' não deve ser fornecido quando 'isDisabled' é false",
-        });
-      }
     }
+    // techAss é opcional, não precisa validar
+} else {
+    // Limpar campos se não for usuário com deficiência
+    if (idDisabled) {
+        errors.push({
+            field: "idDisabled",
+            message: "O 'idDisabled' não deve ser fornecido para usuários sem deficiência",
+        });
+    }
+    if (techAss) {
+        errors.push({
+            field: "techAss",
+            message: "O 'techAss' não deve ser fornecido para usuários sem deficiência",
+        });
+    }
+}
 
     if (errors.length !== 0) {
       return res.status(400).json({

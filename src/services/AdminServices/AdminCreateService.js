@@ -4,35 +4,21 @@ const bycrpt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sequelize = require("../../database/config");
 const uploadCreateService = require("../uploadServices/uploadCreateService");
+const existsEmail = require("../../utils/existsEmail");
 
 const AdminCreateService = async (adminData, files) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const existsEmail = await Admin.findOne({
-      where: { email: adminData.email },
-    });
 
-    if (existsEmail) {
-      return {
-        code: 409,
-        error: {
-          details: [
-            {
-              field: "email",
-              message: "O email enviado já existe",
-            },
-          ],
-        },
-        message: "Erro ao criar admin",
-        success: false,
-      };
+    // função que valida a existencia do email no banco
+    const validEmail = await existsEmail(adminData.email);
+
+    if (validEmail !== false) {
+      return validEmail;
     }
 
-    const generateNIF = () => {
-      return Math.floor(100000 + Math.random() * 900000);
-    };
-
+    // função de gerar NIF
     const NIF = generateNIF();
 
     const existsNIF = await Admin.findOne({
@@ -45,6 +31,7 @@ const AdminCreateService = async (adminData, files) => {
       };
     }
 
+    // Função de criptografia de senhas 
     const passwordCript = await bycrpt.hashSync(adminData.password, 12);
     adminData.password = passwordCript;
 
@@ -115,6 +102,10 @@ const AdminCreateService = async (adminData, files) => {
     console.error(error);
     throw new Error(error.message);
   }
+};
+
+const generateNIF = () => {
+  return Math.floor(100000 + Math.random() * 900000);
 };
 
 module.exports = AdminCreateService;
