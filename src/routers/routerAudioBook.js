@@ -6,12 +6,12 @@ const upload = multer({ storage: multer.memoryStorage() });
 const router = Router();
 
 const AudioBookCreateValidator = require("../middlewares/Validators/AudioBookValidators/AudioBookCreateValidator");
-const AudioBookCreateController = require("../controllers/AudioBooksControllers/AudioBookCreateController");
-const AudioBookDeleteController = require("../controllers/AudioBooksControllers/AudioBookDeleteController");
-const AudioBookUpdateController = require("../controllers/AudioBooksControllers/AudioBookUpdateController");
-const AudioBookGetAllController = require("../controllers/AudioBooksControllers/AudioBookGetAllController");
-const AudioBookGetByBookController = require("../controllers/AudioBooksControllers/AudioBookGetByBookController");
-const AudioBookDeleteByBookController = require("../controllers/AudioBooksControllers/AudioBookDeleteByBookController");
+const AudioBookCreateController = require("../controllers/AudiobooksControllers/AudiobookCreateController");
+const AudioBookDeleteController = require("../controllers/AudiobooksControllers/AudiobookDeleteController");
+const AudioBookUpdateController = require("../controllers/AudiobooksControllers/AudiobookUpdateController");
+const AudioBookGetAllController = require("../controllers/AudiobooksControllers/AudiobookGetAllController");
+const AudioBookGetByBookController = require("../controllers/AudiobooksControllers/AudioBookGetByBookController");
+const AudioBookDeleteByBookController = require("../controllers/AudiobooksControllers/AudioBookDeleteByBookController");
 
 router.post(
   "/",

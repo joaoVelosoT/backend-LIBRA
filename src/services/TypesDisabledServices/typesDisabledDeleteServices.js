@@ -6,7 +6,7 @@ const UserUpdateForDelete = require("../UsersDisabledServices/UserUpdateForDelet
 const typesDisabledDeleteService = {
   delete: async (name) => {
     try {
-      
+
       // Buscando o tipo
       const typeDisabled = await typesDisabled.findOne({
         where: {
@@ -23,7 +23,7 @@ const typesDisabledDeleteService = {
         // Deletar
         const usersUpdated = await UserUpdateForDelete(type.dataValues.id);
         console.log(usersUpdated);
-        
+
         // console.log(type.dataValues.id)
       }
 

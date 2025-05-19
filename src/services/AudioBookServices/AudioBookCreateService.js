@@ -1,5 +1,5 @@
 // services/AudioBookServices/AudioBookCreateService.js
-const AudioBook = require("../../models/AudioBook");
+const AudioBook = require("../../models/Audiobook");
 const Book = require("../../models/Book");
 const sequelize = require("../../database/config");
 const uploadCreateService = require("../uploadServices/uploadCreateService");

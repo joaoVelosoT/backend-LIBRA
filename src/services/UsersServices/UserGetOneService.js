@@ -3,7 +3,7 @@ const User = require("../../models/User");
 const Book = require("../../models/Book");
 const UserDisabled = require("../../models/UsersDisableds");
 const Disabled = require("../../models/Disabled");
-const TypesDisabled = require("../../models/TypesDisabled");
+const TypesDisabled = require("../../models/typesDisabled");
 
 const UserGetOneService = async (userId) => {
   try {

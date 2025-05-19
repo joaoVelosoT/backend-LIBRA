@@ -21,7 +21,7 @@ router.post("/", UserCreateValidator, UserCreateController);
 router.get("/", UserGetAllController);
 router.get("/:id", ValidatorID, UserGetOneController);
 router.put("/:id", ValidatorID, UserUpdateValidator, UserUpdateController);
-router.delete("/:id", ValidatorID, AuthAdmin, UserDeleteController);
+router.delete("/:id", ValidatorID, /* AuthAdmin , */ UserDeleteController);
 
 // Rotas de favoritos
 router.post('/:id/favorites', ValidatorID, UserFavoritesController.addFavorite);

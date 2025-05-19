@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../database/config");
-const AdminFoto = require("./adminFoto");
+const AdminFoto = require("./AdminFoto");
 
 // Criação do modelo Admin -> tabela Admin no Banco de Dados
 const Admin = db.define("admin", {
@@ -27,7 +27,7 @@ const Admin = db.define("admin", {
       model: AdminFoto,
       key: "id",
     },
-    onDelete: "SET NULL", 
+    onDelete: "SET NULL",
     allowNull: true,
   },
   resetPasswordToken: {

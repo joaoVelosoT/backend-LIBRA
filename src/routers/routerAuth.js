@@ -12,7 +12,7 @@ const AdminLoginController = require("../controllers/AuthControllers/AuthAdminCo
 const AdminLogoutController = require("../controllers/AuthControllers/AuthAdminController/AdminLogoutController");
 const verifyTokenUser = require("../middlewares/Validators/AuthValidators/verifyTokenUser");
 const verifyTokenAdmin = require("../middlewares/Validators/AuthValidators/verifyTokenAdmin");
-const ForgotPasswordAdminController = require("../controllers/AuthControllers/AuthAdminController/forgotPasswordAdminController");
+const ForgotPasswordAdminController = require("../controllers/AuthControllers/AuthAdminController/ForgotPasswordAdminController");
 const ResetPasswordAdminController = require("../controllers/AuthControllers/AuthAdminController/resetPasswordAdminController");
 
 

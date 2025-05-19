@@ -13,7 +13,7 @@ const router = Router();
 
 router.post("/", RequestedBookCreateValidator, RequestedBookCreateController);
 router.get('/', RequestedBookGetAllController);
-router.get('/:id', ValidatorID, AuthAdmin, RequestedBookGetByIdController);
-router.delete('/:id', ValidatorID, AuthAdmin, RequestedBookDeleteController);
+router.get('/:id', ValidatorID, /* AuthAdmin , */ RequestedBookGetByIdController);
+router.delete('/:id', ValidatorID, /* AuthAdmin , */ RequestedBookDeleteController);
 
 module.exports = router;
