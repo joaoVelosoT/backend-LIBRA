@@ -4,6 +4,8 @@ const { exec } = require('child_process');
 const util = require('util');
 const fs = require('fs');
 const path = require('path');
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
 
 const execPromise = util.promisify(exec);
 
@@ -53,31 +55,30 @@ router.post('/braille', async (req, res) => {
     }
 });
 
-router.post('/translate/braille', async (req, res) => {
-
-    console.log(req.files);
-    
-    const file = req.files;
+router.post('/translate/braille', upload.single('file'), async (req, res) => {
+    const file = req.file;
     if (!file) return res.status(400).json({ error: 'Arquivo é obrigatório!' });
 
     try {
+        // Garante que o diretório existe
+        if (!fs.existsSync(WORK_DIR)) {
+            fs.mkdirSync(WORK_DIR, { recursive: true });
+        }
 
-        const outputFile = path.join(WORK_DIR, `${file.name}_tranlate.brt`);
+        const inputPath = path.join(WORK_DIR, file.originalname);
+        const outputPath = path.join(WORK_DIR, `${file.originalname}_translate.brt`);
 
-        // 4. Executar conversão com as duas tabelas
-        await execPromise(`lou_translate -b unicode.dis,pt-pt-g1.utb < ${file} > ${outputFile}`);
+        // Escreve o buffer do arquivo no sistema
+        fs.writeFileSync(inputPath, file.buffer);
 
-        // 5. Ler resultado
-        const result = fs.readFileSync(outputFile, 'utf-8').trim();
-
-        // 6. Verificar se contém caracteres Braille Unicode (U+2800 a U+28FF)
-        const isRealBraille = /[\u2800-\u28FF]/.test(result);
+        // Executa a conversão
+        await execPromise(`lou_translate unicode.dis,pt-pt-g1.utb < "${inputPath}" > "${outputPath}"`, {
+            maxBuffer: 1024 * 1024 * 1024 // 1 MB
+        });
 
         res.json({
             success: true,
-            braille: result,
-            isRealBraille,
-            outputPath: outputFile
+            outputPath
         });
 
     } catch (error) {
@@ -88,6 +89,7 @@ router.post('/translate/braille', async (req, res) => {
         });
     }
 });
+
 
 router.post('/desbraille', async (req, res) => {
     const { braille } = req.body;
