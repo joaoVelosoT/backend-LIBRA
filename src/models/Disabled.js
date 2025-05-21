@@ -19,10 +19,10 @@ const Disabled = db.define("Disabled", {
   timestamps: false
 });
 
-Disabled.associate = function(models) {
+Disabled.associate = function (models) {
   Disabled.belongsTo(models.TypesDisabled, {
     foreignKey: 'idDisabledTypes',
-    as: 'TypesDisabled'
+    as: 'typeDisabled'
   });
 };
 
