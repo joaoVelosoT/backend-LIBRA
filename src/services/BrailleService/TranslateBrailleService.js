@@ -15,7 +15,6 @@ const TranslateBrailleService = {
 
         try {
 
-            console.log(file);
             if (!file || !file.originalname) {
                 throw new Error("Arquivo inválido ou mal formatado para tradução.");
             }
@@ -52,15 +51,29 @@ const TranslateBrailleService = {
             }
 
             const brailleData = {
-                id_arquivo: uploadResult.arquivoId,
+                id_link: uploadResult.arquivoId,
             };
 
             const braille = await Braille.create(brailleData, { transaction });
 
-            console.log(braille)
-
             await transaction.commit();
 
+            if (fs.existsSync(WORK_DIR)) {
+                // Ler todos os arquivos do diretório
+                const arquivos = fs.readdirSync(WORK_DIR);
+
+                // Excluir cada arquivo
+                arquivos.forEach(arquivo => {
+                    const caminhoArquivo = path.join(WORK_DIR, arquivo);
+                    try {
+                        fs.unlinkSync(caminhoArquivo);
+                        console.log(`Arquivo ${arquivo} excluído com sucesso.`);
+                    } catch (err) {
+                        console.error(`Erro ao excluir ${arquivo}: ${err}`);
+                    }
+                });
+            };
+            
             return {
                 code: 201,
                 braille,

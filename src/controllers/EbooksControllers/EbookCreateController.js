@@ -1,5 +1,6 @@
 const EbookCreateService = require("../../services/EbookServices/EbookCreateService.js");
 const TranslateBrailleController = require("../BrailleController/TranslateBrailleController.js");
+const GenerateEpubController = require("../EpubController/GenerateEpubController.js")
 const Book = require("../../models/Book.js");
 
 const EbookCreateController = async (req, res) => {
@@ -7,9 +8,6 @@ const EbookCreateController = async (req, res) => {
 
     const { idLivro, publicacao } = req.body;
     const files = req.files;
-
-    console.log(files);
-
 
     // Busca o livro pelo ID
     const book = await Book.findByPk(idLivro);
@@ -31,7 +29,7 @@ const EbookCreateController = async (req, res) => {
     // Atualiza o livro com o ID do Ebook criado
     await book.update({ id_ebook: ebookResult.ebooks.id });
 
-
+    // const epubResult = await GenerateEpubController(files.Ebook[0])
     const brailleResult = await TranslateBrailleController(files.Ebook[0], idLivro);
 
     if (!brailleResult.success) {

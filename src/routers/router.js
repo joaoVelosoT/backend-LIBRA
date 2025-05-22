@@ -17,6 +17,7 @@ const ebookRouter = require("./routerEbook.js")
 const audiobookRouter = require("./routerAudioBook.js")
 const BookSearchController = require("../controllers/BooksControllers/BookSearchController")
 const brailleRoutes = require('./routerBraille.js');
+const epubRoutes = require("./routerEpub.js")
 
 
 router.use("/ebook", ebookRouter);
@@ -38,6 +39,7 @@ router.use("/notificationAss", routerNotificationAssistence);
 router.use("/search", BookSearchController);
 
 router.use('/converte', brailleRoutes);
+router.use('/generate-epub', epubRoutes)
 
 
 module.exports = router;

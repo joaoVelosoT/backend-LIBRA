@@ -4,8 +4,6 @@ const Book = require("../../models/Book");
 const TranslateBrailleController = async (file, idLivro) => {
     try {
 
-        console.log(file);
-
         if (!file) return { error: "Arquivo é obrigatório!" };
 
         const book = await Book.findByPk(idLivro);
@@ -21,6 +19,7 @@ const TranslateBrailleController = async (file, idLivro) => {
             throw new Error("Erro na conversão para Braille!")
         }
 
+        
         await book.update({ id_braille: result.braille.id });
 
         return {

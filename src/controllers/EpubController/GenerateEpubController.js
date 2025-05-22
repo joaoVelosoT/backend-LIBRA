@@ -39,7 +39,6 @@ const GenerateEpub = async (req, res) => {
     if (!req.files) return res.status(400).json({ error: "PDF não enviado." });
 
     const filePath = req.files.Ebook[0].path;
-    
 
     try {
         const pdfParser = new PDFParser();
