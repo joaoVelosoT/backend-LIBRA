@@ -7,9 +7,6 @@ const uploadCreateController = async (req, res) => {
         }
 
         const { url } = req.body
-        console.log(req.file);
-
-        console.log(url);
 
         const { originalname, buffer, mimetype } = req.file;
 

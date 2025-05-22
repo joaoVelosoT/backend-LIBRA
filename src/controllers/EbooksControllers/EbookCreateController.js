@@ -1,4 +1,5 @@
 const EbookCreateService = require("../../services/EbookServices/EbookCreateService.js");
+const TranslateBrailleController = require("../BrailleController/TranslateBrailleController.js");
 const Book = require("../../models/Book.js");
 
 const EbookCreateController = async (req, res) => {
@@ -6,6 +7,9 @@ const EbookCreateController = async (req, res) => {
 
     const { idLivro, publicacao } = req.body;
     const files = req.files;
+
+    console.log(files);
+
 
     // Busca o livro pelo ID
     const book = await Book.findByPk(idLivro);
@@ -27,11 +31,20 @@ const EbookCreateController = async (req, res) => {
     // Atualiza o livro com o ID do Ebook criado
     await book.update({ id_ebook: ebookResult.ebooks.id });
 
+
+    const brailleResult = await TranslateBrailleController(files.Ebook[0], idLivro);
+
+    if (!brailleResult.success) {
+      console.error("Erro na conversão automática para Braille:", brailleResult.message || brailleResult.error);
+      // Continua sem impedir o retorno do ebook
+    }
+
+
     return res.status(ebookResult.code).json({
       code: ebookResult.code,
       data: {
         book: book,
-        audioBook: ebookResult.ebooks
+        Ebook: ebookResult.ebooks
       },
       message: "Ebook criado e livro atualizado com sucesso!",
       success: true,

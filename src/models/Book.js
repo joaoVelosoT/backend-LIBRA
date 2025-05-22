@@ -4,6 +4,8 @@ const Capa = require("./Capa");
 const Banner = require("./Banner");
 const EBook = require("./Ebook");
 const AudioBook = require("./Audiobook");
+const Braille = require("./Braille");
+const Epub = require("./Epub");
 
 const Book = db.define("Books", {
   titulo: {
@@ -41,6 +43,24 @@ const Book = db.define("Books", {
     allowNull: true,
     references: {
       model: Capa,
+      key: "id",
+    },
+    onDelete: "SET NULL",
+  },
+  id_braille: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: Braille,
+      key: "id",
+    },
+    onDelete: "SET NULL",
+  },
+  id_epub: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: Epub,
       key: "id",
     },
     onDelete: "SET NULL",

@@ -15,6 +15,7 @@ const allowedMimeTypes = [
   'application/pdf',
   'video/mp4',
   'audio/mpeg',
+  'application/octet-stream'
 ];
 const normalizeFileName = (fileName) => {
   return fileName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
