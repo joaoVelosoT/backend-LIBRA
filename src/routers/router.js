@@ -18,8 +18,10 @@ const audiobookRouter = require("./routerAudioBook.js")
 const BookSearchController = require("../controllers/BooksControllers/BookSearchController")
 const brailleRoutes = require('./routerBraille.js');
 const epubRoutes = require("./routerEpub.js")
+const aiRoutes = require("./RouterIa.js");
 
 
+router.use("/api/ia", aiRoutes);
 router.use("/ebook", ebookRouter);
 router.use("/audiobook", audiobookRouter);
 router.use("/books", bookRouter);
