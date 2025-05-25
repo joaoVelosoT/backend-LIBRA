@@ -8,6 +8,14 @@ const CACHE_DURATION = 10 * 60 * 1000; // 10 minutos
 // Tempo máximo de espera para APIs
 const API_TIMEOUT = 8000; // 8 segundos
 
+// Variável para manter o contexto da conversa
+let contextoConversa = {
+  ultimoLivroMencionado: null,
+  ultimaPergunta: null
+};
+
+let piadasAnteriores = [];
+
 async function perguntarIA(pergunta, livrosDisponiveis = []) {
   // Verificação básica dos dados
   if (!pergunta || typeof pergunta !== "string" || pergunta.trim().length < 2) {
@@ -15,11 +23,41 @@ async function perguntarIA(pergunta, livrosDisponiveis = []) {
   }
 
   // Pré-processamento da pergunta
-  const perguntaLower = (typeof pergunta === "string" ? pergunta.toLowerCase().trim() : "");
+  const perguntaLower = pergunta.toLowerCase().trim();
   
+  // Atualiza o contexto da conversa
+  contextoConversa.ultimaPergunta = perguntaLower;
+
   // Verifica se é um cumprimento ou interação social (tratamento especial)
   if (isInteracaoSocial(perguntaLower)) {
     return gerarRespostaSocial(perguntaLower);
+  }
+
+  if (perguntaLower.includes("piada") || perguntaLower.includes("conte uma piada")) {
+    return contarPiadaLiteraria();
+  }
+
+  // Verifica se é pedido de outra piada
+  if (perguntaLower.includes("outra piada") || perguntaLower.includes("mais uma piada")) {
+    return responderOutraPiada();
+  }
+
+  // Verifica se é um pedido de curiosidade
+  if (perguntaLower.includes("curiosidade") || perguntaLower.includes("fato interessante")) {
+    return contarCuriosidadeLiteraria();
+  }
+
+  // Verifica se é um pedido de formatos disponíveis
+  if (perguntaLower.includes("formatos") || perguntaLower.includes("disponível") || perguntaLower.includes("versão")) {
+    const livroEncontrado = contextoConversa.ultimoLivroMencionado || findBook(perguntaLower, livrosDisponiveis);
+    if (livroEncontrado) {
+      return generateFormatsResponse(livroEncontrado);
+    }
+  }
+
+  // Verifica se é pedido de livros disponíveis
+  if (perguntaLower.includes("livros disponíveis") || perguntaLower.includes("livros disponiveis")) {
+    return listarLivrosDisponiveis(livrosDisponiveis);
   }
 
   // Verificação específica para perguntas sobre autores/livros
@@ -29,9 +67,15 @@ async function perguntarIA(pergunta, livrosDisponiveis = []) {
       perguntaLower.includes("de quem é")) {
     const livroEncontrado = findBook(perguntaLower, livrosDisponiveis);
     if (livroEncontrado) {
+      contextoConversa.ultimoLivroMencionado = livroEncontrado;
       return generateBookFoundResponse(livroEncontrado);
     }
     return "📚 Não encontrei esse livro em nosso acervo. Deseja ver outros livros disponíveis?";
+  }
+
+  // Verifica se é pedido de recomendações
+  if (perguntaLower.includes("recomendações") || perguntaLower.includes("recomendar") || perguntaLower.includes("sugestões")) {
+    return generateBookRecommendation(livrosDisponiveis);
   }
 
   // Verifica cache primeiro
@@ -47,6 +91,13 @@ async function perguntarIA(pergunta, livrosDisponiveis = []) {
       API_TIMEOUT
     );
     saveToCache(cacheKey, resposta);
+    
+    // Atualiza contexto se encontrar um livro na resposta
+    const livroEncontrado = findBook(perguntaLower, livrosDisponiveis);
+    if (livroEncontrado) {
+      contextoConversa.ultimoLivroMencionado = livroEncontrado;
+    }
+    
     return resposta;
   } catch (error) {
     console.error("Erro na API Hugging Face:", {
@@ -63,6 +114,13 @@ async function perguntarIA(pergunta, livrosDisponiveis = []) {
       API_TIMEOUT
     );
     saveToCache(cacheKey, resposta);
+    
+    // Atualiza contexto se encontrar um livro na resposta
+    const livroEncontrado = findBook(perguntaLower, livrosDisponiveis);
+    if (livroEncontrado) {
+      contextoConversa.ultimoLivroMencionado = livroEncontrado;
+    }
+    
     return resposta;
   } catch (error) {
     console.error("Erro na API Together.ai:", {
@@ -80,6 +138,13 @@ async function perguntarIA(pergunta, livrosDisponiveis = []) {
         API_TIMEOUT
       );
       saveToCache(cacheKey, resposta);
+      
+      // Atualiza contexto se encontrar um livro na resposta
+      const livroEncontrado = findBook(perguntaLower, livrosDisponiveis);
+      if (livroEncontrado) {
+        contextoConversa.ultimoLivroMencionado = livroEncontrado;
+      }
+      
       return resposta;
     }
   } catch (error) {
@@ -90,7 +155,141 @@ async function perguntarIA(pergunta, livrosDisponiveis = []) {
   }
 
   // 4. Fallback local completo
-  return generateLocalResponse(perguntaLower, livrosDisponiveis);
+  const respostaLocal = generateLocalResponse(perguntaLower, livrosDisponiveis);
+  
+  // Atualiza contexto se encontrar um livro na resposta
+  const livroEncontrado = findBook(perguntaLower, livrosDisponiveis);
+  if (livroEncontrado) {
+    contextoConversa.ultimoLivroMencionado = livroEncontrado;
+  }
+  
+  return respostaLocal;
+}
+
+// --- Funções para interações comuns --- //
+
+function contarPiadaLiteraria() {
+  const piadasDisponiveis = [
+"📖 Por que o livro de matemática ficou deprimido? Porque tinha muitos problemas!",
+"😂 O que o lápis disse para o papel? 'Você está me desapontando!'",
+"📚 Por que o livro foi preso? Porque tinha muitas páginas em branco - era um caso de folhas em branco!",
+"🤓 Sabia que os livros de suspense são ótimos para emagrecer? Dão um susto que até o apetite some!",
+"😄 Qual é o animal mais antigo do mundo? O vaga-lume, porque está no livro das recordações!",
+"📖 Por que o livro de receitas foi ao psicólogo? Porque estava cheio de problemas emocionais (e muitos temperos)!",
+"😂 O que o livro de gramática disse para o livro de história? 'Você vive no passado!'",
+"📚 Qual é o livro mais doce que existe? O Romeu e Julieta, porque é um drama 'açucarado'!",
+"📖 Por que o livro de poesia estava sempre animado? Porque tinha rimas de sobra!",
+"😂 O que o livro de ciências disse para o livro de geografia? 'Você está sempre viajando!'",
+"📚 O que o marcador de página disse para o livro? 'Eu te sigo até o fim!'",
+"🤓 Como o livro de física se exercita? Com muitas páginas de força!",
+"😄 Por que o livro de terror foi expulso da biblioteca? Porque dava calafrios até no bibliotecário!",
+"📖 Por que o livro de piadas nunca fica na prateleira? Porque está sempre rolando de rir!",
+"😂 O que a caneta disse para o livro de suspense? 'Não me faça esperar tanto pela próxima página!'"
+  ];
+
+  // Filtra piadas que ainda não foram usadas
+  let piadasNaoUsadas = piadasDisponiveis.filter(piada => 
+    !piadasAnteriores.includes(piada)
+  );
+
+  // Se todas já foram usadas, reinicia o ciclo
+  if (piadasNaoUsadas.length === 0) {
+    piadasAnteriores = [];
+    piadasNaoUsadas = [...piadasDisponiveis];
+  }
+
+  // Seleciona uma piada aleatória
+  const piadaAleatoria = piadasNaoUsadas[
+    Math.floor(Math.random() * piadasNaoUsadas.length)
+  ];
+
+  // Adiciona a piada usada ao histórico
+  piadasAnteriores.push(piadaAleatoria);
+
+  return piadaAleatoria;
+}
+
+function responderOutraPiada() {
+  return contarPiadaLiteraria();
+}
+
+function contarCuriosidadeLiteraria() {
+  const curiosidades = [
+    "📚 Sabia que o livro mais roubado de bibliotecas públicas é o Guinness World Records?",
+    "🖋️ A palavra 'livro' vem do latim 'liber', que originalmente significava a camada interna da casca das árvores!",
+    "📖 O maior livro do mundo é 'O Pequeno Príncipe', que foi traduzido para mais de 300 línguas e dialetos!",
+    "✍️ Machado de Assis, nosso grande escritor brasileiro, era canhoto e sofria de epilepsia!",
+    "📕 O livro mais vendido da história (depois da Bíblia) é 'Dom Quixote', de Miguel de Cervantes!",
+    "🔍 A Biblioteca do Congresso dos EUA é a maior do mundo, com mais de 170 milhões de itens!",
+    "📖 O termo 'bookworm' (traça de livros) vem dos insetos que comem papel, mas também se refere a pessoas que leem muito!",
+    "✉️ J.R.R. Tolkien recebeu tantas cartas de fãs endereçadas a 'Frodo, O Condado' que teve que deixar de responder!"
+  ];
+  return curiosidades[Math.floor(Math.random() * curiosidades.length)];
+}
+
+function generateFormatsResponse(livro) {
+  let resposta = `📚 Formatos disponíveis para "${formatarTitulo(livro.titulo)}":\n\n`;
+  
+  resposta += `📱 E-book: ${livro.id_ebook ? "Sim" : "Não"}\n\n`;
+  resposta += `🎧 Audiobook: ${livro.id_Audiobook ? "Sim" : "Não"}\n\n`;
+  resposta += `👆 Braille: ${livro.id_braille ? "Sim" : "Não"}\n\n`;
+  resposta += `📖 EPUB: ${livro.id_epub ? "Sim" : "Não"}\n`;
+  
+  return resposta;
+}
+
+function listarLivrosDisponiveis(livros) {
+  if (livros.length === 0) {
+    return "📚 No momento não temos livros disponíveis em nosso acervo.";
+  }
+
+  // Seleciona 3 livros aleatórios para exemplificar
+  const livrosExemplo = getRandomBooks(livros, 3);
+  const exemplos = livrosExemplo.map(l => formatarTitulo(l.titulo)).join(", ");
+  
+  return `📚 Temos ${livros.length} livros disponíveis em nosso acervo. Alguns exemplos: ${exemplos}.`;
+}
+
+function generateBookRecommendation(livros) {
+  if (livros.length === 0) {
+    return "📚 No momento não temos livros disponíveis para recomendar.";
+  }
+
+  const livroRecomendado = getRandomBooks(livros, 1)[0];
+  return generateBookFullInfoResponse(livroRecomendado);
+}
+
+function generateBookFullInfoResponse(livro) {
+  if (!livro) {
+    return "📚 Não encontrei informações sobre este livro.";
+  }
+
+  let resposta = `📖 **${formatarTitulo(livro.titulo)}**`;
+  
+  if (livro.subtitulo) {
+    resposta += `\n🔹 Subtítulo: ${livro.subtitulo}`;
+  }
+  
+  if (livro.autor) {
+    resposta += `\n✍️ Autor: ${formatarNomeAutor(livro.autor)}`;
+  }
+  
+  if (livro.notaMedia && livro.notaMedia > 0) {
+    resposta += `\n⭐ Avaliação: ${formatarNota(livro.notaMedia)}`;
+  }
+  
+  if (livro.descricao) {
+    resposta += `\n\n📝 Descrição: ${livro.descricao.substring(0, 200)}...`;
+  }
+  
+  // Informações sobre formatos
+  resposta += `\n\n📚 Formatos disponíveis:`;
+  resposta += `\n📱 E-book: ${livro.id_ebook ? "Sim" : "Não"}\n\n`;
+  resposta += `\n🎧 Audiobook: ${livro.id_Audiobook ? "Sim" : "Não"}\n\n`;
+  resposta += `\n👆 Braille: ${livro.id_braille ? "Sim" : "Não"}\n\n`;
+   resposta += `📖 EPUB: ${livro.id_epub ? "Sim" : "Não"}\n\n`;
+
+  return resposta;
 }
 
 // --- Funções auxiliares --- //
@@ -101,7 +300,12 @@ function isInteracaoSocial(texto) {
     /olá|oi|opa|eae|eaí|saudações|hello|hi/i,
     /tudo\s(bem|contigo|com você)/i,
     /como\s(vai|você está)/i,
-    /qual\sé\s(a boa|a novidade)/i
+    /qual\sé\s(a boa|a novidade)/i,
+    /(conte|diga)\s(uma|alguma)\s(coisa|informação)/i,
+    /(qual|como)\s(é|são)\s(seu|seus)/i,
+    /(quem|o que)\s(você)\s(é|faz)/i,
+    /(fale|conte)\s(mais|sobre)/i,
+    /(obrigado|valeu|agradeço)/i
   ];
   return padroes.some(padrao => padrao.test(texto));
 }
@@ -139,6 +343,18 @@ function gerarRespostaSocial(pergunta) {
     "como vai": [
       "🌟 Estou ótimo, cheio de energia para te ajudar a encontrar os melhores livros! E você?",
       "📖 Vou muito bem, obrigado! Aqui no mundo dos livros sempre tem algo novo. E com você?"
+    ],
+    "obrigado": [
+      "😊 De nada! Estou aqui para ajudar sempre que precisar!",
+      "📚 Fico feliz em ajudar! Mais alguma coisa sobre livros?"
+    ],
+    "valeu": [
+      "👍 Valeu você por usar nosso serviço! Precisa de mais alguma coisa?",
+      "😊 Que isso, estamos aqui para isso mesmo! Mais alguma dúvida literária?"
+    ],
+    "quem é você": [
+      "📚 Eu sou o LOOM, o assistente virtual da Livraria Libra! Estou aqui para te ajudar a encontrar os melhores livros e informações literárias!",
+      "😊 Eu sou o LOOM, seu assistente de livros digital! Posso te ajudar a encontrar obras, autores e curiosidades do mundo literário!"
     ]
   };
 
@@ -276,13 +492,15 @@ function generateLocalResponse(perguntaLower, livros) {
     const livrosDoAutor = findBooksByAuthor(autorBuscado, livros);
     
     if (livrosDoAutor.length > 0) {
+      contextoConversa.ultimoLivroMencionado = livrosDoAutor[0];
       return generateAuthorResponse(livrosDoAutor);
-    } 
+    }
   }
 
   // Restante da lógica original
   const livroEncontrado = findBook(perguntaLower, livros);
   if (livroEncontrado) {
+    contextoConversa.ultimoLivroMencionado = livroEncontrado;
     return generateBookFoundResponse(livroEncontrado);
   }
   
@@ -291,7 +509,7 @@ function generateLocalResponse(perguntaLower, livros) {
     return generateGenreResponse(livrosGenero);
   }
   
-  return generateGenericSuggestion(livros);
+  return "📚 Não entendi sua pergunta. Poderia reformular?";
 }
 
 function listarAutoresDisponiveis(livros) {
@@ -318,7 +536,6 @@ function formatarNomeAutor(nome) {
   return nome.trim()
     .split(' ')
     .map(parte => {
-      // Mantém abreviações como "J.K." intactas
       if (/^[A-Z]\.([A-Z]\.)?$/.test(parte)) {
         return parte;
       }
@@ -328,10 +545,8 @@ function formatarNomeAutor(nome) {
 }
 
 function findBooksByAuthor(pergunta, livros) {
-  // Extrai o nome do autor da pergunta
   let autorBuscado = pergunta.toLowerCase();
   
-  // Remove termos comuns
   const termosRemover = ["livro", "livros", "obra", "obras", "do", "da", "de"];
   termosRemover.forEach(termo => {
     autorBuscado = autorBuscado.replace(termo, '').trim();
@@ -351,7 +566,7 @@ function generateAuthorResponse(livros) {
   }
 
   const autor = formatarNomeAutor(livros[0].autor);
-  const livrosList = livros.slice(0, 5)  // Mostra até 5 livros
+  const livrosList = livros.slice(0, 5)
     .map(l => `• "${formatarTitulo(l.titulo)}"` + (l.notaMedia ? ` ${formatarNota(l.notaMedia)}` : ''))
     .join('\n');
   
@@ -361,7 +576,6 @@ function generateAuthorResponse(livros) {
 function formatarTitulo(titulo) {
   if (!titulo) return 'Título desconhecido';
   
-  // Lista de palavras para manter em minúsculo (artigos, preposições)
   const palavrasMinusculas = ['de', 'da', 'do', 'das', 'dos', 'e', 'em', 'na', 'no', 'para'];
   
   return titulo.toLowerCase()
@@ -376,7 +590,6 @@ function formatarTitulo(titulo) {
 }
 
 function findBook(pergunta, livros) {
-  // Extrai o título do livro da pergunta
   const match = pergunta.match(/"([^"]+)"/) || pergunta.match(/(?:livro|obra)\s+([^?]+)/) || [null, pergunta];
   const termoBusca = match[1] ? match[1].trim().toLowerCase() : pergunta.toLowerCase();
   
@@ -393,23 +606,21 @@ function generateBookFoundResponse(livro) {
     return "📚 Não encontrei esse livro em nosso acervo no momento.";
   }
 
-  let resposta = `📖 "${formatarTitulo(livro.titulo)}"`;
+  let resposta = `📖 **${formatarTitulo(livro.titulo)}**`;
   
   if (livro.autor) {
-    resposta += ` é de autoria de ${formatarNomeAutor(livro.autor)}`;
-  } else {
-    resposta += ` (autor não especificado)`;
+    resposta += `\n✍️ Autor: ${formatarNomeAutor(livro.autor)}`;
   }
   
-  if (livro.descricao && !livro.descricao.includes("Harry Potter e a Pedra Filosofal")) {
+  if (livro.descricao) {
     resposta += `\n\n📝 ${livro.descricao.substring(0, 150)}...`;
   }
   
   if (livro.notaMedia && livro.notaMedia > 0) {
     resposta += `\n⭐ Avaliação: ${formatarNota(livro.notaMedia)}`;
   }
-  
-  return resposta + "\n\nPosso te ajudar com algo mais? 😊";
+
+  return resposta;
 }
 
 function findBooksByGenre(pergunta, livros) {
@@ -428,44 +639,6 @@ function generateGenreResponse(livros) {
     .join('\n');
   
   return `📚 Livros de ${genero}:\n${livrosList}`;
-}
-
-function generateGenericSuggestion(livros) {
-  const livrosValidos = livros.filter(l => l.titulo && l.autor && l.generos);
-  
-  if (livrosValidos.length === 0) {
-    return "🔍 Não encontrei livros no momento. Por favor, tente novamente mais tarde.";
-  }
-
-  const livrosPorGenero = {};
-  livrosValidos.forEach(livro => {
-    (livro.generos || []).forEach(genero => {
-      if (!livrosPorGenero[genero]) {
-        livrosPorGenero[genero] = [];
-      }
-      livrosPorGenero[genero].push(livro);
-    });
-  });
-
-  const generosPopulares = Object.keys(livrosPorGenero)
-    .sort((a, b) => livrosPorGenero[b].length - livrosPorGenero[a].length)
-
-  let resposta = "📚 Aqui estão algumas recomendações baseadas em nossos destaques:\n\n";
-  
-  generosPopulares.forEach(genero => {
-    const livrosDoGenero = livrosPorGenero[genero];
-    const livrosDestaque = getRandomBooks(livrosDoGenero, 2);
-    
-    resposta += `🔹 ${genero}:\n`;
-    resposta += livrosDestaque.map(l => 
-      `• "${formatarTitulo(l.titulo)}" - ${formatarNomeAutor(l.autor)}${l.notaMedia ? ` ${formatarNota(l.notaMedia)}` : ''}`
-    ).join('\n');
-    resposta += '\n\n';
-  });
-
-  resposta += "Se quiser recomendações mais específicas, me diga seu gênero favorito ou autor preferido! 😊";
-  
-  return resposta;
 }
 
 function getRandomBooks(livros, count) {
@@ -488,46 +661,39 @@ function generatePrompt(pergunta, livros = []) {
     .map(l => `- "${l.titulo}" (${l.autor})`)
     .join('\n');
 
-  return `[INST] Você é o LOOM, assistente virtual da Livraria Libra, uma plataforma digital focada em acessibilidade. 
+  return `[INST] Você é o LOOM, assistente virtual da Livraria Libra. 
 
-CONTEXTO IMPORTANTE:
-- Você é um assistente amigável e prestativo
-- Seu objetivo é ajudar os usuários a encontrar livros
-- Mantenha sempre um tom educado e profissional
-
-REGRAS ABSOLUTAS:
-1. SEMPRE responda em PORTUGUÊS BRASILEIRO
-2. Para cumprimentos e interações sociais: responda de forma natural sem recomendar livros
-3. Para perguntas sobre livros: confira se estão na lista abaixo antes de responder
-4. NUNCA invente livros ou informações
-5. Use 1-2 emojis por resposta
-6. Seja conciso (1-2 frases)
-7. Se não souber responder, peça para reformular ou diga que vai verificar
-8. Sempre use palavras completas e corretas no português
+REGRAS:
+1. Responda em PORTUGUÊS BRASILEIRO
+2. Seja amigável e prestativo
+3. Não inclua links ou referências a páginas
+4. Para perguntas sobre livros disponíveis, mostre apenas a quantidade e 3 exemplos
+5. Para recomendações, mostre informações completas de um livro aleatório
+6. Formato para recomendações:
+   📖 Título
+   🔹 Subtítulo (se existir)
+   ✍️ Autor
+   ⭐ Avaliação
+   📝 Descrição resumida
+   📚 Formatos disponíveis (E-book e Audiobook)
 
 LIVROS DISPONÍVEIS (${livrosValidos.length}):
 ${sampleBooks || 'Nenhum livro disponível no momento'}
 
-PERGUNTA DO USUÁRIO: "${pergunta}"
+PERGUNTA: "${pergunta}"
 
-SUA RESPOSTA EM PORTUGUÊS BRASILEIRO: [/INST]`;
+RESPONDA APENAS COM INFORMAÇÕES TEXTUAIS SOBRE OS LIVROS: [/INST]`;
 }
 
 function processResponse(rawResponse, livros) {
   let resposta = rawResponse.split("[/INST]")[1]?.trim() || rawResponse.trim();
   
-  resposta = resposta.replace(/[a-zA-Z]+:/g, '').trim();
+  // Remove qualquer tentativa de link que possa ter sido gerada
+  resposta = resposta.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
   
   if (!isRespostaValida(resposta)) {
     return "😊 Desculpe, não entendi completamente. Poderia reformular?";
   }
-  
-  const livrosMencionados = resposta.match(/"([^"]+)"/g) || [];
-  const livrosInvalidos = livrosMencionados.filter(tituloMencionado => 
-    !livros.some(l => l.titulo && tituloMencionado.includes(l.titulo))
-  );
-  
-
   
   if (!resposta.match(/[\u{1F600}-\u{1F6FF}]/u)) {
     resposta = "📚 " + resposta;
