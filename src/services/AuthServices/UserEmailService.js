@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 
 const sendResetPasswordEmail = async (email, token) => {
   try {
-    const resetLink = `http://localhost:8080/auth/reset-password/${token}`;
+    const resetLink = `http://localhost:3000/auth/redSenha/${token}`;
     
     const logoImage = "https://storage.googleapis.com/libra_tcc/LoomDivertido.png";
 
@@ -210,7 +210,7 @@ const sendResetPasswordEmail = async (email, token) => {
                         </div>
                         <p>© ${new Date().getFullYear()} LIBRA. Todos os direitos reservados.</p>
                         <p>Este é um e-mail automático, por favor não responda.</p>
-                        <p>Caso necessite de ajuda, entre em contato com nosso <a href="mailto:suporte@libra.com" style="color: #27ae60;">suporte</a>.</p>
+                        <p>Caso necessite de ajuda, entre em contato com nosso <a href="mailto:librabibliotecadigital@gmail.com" style="color: #27ae60;">suporte</a>.</p>
                     </div>
                 </div>
             </div>

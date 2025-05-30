@@ -175,16 +175,16 @@ function contarPiadaLiteraria() {
 "📚 Por que o livro foi preso? Porque tinha muitas páginas em branco - era um caso de folhas em branco!",
 "🤓 Sabia que os livros de suspense são ótimos para emagrecer? Dão um susto que até o apetite some!",
 "😄 Qual é o animal mais antigo do mundo? O vaga-lume, porque está no livro das recordações!",
-"📖 Por que o livro de receitas foi ao psicólogo? Porque estava cheio de problemas emocionais (e muitos temperos)!",
+"📖 Um jovem autor queria escrever para o mundo todo. Provocar reações de emoção, lágrimas e fazer seus leitores perderem o sono. Ele virou redator das mensagens de erro do Windows.",
 "😂 O que o livro de gramática disse para o livro de história? 'Você vive no passado!'",
-"📚 Qual é o livro mais doce que existe? O Romeu e Julieta, porque é um drama 'açucarado'!",
-"📖 Por que o livro de poesia estava sempre animado? Porque tinha rimas de sobra!",
+"📚 Qual é o livro mais doce que existe? O Romeu e Julieta!",
+"📖 John Green teve um pesadelo em que ele era perseguido por um pedaço de madeira falante. Qual é o nome do livro? “Quem é você? A Lasca”",
 "😂 O que o livro de ciências disse para o livro de geografia? 'Você está sempre viajando!'",
 "📚 O que o marcador de página disse para o livro? 'Eu te sigo até o fim!'",
 "🤓 Como o livro de física se exercita? Com muitas páginas de força!",
-"😄 Por que o livro de terror foi expulso da biblioteca? Porque dava calafrios até no bibliotecário!",
-"📖 Por que o livro de piadas nunca fica na prateleira? Porque está sempre rolando de rir!",
-"😂 O que a caneta disse para o livro de suspense? 'Não me faça esperar tanto pela próxima página!'"
+"😄 Paulo Coelho come feijão com curry; a Paula Pimenta.",
+"📖 Casamento é tipo Machado de Assis: começa no romantismo, mas logo acaba no realismo.  ",
+"😂 Você tem algum órgão transplantado? O Frankenstein."
   ];
 
   // Filtra piadas que ainda não foram usadas
