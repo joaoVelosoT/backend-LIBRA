@@ -134,6 +134,8 @@ const Book = db.define("Books", {
 Book.belongsTo(Capa, { foreignKey: 'id_capa', as: 'capa' });
 Book.belongsTo(Banner, { foreignKey: 'id_banner', as: 'banner' });
 Book.belongsTo(EBook, { foreignKey: 'id_ebook', as: 'ebook' });
+Book.belongsTo(Epub, { foreignKey: 'id_epub', as: 'epub' });
+Book.belongsTo(Braille, { foreignKey: 'id_braille', as: 'braille' });
 Book.hasMany(AudioBook, {
   foreignKey: 'id_livro',
   as: 'audiobook' // Mantendo no singular conforme sua preferência
