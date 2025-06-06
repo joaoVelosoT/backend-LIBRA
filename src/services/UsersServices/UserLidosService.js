@@ -1,9 +1,6 @@
-// services/UsersServices/UserFavoritesService.js
+// services/UsersServices/UserLidosService.js
 const User = require("../../models/User");
 const Book = require("../../models/Book");
-const Capa = require("../../models/Capa");
-const Banner = require("../../models/Banner");
-const Arquivos = require("../../models/Arquivos");
 const sequelize = require("../../database/config");
 
 const UserLidosService = {
@@ -12,7 +9,6 @@ const UserLidosService = {
         try {
             // Verifica se o livro existe
             const bookExists = await Book.findByPk(bookId, { transaction });
-
             if (!bookExists) {
                 await transaction.rollback();
                 return {
@@ -32,11 +28,11 @@ const UserLidosService = {
                 };
             }
 
-            // Garante que Lidos seja um array
             const lidos = user.lidos ? [...user.lidos] : [];
+            const lidosIds = user.lidosIds ? [...user.lidosIds] : [];
 
-            // Verifica se já é favorito
-            if (lidos.includes(bookId)) {
+            // Verifica se já está na lista de lidos
+            if (lidosIds.includes(bookId)) {
                 await transaction.rollback();
                 return {
                     code: 400,
@@ -45,15 +41,20 @@ const UserLidosService = {
                 };
             }
 
-            // Adiciona o favorito
-            lidos.push(bookId);
-            await user.update({ lidos: lidos }, { transaction });
+            // Adiciona o objeto do livro e o ID
+            const livroLido = {
+                id: bookId
+            };
 
+            lidos.push(livroLido);
+            lidosIds.push(bookId);
+
+            await user.update({ lidos, lidosIds }, { transaction });
             await transaction.commit();
 
             return {
                 code: 200,
-                message: "Livro adicionado a lista de lidos com sucesso",
+                message: "Livro adicionado à lista de lidos com sucesso",
                 success: true,
                 data: {
                     userId,
@@ -66,12 +67,13 @@ const UserLidosService = {
             console.error("Erro no UserLidosService (addRead):", error);
             return {
                 code: 500,
-                message: "Erro interno ao adicionar livro a lista de lidos.",
+                message: "Erro interno ao adicionar livro à lista de lidos.",
                 error: error.message,
                 success: false,
             };
         }
     },
+
     removeRead: async (userId, bookId) => {
         const transaction = await sequelize.transaction();
         try {
@@ -85,24 +87,25 @@ const UserLidosService = {
                 };
             }
 
-            // Garante que favoritos seja um array
             let lidos = user.lidos ? [...user.lidos] : [];
+            let lidosIds = user.lidosIds ? [...user.lidosIds] : [];
 
-            // Verifica se o livro está nos favoritos
-            const index = lidos.indexOf(bookId);
-            if (index === -1) {
+            // Verifica se o livro está na lista
+            const idIndex = lidosIds.indexOf(bookId);
+            if (idIndex === -1) {
                 await transaction.rollback();
                 return {
                     code: 400,
-                    message: "Livro não está na lista dos lidos",
+                    message: "Livro não está na lista de lidos",
                     success: false,
                 };
             }
 
-            // Remove o favorito
-            lidos.splice(index, 1);
-            await user.update({ lidos: lidos }, { transaction });
+            // Remove o ID e o objeto correspondente
+            lidosIds.splice(idIndex, 1);
+            lidos = lidos.filter(livro => livro.id !== bookId);
 
+            await user.update({ lidos, lidosIds }, { transaction });
             await transaction.commit();
 
             return {
@@ -112,7 +115,7 @@ const UserLidosService = {
                 data: {
                     userId,
                     bookId,
-                    favoritesCount: lidos.length
+                    LidosCount: lidos.length
                 }
             };
         } catch (error) {
@@ -120,7 +123,7 @@ const UserLidosService = {
             console.error("Erro no UserLidosService (removeRead):", error);
             return {
                 code: 500,
-                message: "Erro interno ao remover livro dos lidos.",
+                message: "Erro interno ao remover livro da lista de lidos.",
                 error: error.message,
                 success: false,
             };

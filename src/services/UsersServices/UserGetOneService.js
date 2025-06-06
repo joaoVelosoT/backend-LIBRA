@@ -1,4 +1,3 @@
-// services/UsersServices/UserGetOneService.js
 const User = require("../../models/User");
 const Book = require("../../models/Book");
 const UserDisabled = require("../../models/UsersDisableds");
@@ -8,7 +7,20 @@ const TypesDisabled = require("../../models/typesDisabled");
 const UserGetOneService = async (userId) => {
   try {
     const user = await User.findByPk(userId, {
-      attributes: ['id', 'name', 'email', 'isDisabled', 'favoritos', 'lidos', 'desejoLeitura', 'id_perfil_link', 'createdAt', 'updatedAt'],
+      attributes: [
+        'id',
+        'name',
+        'email',
+        'isDisabled',
+        'favoritos',
+        'lidos',
+        'lidosIds', // <- NOVO
+        'desejoLeitura',
+        'desejoLeituraIds', // <- NOVO
+        'id_perfil_link',
+        'createdAt',
+        'updatedAt'
+      ],
       include: [
         {
           association: 'userDisabledInfo',
@@ -39,38 +51,40 @@ const UserGetOneService = async (userId) => {
 
     const userData = user.get({ plain: true });
 
-    // Busca os livros favoritos se existirem
+    // Livros Favoritos
     let livrosFavoritos = [];
-    if (userData.favoritos && userData.favoritos.length > 0) {
+    if (userData.favoritos?.length > 0) {
       livrosFavoritos = await Book.findAll({
         where: { id: userData.favoritos },
         attributes: ['id', 'titulo', 'autor', 'notaMedia']
       });
     }
 
+    // Livros Lidos
     let livrosLidos = [];
-    if (userData.lidos && userData.lidos.length > 0) {
+    if (userData.lidosIds?.length > 0) {
       livrosLidos = await Book.findAll({
-        where: { id: userData.lidos },
+        where: { id: userData.lidosIds },
         attributes: ['id', 'titulo', 'autor', 'notaMedia']
       });
     }
 
+    // Livros Desejo Leitura
     let desejoLeitura = [];
-    if (userData.desejoLeitura && userData.desejoLeitura.length > 0) {
+    if (userData.desejoLeituraIds?.length > 0) {
       desejoLeitura = await Book.findAll({
-        where: { id: userData.desejoLeitura },
+        where: { id: userData.desejoLeituraIds },
         attributes: ['id', 'titulo', 'autor', 'notaMedia']
-      })
+      });
     }
 
     return {
       code: 200,
       data: {
         ...userData,
-        livrosFavoritos: livrosFavoritos,
-        livrosLidos: livrosLidos,
-        desejoLeitura: desejoLeitura,
+        livrosFavoritos,
+        livrosLidos,
+        desejoLeitura,
         deficiencia: userData.userDisabledInfo ? {
           tipo: userData.userDisabledInfo.disabled?.typeDisabled?.name,
           deficiencia: userData.userDisabledInfo.disabled?.name,

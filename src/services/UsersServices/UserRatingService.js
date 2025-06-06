@@ -31,7 +31,7 @@ const UserRatingService = {
       }
 
       // Verifica favoritos
-      const lidos = user.lidos || [];
+      const lidos = user.lidosIds || [];
       if (!lidos.includes(parseInt(bookId))) {
         await transaction.rollback();
         return {

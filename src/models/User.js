@@ -30,6 +30,16 @@ const User = db.define("User", {
     defaultValue: [],
     allowNull: false
   },
+  lidosIds: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+    allowNull: false
+  },
+  desejoLeituraIds: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+    allowNull: false
+  },
   lidos: {
     type: DataTypes.JSON,
     defaultValue: [],
