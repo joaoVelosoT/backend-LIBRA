@@ -4,7 +4,6 @@ const BookGetAllController = async (req, res) => {
   try {
     
     const result = await BookGetAllService(req.query);
-    console.log("Resultado do serviço:", result);
 
     if (!result.success) {
       return res.status(result.code).json(result);

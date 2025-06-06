@@ -5,14 +5,9 @@ const bycrpt = require("bcryptjs");
 const RegisterUserService = async (dataUser) => {
   try {
 
-    console.log(dataUser);
-
-
     const { email, password } = dataUser;
 
     const user = await User.findOne({ where: { email: email } });
-
-    console.log(user);
 
     if (!user) {
       return {
@@ -66,7 +61,7 @@ const RegisterUserService = async (dataUser) => {
       code: 201,
       data: {
         token,
-        user: user.user,
+        user: user.dataValues.id,
       },
       message: "Login usuário com sucesso",
       success: true,
