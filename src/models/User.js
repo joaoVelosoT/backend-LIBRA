@@ -10,7 +10,6 @@ const User = db.define("User", {
   email: {
     type: DataTypes.STRING(100),
     allowNull: false,
-    unique: true,
   },
   password: {
     type: DataTypes.STRING,
@@ -26,18 +25,36 @@ const User = db.define("User", {
     allowNull: true,
   },
   favoritos: {
-    type: DataTypes.JSON,
-    defaultValue: [],
+    type: DataTypes.TEXT,
+    get() {
+      const rawValue = this.getDataValue("favoritos");
+      return rawValue ? JSON.parse(rawValue) : []
+    },
+    set(value) {
+      this.setDataValue("favoritos", JSON.stringify(value));
+    },
     allowNull: false
   },
   lidos: {
-    type: DataTypes.JSON,
-    defaultValue: [],
+    type: DataTypes.TEXT,
+    get() {
+      const rawValue = this.getDataValue("lidos");
+      return rawValue ? JSON.parse(rawValue) : []
+    },
+    set(value) {
+      this.setDataValue("lidos", JSON.stringify(value));
+    },
     allowNull: false
   },
   desejoLeitura: {
-    type: DataTypes.JSON,
-    defaultValue: [],
+    type: DataTypes.TEXT,
+    get() {
+      const rawValue = this.getDataValue("desejoLeitura");
+      return rawValue ? JSON.parse(rawValue) : []
+    },
+    set(value) {
+      this.setDataValue("desejoLeitura", JSON.stringify(value));
+    },
     allowNull: false
   },
   validToken: {

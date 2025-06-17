@@ -107,13 +107,24 @@ const Book = db.define("Books", {
     onDelete: "SET NULL",
   },
   generos: {
-    type: DataTypes.JSON,
-    allowNull: true,
-    defaultValue: []
+    type: DataTypes.TEXT,
+    get() {
+      const rawValue = this.getDataValue("generos");
+      return rawValue ? JSON.parse(rawValue) : []
+    },
+    set(value) {
+      this.setDataValue("generos", JSON.stringify(value));
+    },
   },
   notas: {
-    type: DataTypes.JSON,
-    defaultValue: [],
+    type: DataTypes.TEXT,
+    get() {
+      const rawValue = this.getDataValue("notas");
+      return rawValue ? JSON.parse(rawValue) : []
+    },
+    set(value) {
+      this.setDataValue("notas", JSON.stringify(value));
+    },
     allowNull: true
   },
   notaMedia: {
