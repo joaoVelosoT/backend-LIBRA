@@ -7,7 +7,7 @@ const uploadCreateService = require("../uploadServices/uploadCreateService");
 
 const BookCreateService = async (bookData, files) => {
   const transaction = await sequelize.transaction();
-
+  
   try {
     const book = await Book.create(bookData, { transaction });
     const nomeLivro = `livros/${book.titulo.replace(/\s+/g, "_")}`;

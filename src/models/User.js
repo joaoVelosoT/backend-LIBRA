@@ -35,6 +35,16 @@ const User = db.define("User", {
     },
     allowNull: false
   },
+  lidosIds: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+    allowNull: false
+  },
+  desejoLeituraIds: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+    allowNull: false
+  },
   lidos: {
     type: DataTypes.TEXT,
     get() {

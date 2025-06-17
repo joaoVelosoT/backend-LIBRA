@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 
 const sendResetPasswordEmail = async (email, token) => {
   try {
-    const resetLink = `http://localhost:8080/auth/reset-password/${token}`;
+    const resetLink = `http://localhost:3000/auth/redSenha/${token}`;
     
     const logoImage = "https://storage.googleapis.com/libra_tcc/LoomDivertido.png";
 

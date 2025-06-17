@@ -4,6 +4,8 @@ const Banner = require("../../models/Banner");
 const Arquivos = require("../../models/Arquivos");
 const AudioBook = require("../../models/Audiobook");
 const Ebook = require("../../models/Ebook");
+const Braille = require("../../models/Braille");
+const Epub = require("../../models/Epub");
 
 const BookGetByIdService = async (id) => {
   try {
@@ -21,13 +23,23 @@ const BookGetByIdService = async (id) => {
         },
         {
           model: Ebook,
-          as: 'ebook', // Usando o singular
+          as: 'ebook', 
           include: [{ model: Arquivos, as: 'arquivo' }]
         },
         {
           model: AudioBook,
           as: "audiobook", // Mantendo no singular
           include: [{ model: Arquivos, as: "arquivo" }]
+        },
+        {
+          model: Braille,
+          as: 'braille', // Usando o singular
+          include: [{ model: Arquivos, as: 'arquivo' }]
+        },
+        {
+          model: Epub,
+          as: 'epub', // Usando o singular
+          include: [{ model: Arquivos, as: 'arquivo' }]
         }
       ],
     });
