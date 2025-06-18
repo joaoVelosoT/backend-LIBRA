@@ -33,16 +33,31 @@ const User = db.define("User", {
     set(value) {
       this.setDataValue("favoritos", JSON.stringify(value));
     },
-    allowNull: false
+    allowNull: false,
+    defaultValue: '[]',
   },
   lidosIds: {
-    type: DataTypes.JSON,
-    defaultValue: [],
+    type: DataTypes.TEXT,
+    get() {
+      const rawValue = this.getDataValue("lidosIds");
+      return rawValue ? JSON.parse(rawValue) : []
+    },
+    set(value) {
+      this.setDataValue("lidosIds", JSON.stringify(value));
+    },
+    defaultValue: '[]',
     allowNull: false
   },
   desejoLeituraIds: {
-    type: DataTypes.JSON,
-    defaultValue: [],
+    type: DataTypes.TEXT,
+    get() {
+      const rawValue = this.getDataValue("desejoLeituraIds");
+      return rawValue ? JSON.parse(rawValue) : []
+    },
+    set(value) {
+      this.setDataValue("desejoLeituraIds", JSON.stringify(value));
+    },
+    defaultValue: '[]',
     allowNull: false
   },
   lidos: {
@@ -54,7 +69,8 @@ const User = db.define("User", {
     set(value) {
       this.setDataValue("lidos", JSON.stringify(value));
     },
-    allowNull: false
+    allowNull: false,
+    defaultValue: '[]',
   },
   desejoLeitura: {
     type: DataTypes.TEXT,
@@ -65,7 +81,8 @@ const User = db.define("User", {
     set(value) {
       this.setDataValue("desejoLeitura", JSON.stringify(value));
     },
-    allowNull: false
+    allowNull: false,
+    defaultValue: '[]'
   },
   validToken: {
     type: DataTypes.STRING,

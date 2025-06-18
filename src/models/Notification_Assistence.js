@@ -1,7 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../database/config");
 const Notification = require("./Notification");
-const User = require("./User");
 const Evento = require("./Evento");
 
 const NotificationAssistence = db.define("NotificationAssistence", {
@@ -18,7 +17,7 @@ const NotificationAssistence = db.define("NotificationAssistence", {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: User,
+            model: "User",
             key: "id",
         },
         onDelete: "CASCADE"
